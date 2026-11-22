@@ -47,7 +47,7 @@ npm run typecheck
 
 `npm run test:watch` mantiene las pruebas en observación. `ng test` usa Vitest a través del ejecutor oficial, sin configuración personalizada. Las pruebas originales JavaScript se conservan, adaptadas a Vitest y a las nuevas rutas; sus casos inválidos siguen comprobando las validaciones en tiempo de ejecución. Todo el código de la aplicación está en TypeScript estricto.
 
-Las pruebas cubren catálogo, modelos, límites de equipo, aislamiento entre ninjas, selecciones y limpieza de valores, foco de teclado, navegación, generación asíncrona, errores, descarte de resultados obsoletos, fuentes, Unicode, coordenadas y composición PDF. También verifican nombres de archivo, selección de plantilla, botones de exportación, descarga mediante Blob, ventanas bloqueadas y limpieza de URLs. Una captura de referencia del motor original comprueba texto, cajas, estilos, saltos de línea, tamaños y líneas base para los doce grupos de técnicas.
+Las pruebas cubren catálogo, modelos, límites de equipo, aislamiento entre ninjas, selecciones y limpieza de valores, foco de teclado, navegación, generación asíncrona, errores, descarte de resultados obsoletos, fuentes, Unicode, coordenadas y composición PDF. También verifican nombres de archivo, selección de plantilla, botones de exportación, descarga mediante Blob, ventanas bloqueadas y limpieza de URLs. El editor comprueba la sincronización de minifichas, estadísticas e iconos, los huecos de equipo seleccionados fuera de orden y el cambio de personaje sin recrear formularios ni invalidar el PDF. Una captura de referencia del motor original comprueba texto, cajas, estilos, saltos de línea, tamaños y líneas base para los doce grupos de técnicas.
 
 ## Arquitectura
 
@@ -60,7 +60,8 @@ src/
     features/
       character-sheet/      # Editor, estado Signals y controles Material
       pdf-generator/        # Motor PDF, plantillas, generación y exportación local
-    layout/                 # Cabecera, contenido y pie originales
+    layout/                 # Estructura base y pie de la aplicación
+    shared/                 # Iconos SVG locales y tipados
     app.ts
     app.config.ts
     app.routes.ts
@@ -80,11 +81,15 @@ docs/migration/             # Inventario, decisiones e informe de verificación
 
 Los componentes son standalone, usan `OnPush`, `inject()`, entradas/salidas con Signals y control de flujo `@for`. No hay NgModules propios. Angular 21 funciona **sin Zone.js** por defecto; no se instala ni se carga.
 
-`BandState` conserva las reglas de los modelos y publica instantáneas tipadas mediante Signals de solo lectura y `computed()`. Los controles editables usan **Reactive Forms tipados**: Signal Forms de Angular 21 todavía declara su API como experimental, por lo que no cumple el requisito de estabilidad de esta migración. No se usan formularios template-driven ni RxJS para el estado síncrono. `linkedSignal()` mantiene el valor de los controles cuando cambia su entrada.
+`BandState` conserva las reglas de los modelos y publica instantáneas tipadas mediante Signals de solo lectura y `computed()`. Los controles editables usan **Reactive Forms tipados**: Signal Forms de Angular 21 todavía declara su API como experimental, por lo que no cumple el requisito de estabilidad de esta migración. No se usan formularios template-driven ni RxJS para el estado síncrono. Los controles mantienen su instancia de `FormControl` y sincronizan los cambios externos mediante `effect()`, conservando el foco y el cursor al editar.
 
 Solo existe una pantalla real. Angular Router la carga de forma diferida y redirige rutas desconocidas al editor. No se añaden pantallas ficticias ni carpetas para funciones futuras. El motor PDF y sus dependencias se cargan al generar por primera vez; no se añade `@defer` a un formulario que debe estar disponible inmediatamente.
 
-La presentación conserva el contenido en inglés y la distribución del editor existente. Material proporciona campos, selectores nativos accesibles y botones; CDK mantiene el foco tras editar listas. El tema sigue la preferencia clara u oscura del dispositivo y el SCSS parte de una columna para móvil, ampliándose a dos en pantallas mayores. No se introduce un cambio completo de diseño.
+La presentación sigue las referencias del editor oscuro: cabecera compacta, barra de escuadra y tres minifichas. Los controles tienen etiquetas en español; los nombres y reglas de los catálogos conservan sus valores originales en inglés para los datos y el PDF. Los campos y selectores son controles HTML nativos con Reactive Forms y estilos propios sobre el tema base de Material.
+
+En pantallas inferiores a **56 rem**, las tres minifichas aparecen arriba y solo se muestra debajo el formulario del personaje seleccionado. A partir de ese ancho se muestran tres columnas, cada una con su minificha y formulario; las minifichas pasan a ser informativas, sin selección por clic ni botones de selección en el recorrido de teclado. Se conserva una sola instancia de cada editor: cambiar de personaje o de tamaño de pantalla no borra las selecciones. La selección móvil es estado de interfaz y no invalida el PDF generado.
+
+`NinjaSummary`, `StatsView` y `EquipmentSummary` presentan el resumen sin modificar el modelo. `EquipmentPresentation` comparte el mapa de iconos y los huecos entre minifichas y selectores. `UiIcon`, en `shared/ui-icon.ts`, contiene los SVG provisionales; para sustituirlos no es necesario cambiar catálogos ni reglas. Las seis estadísticas incluyen movimiento y siguen siendo de solo lectura. Los detalles de armas y objetos se consultan mediante el desplegable «Ver efectos del equipo».
 
 ## Funciones actuales
 
@@ -92,7 +97,8 @@ La presentación conserva el contenido en inglés y la distribución del editor 
 - Tres ninjas independientes con nombre y uno de cuatro tipos.
 - Estadísticas derivadas de tipo, no editables, incluyendo valores cero.
 - Doce grupos de tres técnicas, descripción, coste de chakra fijo o variable e indicación Mokushin.
-- Hasta tres armas y dos objetos por ninja; altas, bajas, selección y limpieza con datos derivados del catálogo.
+- Tres huecos de armas y dos de objetos por ninja, con datos derivados del catálogo. «Sin arma» y «Sin objeto» vacían un hueco sin desplazar los demás.
+- Minifichas con iconos de las seis estadísticas y del equipo, sincronizadas con su personaje.
 - Generación de PDF desde una instantánea de la banda, estados de carga, éxito y error, e invalidación al editar.
 - PDF original, 69 campos declarados y 54 activos; 15 campos sin coordenadas siguen desactivados.
 - Eagle Lake y respaldo DejaVu Sans, incrustación local de fuentes, precisión de coordenadas y algoritmos originales.
@@ -105,11 +111,11 @@ No se han añadido campos obligatorios ni restricciones al nombre que no existí
 
 El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe datos, plantilla y una función de carga de recursos sustituible en pruebas. `PdfGeneration` lo conecta con el formulario y conserva los bytes válidos en memoria. `getPdfBytes()` devuelve una copia o `null` si cambió la banda o la plantilla. [Documentación del motor y exportación](src/app/features/pdf-generator/README.md).
 
-1. Introduce **Squad name** si quieres personalizar el nombre del archivo y completa los ninjas.
-2. Elige **Sheet template**. Por ahora contiene únicamente la plantilla original con Eagle Lake.
-3. Pulsa **Generate PDF**. Al terminar se inicia automáticamente la descarga y aparecen el nombre del archivo y los botones de exportación habilitados. Por ejemplo, `Los Cuervos` produce `Los-Cuervos.pdf`; si no hay nombre se usa `jutsu-squad.pdf`. Los caracteres incompatibles con nombres de archivo se sustituyen y los nombres largos se limitan.
-4. **Download PDF** permite descargar de nuevo el documento generado, también si el navegador no inició la descarga automática.
-5. **Open PDF to print** abre el mismo documento en otra pestaña. Utiliza los controles de impresión del visor PDF. Si el navegador bloquea la pestaña, el estado indica que debes permitir ventanas emergentes para este sitio y reintentar.
+1. Introduce el nombre de **Escuadra** si quieres personalizar el nombre del archivo y completa los ninjas. En móvil, toca su minificha para elegir el personaje que quieres editar.
+2. Elige **Plantilla de ficha**. Por ahora contiene únicamente la plantilla original con Eagle Lake.
+3. Pulsa **Generar y descargar PDF**, en la barra de iconos o al pie del editor. Al terminar se inicia automáticamente la descarga y aparecen el nombre del archivo y los botones de exportación habilitados. Por ejemplo, `Los Cuervos` produce `Los-Cuervos.pdf`; si no hay nombre se usa `jutsu-squad.pdf`. Los caracteres incompatibles con nombres de archivo se sustituyen y los nombres largos se limitan.
+4. El icono **Descargar PDF** permite descargar de nuevo el documento generado, también si el navegador no inició la descarga automática.
+5. El icono **Abrir PDF para imprimir** abre el mismo documento en otra pestaña. Utiliza los controles de impresión del visor PDF. Si el navegador bloquea la pestaña, el estado indica que debes permitir ventanas emergentes para este sitio y reintentar. Los iconos tienen etiquetas accesibles y muestran su acción al pasar el puntero.
 
 Cualquier edición, incluido el nombre de la banda, o cambio de plantilla deshabilita las exportaciones hasta volver a generar. Una generación en curso que quede obsoleta se descarta. Los PDF ya abiertos conservan su recurso hasta cerrar su pestaña; las URLs temporales de descarga se liberan después de iniciarla y todos los recursos se limpian al destruir la aplicación.
 
@@ -123,4 +129,4 @@ Consulta [el informe de migración](docs/migration/angular-migration.md) para el
 
 El `.gitignore` excluye dependencias, compilaciones, cachés, cobertura, salidas generadas, copias de revisión y configuración local. Las plantillas PDF, fuentes, licencias, catálogos y `package-lock.json` forman parte del código versionado. La copia inicial `output/migration/vite-phase5-source.tar.gz` y el PDF de revisión permanecen únicamente en el entorno local.
 
-Verificación de la fase 6: 73 pruebas automatizadas, comprobación de tipos y compilación de producción correctas. La revisión manual de descarga, pestaña PDF e impresión queda pendiente porque el host de acceso al navegador no estaba disponible en la sesión de implementación.
+Verificación actual: 78 pruebas automatizadas, comprobación de tipos y compilación de producción correctas. El usuario confirmó la descarga de la fase 6 en Firefox desde `http://localhost:4200/`, tras resolver un error de `start` que mantenía una compilación anterior. Se ha comprobado por HTTP que el servidor entrega el nuevo editor con minifichas y las acciones de exportación. La revisión visual del nuevo diseño en escritorio y móvil, y la apertura manual para imprimir, siguen pendientes: el host de acceso al navegador no estaba disponible en la sesión de implementación.

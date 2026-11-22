@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CharacterSheet } from './character-sheet';
 import { BandState } from './band-state';
 import { GENERATE_BAND_PDF } from '../pdf-generator/pdf-generation';
 import { PdfBrowserFiles } from '../pdf-generator/pdf-browser-files';
 import { PdfTemplates } from '../pdf-generator/pdf-templates';
+import { PdfGeneration } from '../pdf-generator/pdf-generation';
 
 async function setup() {
   const generate = vi.fn().mockResolvedValue(new Uint8Array([37, 80, 68, 70]));
@@ -23,14 +24,11 @@ async function setup() {
     control.dispatchEvent(new Event('change', { bubbles: true }));
     await fixture.whenStable();
   };
-  const click = async (label: string) => {
-    element.querySelector<HTMLButtonElement>(`button[aria-label="${label}"]`)!.click();
-    await fixture.whenStable();
-  };
-  return { fixture, element, state, select, click, generate, files };
+  return { fixture, element, state, select, generate, files };
 }
 
 describe('Character sheet', () => {
+  afterEach(() => vi.unstubAllGlobals());
   it('edits independent ninjas and displays catalog stats and all three techniques', async () => {
     const { fixture, element, state, select } = await setup();
     expect(element.querySelectorAll('.ninja-editor')).toHaveLength(3);
@@ -54,24 +52,104 @@ describe('Character sheet', () => {
     expect(name.value).toBe('Águila');
   });
 
-  it('keeps equipment limits, derived details and keyboard focus after add/remove', async () => {
-    const { element, state, select, click } = await setup();
-    await click('Add weapon to Ninja 1');
-    expect(document.activeElement?.id).toBe('ninja-1-weapon-1-name');
+  it('offers three weapon and two item slots and keeps focus and other slots when clearing one', async () => {
+    const { element, state, select } = await setup();
+    expect(element.querySelectorAll('#ninja-1-panel .equipment-row')).toHaveLength(5);
+    const third = element.querySelector<HTMLSelectElement>('#ninja-1-weapon-3-name')!;
+    third.focus();
+    await select('ninja-1-weapon-3-name', 'Shuriken');
+    expect(document.activeElement).toBe(third);
+    expect(state.band().ninjas[0].equipment.weapons.map((entry) => entry.name)).toEqual(['', '', 'Shuriken']);
     await select('ninja-1-weapon-1-name', 'Kunai');
+    await select('ninja-1-weapon-2-name', 'Explosive Seal');
+    await select('ninja-1-item-2-name', 'Smoke Bomb');
+    expect(state.band().ninjas[0].equipment.weapons).toHaveLength(3);
+    expect(state.band().ninjas[0].equipment.items).toHaveLength(2);
     expect(element.querySelector('.equipment-details')!.textContent).toContain('2D6 ranged attack.');
     expect(element.querySelector('.equipment-details')!.textContent).toContain('1 action');
-    await click('Add weapon to Ninja 1');
-    await click('Add weapon to Ninja 1');
-    expect(element.querySelector<HTMLButtonElement>('[aria-label="Add weapon to Ninja 1"]')!.disabled).toBe(true);
-    await click('Add item to Ninja 1');
-    await click('Add item to Ninja 1');
-    expect(element.querySelector<HTMLButtonElement>('[aria-label="Add item to Ninja 1"]')!.disabled).toBe(true);
-    expect(state.band().ninjas[0].equipment.weapons).toHaveLength(3);
-    await click('Remove weapon 2 from Ninja 1');
-    expect(document.activeElement?.id).toBe('ninja-1-weapon-2-name');
-    expect(state.band().ninjas[0].equipment.weapons).toHaveLength(2);
-    expect(element.querySelector<HTMLButtonElement>('[aria-label="Add weapon to Ninja 1"]')!.disabled).toBe(false);
+    const summary = element.querySelector('app-ninja-summary')!;
+    expect(summary.querySelectorAll('.equipment-token:not(.is-empty)')).toHaveLength(4);
+    const weaponIcon = summary.querySelector('[data-equipment="Kunai"] path')!.getAttribute('d');
+    const itemIcon = summary.querySelector('[data-equipment="Smoke Bomb"] path')!.getAttribute('d');
+    const emptyIcon = summary.querySelector('.is-empty path')!.getAttribute('d');
+    expect(weaponIcon).not.toBe(emptyIcon);
+    expect(itemIcon).not.toBe(weaponIcon);
+    expect(summary.querySelector('[data-equipment="Smoke Bomb"]')).not.toBeNull();
+    await select('ninja-1-weapon-2-name', '');
+    expect(state.band().ninjas[0].equipment.weapons.map((entry) => entry.name)).toEqual(['Kunai', '', 'Shuriken']);
+    expect(third.value).toBe('Shuriken');
+    expect(summary.querySelector('[data-equipment="Explosive Seal"]')).toBeNull();
+    await select('ninja-1-weapon-3-name', '');
+    expect(state.band().ninjas[0].equipment.weapons).toHaveLength(1);
+    expect(element.querySelectorAll('#ninja-1-panel .equipment-row')).toHaveLength(5);
+    expect(state.band().ninjas[1].equipment.weapons).toHaveLength(0);
+  });
+
+  it('updates all six stats in the associated mini sheet without editable stat controls', async () => {
+    const { element, select } = await setup();
+    await select('ninja-1-type', 'Physical');
+    await select('ninja-2-type', 'Defensive');
+    await select('ninja-3-type', 'Jutsu Master');
+    const summaries = element.querySelectorAll('app-ninja-summary');
+    expect(summaries).toHaveLength(3);
+    const stats = [...summaries[0].querySelectorAll('.stat-value')].map((value) => value.textContent);
+    expect(stats).toEqual(['12', '6', '5', '7', '4', '10']);
+    expect(summaries[1].querySelector('[data-stat="defense"] .stat-value')!.textContent).toBe('6');
+    expect(summaries[2].querySelector('[data-stat="chakra"] .stat-value')!.textContent).toBe('20');
+    expect(element.querySelectorAll('input[type="number"]')).toHaveLength(0);
+    expect(summaries[0].querySelectorAll('.mini-stat app-ui-icon')).toHaveLength(6);
+  });
+
+  it('switches the active editor without recreating forms, changing band data or invalidating the PDF', async () => {
+    const { fixture, element, state, files } = await setup();
+    state.setName(0, 'Kragash');
+    state.setName(2, 'Zikka');
+    await fixture.whenStable();
+    const firstName = element.querySelector<HTMLInputElement>('#ninja-1-name')!;
+    const thirdName = element.querySelector<HTMLInputElement>('#ninja-3-name')!;
+    element.querySelector<HTMLButtonElement>('#generate-pdf')!.click();
+    await fixture.whenStable();
+    const band = state.band();
+    const revision = state.revision();
+    element.querySelector<HTMLButtonElement>('#ninja-3-select')!.click();
+    await fixture.whenStable();
+    expect(element.querySelectorAll('.ninja-column.is-selected')).toHaveLength(1);
+    expect(element.querySelector('.is-selected .ninja-panel')!.id).toBe('ninja-3-panel');
+    expect(element.querySelector('#ninja-3-select')!.getAttribute('aria-pressed')).toBe('true');
+    expect(element.querySelector('#ninja-1-select')!.getAttribute('aria-pressed')).toBe('false');
+    expect(state.band()).toBe(band);
+    expect(state.revision()).toBe(revision);
+    expect(TestBed.inject(PdfGeneration).hasPdf()).toBe(true);
+    expect(files.download).toHaveBeenCalledTimes(1);
+    expect(element.querySelector('#ninja-3-name')).toBe(thirdName);
+    element.querySelector<HTMLButtonElement>('#ninja-1-select')!.click();
+    await fixture.whenStable();
+    expect(element.querySelector('#ninja-1-name')).toBe(firstName);
+    expect(firstName.value).toBe('Kragash');
+    expect(thirdName.value).toBe('Zikka');
+  });
+
+  it('ignores desktop mini-sheet clicks and keeps mobile selection available after resizing', async () => {
+    let desktop = true;
+    const matchMedia = vi.fn(() => ({ matches: desktop }) as MediaQueryList);
+    vi.stubGlobal('matchMedia', matchMedia);
+    const { fixture, element, state } = await setup();
+    const band = state.band();
+    const third = element.querySelectorAll('app-ninja-summary')[2];
+    third.querySelector<HTMLButtonElement>('.ninja-select')!.click();
+    third.querySelector<HTMLElement>('.equipment-token')!.click();
+    await fixture.whenStable();
+    expect(matchMedia).toHaveBeenCalledWith('(min-width: 56rem)');
+    expect(element.querySelector('.is-selected .ninja-panel')!.id).toBe('ninja-1-panel');
+    desktop = false;
+    third.querySelector<HTMLButtonElement>('.ninja-select')!.click();
+    await fixture.whenStable();
+    expect(element.querySelector('.is-selected .ninja-panel')!.id).toBe('ninja-3-panel');
+    desktop = true;
+    element.querySelector<HTMLButtonElement>('#ninja-1-select')!.click();
+    await fixture.whenStable();
+    expect(element.querySelector('.is-selected .ninja-panel')!.id).toBe('ninja-3-panel');
+    expect(state.band()).toBe(band);
   });
 
   it('generates and downloads the current form snapshot through the button', async () => {

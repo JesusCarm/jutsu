@@ -44,6 +44,12 @@ export class BandState {
     this.publish();
   }
 
+  selectEquipmentSlot(index: number, kind: EquipmentKind, slot: number, name: string): void {
+    const definition = name === '' ? null : this.catalog.getEquipment(kind).find((item) => item.name === name);
+    this.ninja(index).equipment.selectSlot(kind, slot, definition);
+    this.publish();
+  }
+
   removeEquipment(index: number, kind: EquipmentKind, entry: number): void {
     this.ninja(index).equipment.removeEntry(kind, entry);
     this.publish();

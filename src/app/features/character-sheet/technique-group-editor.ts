@@ -1,27 +1,27 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import type { NinjaSnapshot } from '../../core/models/band-snapshot';
 import { TECHNIQUE_GROUPS } from '../../core/models/ninja-options';
+import { UiIcon } from '../../shared/ui-icon';
 import { BandState } from './band-state';
 import { CatalogSelect } from './catalog-select';
+import { NinjaLabels } from './ninja-labels';
 
 @Component({
   selector: 'app-technique-group-editor',
-  imports: [CatalogSelect],
+  imports: [CatalogSelect, UiIcon],
   template: `
-    <fieldset class="form-section"><legend>Techniques</legend>
-      <app-catalog-select label="Technique group" placeholder="Choose a group" [controlId]="'ninja-' + (ninjaIndex() + 1) + '-technique-group'"
-        [options]="options()" [value]="group().name" (selected)="state.selectGroup(ninjaIndex(), $event)" />
+    <fieldset class="form-section technique-editor"><legend><app-ui-icon name="book" />Escuela de jutsu</legend>
+      <app-catalog-select label="Escuela de jutsu" [hideLabel]="true" placeholder="Elige una escuela"
+        [controlId]="'ninja-' + (ninjaIndex() + 1) + '-technique-group'" [options]="options()" [value]="group().name"
+        (selected)="state.selectGroup(ninjaIndex(), $event)" />
       <div class="technique-list">
         @for (technique of group().techniques; track $index) {
-          <fieldset class="technique-card"><legend>Technique {{ $index + 1 }}</legend>
-            <dl class="technique-fields">
-              <div class="read-only-field"><dt>Name</dt><dd>{{ technique.name }}</dd></div>
-              <div class="read-only-field"><dt>Chakra cost</dt><dd>{{ technique.chakra }}</dd></div>
-              <div class="read-only-field"><dt>Short description</dt><dd>{{ technique.description }}</dd></div>
-              <div class="read-only-field"><dt>Mokushin</dt><dd>{{ technique.isMokushin ? 'Yes' : 'No' }}</dd></div>
-            </dl>
-          </fieldset>
-        } @empty { <p class="form-help">Select a group to see its three techniques.</p> }
+          <article class="technique-card">
+            <div class="technique-heading"><h3>{{ technique.name }}</h3><span class="chakra-cost" title="Coste de chakra"><app-ui-icon name="flame" /><span class="sr-only">Chakra: </span>{{ technique.chakra }}</span></div>
+            <p>{{ technique.description }}</p>
+            @if (technique.isMokushin) { <span class="mokushin-badge">Mokushin</span> }
+          </article>
+        } @empty { <p class="empty-techniques">Elige una escuela para consultar sus tres técnicas.</p> }
       </div>
     </fieldset>
   `,
@@ -31,5 +31,8 @@ export class TechniqueGroupEditor {
   readonly group = input.required<NinjaSnapshot['techniqueGroup']>();
   readonly ninjaIndex = input.required<number>();
   protected readonly state = inject(BandState);
-  protected readonly options = computed(() => TECHNIQUE_GROUPS.map((name) => ({ name, disabled: !this.state.catalog.getTechniqueGroup(name) })));
+  private readonly labels = new NinjaLabels();
+  protected readonly options = computed(() => TECHNIQUE_GROUPS.map((name) => ({
+    name, label: this.labels.group(name), disabled: !this.state.catalog.getTechniqueGroup(name),
+  })));
 }

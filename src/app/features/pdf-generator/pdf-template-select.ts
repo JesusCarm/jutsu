@@ -1,23 +1,17 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 import { PdfTemplates } from './pdf-templates';
 
 @Component({
   selector: 'app-pdf-template-select',
-  imports: [ReactiveFormsModule, MatFormField, MatLabel, MatInput],
+  imports: [ReactiveFormsModule],
   template: `
-    <mat-form-field appearance="outline" subscriptSizing="dynamic">
-      <mat-label>Sheet template</mat-label>
-      <select matNativeControl id="pdf-template" [formControl]="selection" (change)="templates.select(selection.value)">
-        @for (option of templates.options; track option.id) {
-          <option [value]="option.id">{{ option.label }}</option>
-        }
-      </select>
-    </mat-form-field>
+    <label for="pdf-template">Plantilla de ficha</label>
+    <span class="select-wrap"><select id="pdf-template" [formControl]="selection" (change)="templates.select(selection.value)">
+      @for (option of templates.options; track option.id) { <option [value]="option.id">{{ option.label }}</option> }
+    </select></span>
   `,
-  styles: `:host { display: block; max-width: 30rem; }`,
+  styles: `:host { display: block; min-width: 0; }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PdfTemplateSelect {

@@ -11,6 +11,38 @@ import { TechniqueGroup } from '../src/app/core/models/technique-group';
 import { createTestGameData } from './fixtures/game-data.js';
 import { NINJA_TYPES } from '../src/app/core/models/ninja-options';
 
+test('fixed equipment slots can be selected out of order and cleared without shifting other selections', () => {
+  const equipment = new Equipment();
+  const kunai = { name: 'Kunai', description: 'Ranged attack', cost: '1 action' };
+  const shuriken = { name: 'Shuriken', description: 'Ranged attack', cost: '1 action' };
+  equipment.selectSlot('weapons', 2, shuriken);
+  assert.deepEqual(equipment.weapons.map((entry) => entry.name), ['', '', 'Shuriken']);
+  equipment.selectSlot('weapons', 0, kunai);
+  equipment.selectSlot('weapons', 1, kunai);
+  equipment.selectSlot('weapons', 0, null);
+  assert.deepEqual(equipment.weapons.map((entry) => entry.name), ['', 'Kunai', 'Shuriken']);
+  equipment.selectSlot('weapons', 2, null);
+  assert.deepEqual(equipment.weapons.map((entry) => entry.name), ['', 'Kunai']);
+  equipment.selectSlot('weapons', 1, null);
+  assert.equal(equipment.weapons.length, 0);
+  equipment.selectSlot('items', 1, { name: 'Smoke Bomb', description: 'Escape' });
+  assert.equal(equipment.items[1].name, 'Smoke Bomb');
+  assert.equal(equipment.weapons.length, 0);
+  equipment.selectSlot('items', 1, null);
+  assert.equal(equipment.items.length, 0);
+});
+
+test('fixed equipment slots reject invalid indices and definitions without altering the inventory', () => {
+  const equipment = new Equipment();
+  equipment.selectSlot('weapons', 0, { name: 'Kunai', description: 'Ranged attack' });
+  const before = JSON.stringify(equipment);
+  for (const slot of [-1, 3, 0.5, NaN]) assert.throws(() => equipment.selectSlot('weapons', slot, null), RangeError);
+  assert.throws(() => equipment.selectSlot('items', 2, null), RangeError);
+  assert.throws(() => equipment.selectSlot('weapons', 0, undefined), TypeError);
+  assert.throws(() => equipment.selectSlot('weapons', 0, { name: 'Broken' }), TypeError);
+  assert.equal(JSON.stringify(equipment), before);
+});
+
 test('a band starts with exactly three independent ninjas and no selected definitions', () => {
   const band = new Band();
   assert.equal(band.ninjas.length, 3);

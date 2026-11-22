@@ -1,4 +1,5 @@
 import type { EquipmentKind, EquipmentDefinition } from './game-types';
+import { EQUIPMENT_LIMITS } from './game-types';
 import { EquipmentEntry } from './equipment-entry';
 
 export class Equipment {
@@ -21,7 +22,7 @@ export class Equipment {
 
   getLimit(kind: EquipmentKind) {
     this.getEntries(kind);
-    return kind === 'weapons' ? 3 : 2;
+    return EQUIPMENT_LIMITS[kind];
   }
 
   canAddEntry(kind: EquipmentKind) {
@@ -45,6 +46,21 @@ export class Equipment {
       return currentIndex === index ? entry : current;
     }));
     return entry;
+  }
+
+  selectSlot(kind: EquipmentKind, index: number, definition: EquipmentDefinition | null | undefined): void {
+    const limit = this.getLimit(kind);
+    if (!Number.isInteger(index) || index < 0 || index >= limit) {
+      throw new RangeError(`Equipment slot must be between 0 and ${limit - 1}.`);
+    }
+    if (definition === undefined) throw new TypeError('Choose an equipment definition or clear the selection.');
+    const entry = new EquipmentEntry(definition);
+    const entries = [...this.getEntries(kind)];
+    if (!entry.name && index >= entries.length) return;
+    while (entries.length <= index) entries.push(new EquipmentEntry());
+    entries[index] = entry;
+    while (entries.at(-1)?.name === '') entries.pop();
+    this.#entries[kind] = Object.freeze(entries);
   }
 
   validateIndex(kind: EquipmentKind, index: number) {

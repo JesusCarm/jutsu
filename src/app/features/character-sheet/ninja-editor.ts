@@ -1,38 +1,30 @@
-import { ChangeDetectionStrategy, Component, inject, input, linkedSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 import type { NinjaSnapshot } from '../../core/models/band-snapshot';
 import { BandState } from './band-state';
 import { CatalogSelect } from './catalog-select';
-import { StatsView } from './stats-view';
 import { TechniqueGroupEditor } from './technique-group-editor';
 import { EquipmentListEditor } from './equipment-list-editor';
+import { NinjaLabels } from './ninja-labels';
 
 @Component({
   selector: 'app-ninja-editor',
-  imports: [ReactiveFormsModule, MatFormField, MatLabel, MatInput, CatalogSelect, StatsView, TechniqueGroupEditor, EquipmentListEditor],
+  imports: [ReactiveFormsModule, CatalogSelect, TechniqueGroupEditor, EquipmentListEditor],
   template: `
     <fieldset class="ninja-editor">
-      <legend>Ninja {{ index() + 1 }}</legend>
+      <legend class="sr-only">Editar Ninja {{ index() + 1 }}</legend>
+      <div class="editor-heading"><h2>{{ ninja().name || 'Ninja ' + (index() + 1) }}</h2><span class="badge">{{ labels.type(ninja().type) || 'Sin tipo' }}</span></div>
       <div class="identity-fields">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-          <mat-label>Name</mat-label>
-          <input matInput [id]="'ninja-' + (index() + 1) + '-name'" [formControl]="name()"
-            (input)="state.setName(index(), name().value)" />
-        </mat-form-field>
-        <app-catalog-select label="Type" placeholder="Choose a type" [controlId]="'ninja-' + (index() + 1) + '-type'"
-          [options]="state.catalog.ninjaTypes" [value]="ninja().type" (selected)="state.selectType(index(), $event)" />
-      </div>
-      <app-stats-view [stats]="ninja().stats" />
-      <app-technique-group-editor [group]="ninja().techniqueGroup" [ninjaIndex]="index()" />
-      <fieldset class="form-section">
-        <legend>Equipment</legend>
-        <div class="equipment-columns">
-          <app-equipment-list-editor kind="weapons" [entries]="ninja().equipment.weapons" [ninjaIndex]="index()" />
-          <app-equipment-list-editor kind="items" [entries]="ninja().equipment.items" [ninjaIndex]="index()" />
+        <div class="text-field"><label [for]="'ninja-' + (index() + 1) + '-name'">Nombre</label>
+          <input [id]="'ninja-' + (index() + 1) + '-name'" [formControl]="name" placeholder="Nombre del ninja"
+            (input)="state.setName(index(), name.value)" />
         </div>
-      </fieldset>
+        <app-catalog-select label="Tipo" placeholder="Elige un tipo" [controlId]="'ninja-' + (index() + 1) + '-type'"
+          [options]="types()" [value]="ninja().type" (selected)="state.selectType(index(), $event)" />
+      </div>
+      <app-equipment-list-editor kind="weapons" [entries]="ninja().equipment.weapons" [ninjaIndex]="index()" />
+      <app-equipment-list-editor kind="items" [entries]="ninja().equipment.items" [ninjaIndex]="index()" />
+      <app-technique-group-editor [group]="ninja().techniqueGroup" [ninjaIndex]="index()" />
     </fieldset>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,5 +33,13 @@ export class NinjaEditor {
   readonly ninja = input.required<NinjaSnapshot>();
   readonly index = input.required<number>();
   protected readonly state = inject(BandState);
-  protected readonly name = linkedSignal(() => new FormControl(this.ninja().name, { nonNullable: true }));
+  protected readonly labels = new NinjaLabels();
+  protected readonly types = computed(() => this.state.catalog.ninjaTypes.map((type) => ({ name: type.name, label: this.labels.type(type.name) })));
+  protected readonly name = new FormControl('', { nonNullable: true });
+
+  constructor() {
+    effect(() => {
+      if (this.name.value !== this.ninja().name) this.name.setValue(this.ninja().name, { emitEvent: false });
+    });
+  }
 }

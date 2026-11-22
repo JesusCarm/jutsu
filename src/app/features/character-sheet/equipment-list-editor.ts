@@ -1,36 +1,40 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, computed, inject, Injector, input, viewChildren } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { CdkMonitorFocus, FocusMonitor } from '@angular/cdk/a11y';
-import { ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import type { EquipmentDefinition, EquipmentKind } from '../../core/models/game-types';
+import { UiIcon } from '../../shared/ui-icon';
 import { BandState } from './band-state';
 import { CatalogSelect } from './catalog-select';
+import { EquipmentPresentation } from './equipment-presentation';
 
 @Component({
   selector: 'app-equipment-list-editor',
-  imports: [MatButton, CatalogSelect, CdkMonitorFocus],
+  imports: [CatalogSelect, UiIcon],
   template: `
-    <fieldset class="equipment-editor"><legend>{{ kind() === 'weapons' ? 'Weapons' : 'Items' }}</legend>
-      <p class="equipment-count" role="status">{{ entries().length }} / {{ limit() }} {{ kind() }}</p>
+    <fieldset class="equipment-editor form-section">
+      <legend><app-ui-icon [name]="kind() === 'weapons' ? 'swords' : 'bag'" />{{ kind() === 'weapons' ? 'Armas' : 'Objetos' }}</legend>
       <div class="equipment-list">
-        @for (entry of entries(); track $index) {
-          <fieldset class="equipment-entry"><legend>{{ kind() === 'weapons' ? 'Weapon' : 'Item' }} {{ $index + 1 }}</legend>
-            <div #entryControl cdkMonitorSubtreeFocus>
-              <app-catalog-select [label]="kind() === 'weapons' ? 'Weapon' : 'Item'" [placeholder]="'Choose a ' + singular()"
-                [controlId]="'ninja-' + (ninjaIndex() + 1) + '-' + singular() + '-' + ($index + 1) + '-name'"
-                [value]="entry.name" [options]="options()" (selected)="state.selectEquipment(ninjaIndex(), kind(), $index, $event)" />
-            </div>
-            <dl class="equipment-details">
-              <div class="read-only-field"><dt>Short description</dt><dd>{{ entry.description || '—' }}</dd></div>
-              <div class="read-only-field"><dt>Action cost</dt><dd>{{ entry.cost || '—' }}</dd></div>
-            </dl>
-            <button matButton type="button" class="remove-button" [attr.aria-label]="'Remove ' + singular() + ' ' + ($index + 1) + ' from Ninja ' + (ninjaIndex() + 1)"
-              (click)="remove($index)">Remove {{ singular() }}</button>
-          </fieldset>
-        } @empty { <p class="empty-list">{{ options().length ? 'No ' + kind() + ' added.' : 'No ' + kind() + ' available.' }}</p> }
+        @for (slot of slots(); track slot.index) {
+          <div class="equipment-row">
+            <app-ui-icon [name]="slot.icon" [title]="slot.name || emptyLabel()" />
+            <app-catalog-select [label]="(kind() === 'weapons' ? 'Arma ' : 'Objeto ') + (slot.index + 1)"
+              [hideLabel]="true" [placeholder]="emptyLabel()" [controlId]="controlId(slot.index)"
+              [value]="slot.name" [options]="options()" [describedBy]="slot.name ? controlId(slot.index) + '-details' : ''"
+              (selected)="state.selectEquipmentSlot(ninjaIndex(), kind(), slot.index, $event)" />
+            @if (slot.name) {
+              <span class="sr-only" [id]="controlId(slot.index) + '-details'">{{ slot.description }} {{ slot.cost }}</span>
+            }
+          </div>
+        }
       </div>
-      <button #addButton matButton="tonal" type="button" class="add-button" [disabled]="entries().length >= limit() || !options().length"
-        [attr.aria-label]="'Add ' + singular() + ' to Ninja ' + (ninjaIndex() + 1)" (click)="add()">Add {{ singular() }}</button>
+      @if (hasEquipment()) {
+        <details class="equipment-details">
+          <summary>Ver efectos del equipo</summary>
+          @for (slot of slots(); track slot.index) {
+            @if (slot.name) {
+              <div class="equipment-effect"><strong>{{ slot.name }}</strong><span class="action-cost">{{ slot.cost }}</span><p>{{ slot.description }}</p></div>
+            }
+          }
+        </details>
+      }
     </fieldset>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,31 +44,13 @@ export class EquipmentListEditor {
   readonly entries = input.required<readonly EquipmentDefinition[]>();
   readonly ninjaIndex = input.required<number>();
   protected readonly state = inject(BandState);
-  protected readonly singular = computed(() => this.kind() === 'weapons' ? 'weapon' : 'item');
-  protected readonly limit = computed(() => this.kind() === 'weapons' ? 3 : 2);
+  private readonly presentation = new EquipmentPresentation();
+  protected readonly slots = computed(() => this.presentation.slots(this.kind(), this.entries()));
+  protected readonly hasEquipment = computed(() => this.entries().some((entry) => entry.name));
   protected readonly options = computed(() => this.state.catalog.getEquipment(this.kind()));
-  private readonly injector = inject(Injector);
-  private readonly focus = inject(FocusMonitor);
-  private readonly controls = viewChildren<ElementRef<HTMLElement>>('entryControl');
-  private readonly addButtons = viewChildren<ElementRef<HTMLButtonElement>>('addButton');
+  protected readonly emptyLabel = computed(() => this.kind() === 'weapons' ? 'Sin arma' : 'Sin objeto');
 
-  protected add(): void {
-    this.state.addEquipment(this.ninjaIndex(), this.kind());
-    this.restoreFocus(this.entries().length);
-  }
-
-  protected remove(index: number): void {
-    this.state.removeEquipment(this.ninjaIndex(), this.kind(), index);
-    this.restoreFocus(index);
-  }
-
-  private restoreFocus(index: number): void {
-    // The only DOM query: retain the original keyboard focus after dynamic list edits.
-    afterNextRender(() => {
-      const controls = this.controls();
-      const select = controls[Math.min(index, controls.length - 1)]?.nativeElement.querySelector('select');
-      const target = select ?? this.addButtons()[0]?.nativeElement;
-      if (target) this.focus.focusVia(target, 'program');
-    }, { injector: this.injector });
+  protected controlId(index: number): string {
+    return `ninja-${this.ninjaIndex() + 1}-${this.kind() === 'weapons' ? 'weapon' : 'item'}-${index + 1}-name`;
   }
 }
