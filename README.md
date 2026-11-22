@@ -1,6 +1,6 @@
 # Jutsu Band Builder
 
-Aplicación local de Gipsy Games para crear una banda de **tres ninjas** y generar sus fichas. Migrada de JavaScript/Vite a Angular, conservando el alcance de la **fase 5**. El PDF se genera en memoria; descarga, impresión y selector de plantillas siguen pendientes de autorización para la fase 6.
+Aplicación local de Gipsy Games para crear una banda de **tres ninjas** y generar sus fichas. Migrada de JavaScript/Vite a Angular e implementada hasta la **fase 6**: generación, descarga con el nombre de la banda y apertura del PDF para imprimir. Todo funciona en el navegador.
 
 ## Entorno y dependencias
 
@@ -47,7 +47,7 @@ npm run typecheck
 
 `npm run test:watch` mantiene las pruebas en observación. `ng test` usa Vitest a través del ejecutor oficial, sin configuración personalizada. Las pruebas originales JavaScript se conservan, adaptadas a Vitest y a las nuevas rutas; sus casos inválidos siguen comprobando las validaciones en tiempo de ejecución. Todo el código de la aplicación está en TypeScript estricto.
 
-Las pruebas cubren catálogo, modelos, límites de equipo, aislamiento entre ninjas, selecciones y limpieza de valores, foco de teclado, navegación, generación asíncrona, errores, descarte de resultados obsoletos, fuentes, Unicode, coordenadas y composición PDF. Una captura de referencia del motor original comprueba texto, cajas, estilos, saltos de línea, tamaños y líneas base para los doce grupos de técnicas.
+Las pruebas cubren catálogo, modelos, límites de equipo, aislamiento entre ninjas, selecciones y limpieza de valores, foco de teclado, navegación, generación asíncrona, errores, descarte de resultados obsoletos, fuentes, Unicode, coordenadas y composición PDF. También verifican nombres de archivo, selección de plantilla, botones de exportación, descarga mediante Blob, ventanas bloqueadas y limpieza de URLs. Una captura de referencia del motor original comprueba texto, cajas, estilos, saltos de línea, tamaños y líneas base para los doce grupos de técnicas.
 
 ## Arquitectura
 
@@ -59,7 +59,7 @@ src/
       services/             # Catálogo JSON y acceso a URLs de plataforma
     features/
       character-sheet/      # Editor, estado Signals y controles Material
-      pdf-generator/        # Motor PDF independiente, estado y acción de generar
+      pdf-generator/        # Motor PDF, plantillas, generación y exportación local
     layout/                 # Cabecera, contenido y pie originales
     app.ts
     app.config.ts
@@ -86,8 +86,9 @@ Solo existe una pantalla real. Angular Router la carga de forma diferida y redir
 
 La presentación conserva el contenido en inglés y la distribución del editor existente. Material proporciona campos, selectores nativos accesibles y botones; CDK mantiene el foco tras editar listas. El tema sigue la preferencia clara u oscura del dispositivo y el SCSS parte de una columna para móvil, ampliándose a dos en pantallas mayores. No se introduce un cambio completo de diseño.
 
-## Funciones conservadas
+## Funciones actuales
 
+- Nombre opcional de la banda para identificar el archivo descargado.
 - Tres ninjas independientes con nombre y uno de cuatro tipos.
 - Estadísticas derivadas de tipo, no editables, incluyendo valores cero.
 - Doce grupos de tres técnicas, descripción, coste de chakra fijo o variable e indicación Mokushin.
@@ -95,12 +96,22 @@ La presentación conserva el contenido en inglés y la distribución del editor 
 - Generación de PDF desde una instantánea de la banda, estados de carga, éxito y error, e invalidación al editar.
 - PDF original, 69 campos declarados y 54 activos; 15 campos sin coordenadas siguen desactivados.
 - Eagle Lake y respaldo DejaVu Sans, incrustación local de fuentes, precisión de coordenadas y algoritmos originales.
+- Selector con la plantilla actual de tres ninjas por página; solo se ofrecen plantillas disponibles.
+- Descarga del PDF y apertura en otra pestaña para imprimir desde el visor del navegador.
 
 No se han añadido campos obligatorios ni restricciones al nombre que no existían. El modelo sigue rechazando tipos y grupos desconocidos, índices inválidos, datos mal formados y exceso de equipo.
 
 ## PDF y funcionamiento local
 
-El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe datos, plantilla y una función de carga de recursos sustituible en pruebas. `PdfGeneration` lo conecta con el formulario y conserva los bytes válidos en memoria. `getPdfBytes()` devuelve una copia o `null` si la banda cambió. [Documentación del motor](src/app/features/pdf-generator/README.md).
+El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe datos, plantilla y una función de carga de recursos sustituible en pruebas. `PdfGeneration` lo conecta con el formulario y conserva los bytes válidos en memoria. `getPdfBytes()` devuelve una copia o `null` si cambió la banda o la plantilla. [Documentación del motor y exportación](src/app/features/pdf-generator/README.md).
+
+1. Introduce **Squad name** si quieres personalizar el nombre del archivo y completa los ninjas.
+2. Elige **Sheet template**. Por ahora contiene únicamente la plantilla original con Eagle Lake.
+3. Pulsa **Generate PDF**. Al terminar se inicia automáticamente la descarga y aparecen el nombre del archivo y los botones de exportación habilitados. Por ejemplo, `Los Cuervos` produce `Los-Cuervos.pdf`; si no hay nombre se usa `jutsu-squad.pdf`. Los caracteres incompatibles con nombres de archivo se sustituyen y los nombres largos se limitan.
+4. **Download PDF** permite descargar de nuevo el documento generado, también si el navegador no inició la descarga automática.
+5. **Open PDF to print** abre el mismo documento en otra pestaña. Utiliza los controles de impresión del visor PDF. Si el navegador bloquea la pestaña, el estado indica que debes permitir ventanas emergentes para este sitio y reintentar.
+
+Cualquier edición, incluido el nombre de la banda, o cambio de plantilla deshabilita las exportaciones hasta volver a generar. Una generación en curso que quede obsoleta se descarta. Los PDF ya abiertos conservan su recurso hasta cerrar su pestaña; las URLs temporales de descarga se liberan después de iniciarla y todos los recursos se limpian al destruir la aplicación.
 
 Plantilla, coordenadas, fuentes y catálogos se copian como recursos de la aplicación. `PlatformAssets` concentra la resolución respecto al `<base href>`, compatible con navegación estática y futuras adaptaciones de plataforma. No hay backend, autenticación, APIs remotas, IA en ejecución ni almacenamiento cloud. La versión anterior no persistía la banda: se sigue perdiendo al recargar; no se migra ni se introduce almacenamiento.
 
@@ -108,8 +119,8 @@ La incorporación posterior de PWA o Capacitor podrá reutilizar el motor y adap
 
 ## Revisión de la migración
 
-Consulta [el informe de migración](docs/migration/angular-migration.md) para el inventario, las verificaciones y las limitaciones. [El README anterior](docs/migration/phase-5-history.md) se conserva como documento histórico. La rama `migration/angular-modern` se prepara para su publicación en [JesusCarm/jutsu](https://github.com/JesusCarm/jutsu), conservando el commit inicial del repositorio remoto como base y sin hacer merge en `main`.
+Consulta [el informe de migración](docs/migration/angular-migration.md) para el inventario y las verificaciones de aquella fase. [El README anterior](docs/migration/phase-5-history.md) se conserva como documento histórico. La migración ya está integrada en `main` del repositorio [JesusCarm/jutsu](https://github.com/JesusCarm/jutsu).
 
 El `.gitignore` excluye dependencias, compilaciones, cachés, cobertura, salidas generadas, copias de revisión y configuración local. Las plantillas PDF, fuentes, licencias, catálogos y `package-lock.json` forman parte del código versionado. La copia inicial `output/migration/vite-phase5-source.tar.gz` y el PDF de revisión permanecen únicamente en el entorno local.
 
-La aprobación de esta migración es necesaria antes de comenzar funcionalidades de la fase 6.
+Verificación de la fase 6: 73 pruebas automatizadas, comprobación de tipos y compilación de producción correctas. La revisión manual de descarga, pestaña PDF e impresión queda pendiente porque el host de acceso al navegador no estaba disponible en la sesión de implementación.

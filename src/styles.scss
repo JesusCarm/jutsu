@@ -63,6 +63,11 @@ dl { margin: 0; }
 .remove-button { margin-top: .75rem; }
 .builder-actions { display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.25rem; border-top: 1px solid var(--color-border); }
 .builder-actions p { min-width: 0; overflow-wrap: anywhere; color: var(--color-muted); font-size: .875rem; }
+.pdf-template-controls { padding: 1.25rem 1.25rem 0; border-top: 1px solid var(--color-border); }
+.pdf-template-controls + .builder-actions { border-top: 0; }
+.pdf-messages { min-width: 0; }
+.pdf-file-name { margin-top: .375rem; }
+.pdf-buttons { display: flex; flex-direction: column; gap: .75rem; }
 #pdf-status[data-state='error'] { color: var(--mat-sys-error); }
 button { min-height: 3rem; }
 .site-footer { padding-block: .5rem 1.5rem; color: var(--color-muted); font-size: .875rem; }
@@ -80,4 +85,7 @@ button { min-height: 3rem; }
   .identity-fields, .technique-fields, .equipment-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .builder-actions { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  .pdf-template-controls { padding: 1.5rem 2rem 0; }
+  .pdf-messages { flex: 1 1 15rem; }
+  .pdf-buttons { flex-direction: row; flex-wrap: wrap; }
 }

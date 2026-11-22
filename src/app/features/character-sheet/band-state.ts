@@ -13,6 +13,11 @@ export class BandState {
   readonly band = computed(() => this.state().data);
   readonly revision = computed(() => this.state().revision);
 
+  setBandName(name: string): void {
+    this.model.name = name;
+    this.publish();
+  }
+
   setName(index: number, name: string): void {
     this.ninja(index).name = name;
     this.publish();

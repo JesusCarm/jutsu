@@ -3,10 +3,17 @@ import { describe, expect, it, vi } from 'vitest';
 import { BandState } from '../character-sheet/band-state';
 import { GENERATE_BAND_PDF, PdfGeneration } from './pdf-generation';
 import type { GenerateBandPdf } from './pdf-generation';
+import { PDF_TEMPLATE_OPTIONS, PdfTemplates } from './pdf-templates';
 
-function setup(generate: GenerateBandPdf) {
-  TestBed.configureTestingModule({ providers: [{ provide: GENERATE_BAND_PDF, useValue: generate }] });
-  return { pdf: TestBed.inject(PdfGeneration), state: TestBed.inject(BandState) };
+function setup(generate: GenerateBandPdf, multipleTemplates = false) {
+  TestBed.configureTestingModule({ providers: [
+    { provide: GENERATE_BAND_PDF, useValue: generate },
+    ...(multipleTemplates ? [{ provide: PDF_TEMPLATE_OPTIONS, useValue: [
+      { id: 'first', label: 'First', create: () => ({ configUrl: '/first.json', fontUrls: {} }) },
+      { id: 'second', label: 'Second', create: () => ({ configUrl: '/second.json', fontUrls: {} }) },
+    ] }] : []),
+  ] });
+  return { pdf: TestBed.inject(PdfGeneration), state: TestBed.inject(BandState), templates: TestBed.inject(PdfTemplates) };
 }
 
 describe('PDF generation state', () => {
@@ -47,5 +54,48 @@ describe('PDF generation state', () => {
     expect(pdf.generating()).toBe(false);
     await pdf.generate();
     expect(pdf.status().phase).toBe('success');
+  });
+
+  it('passes the selected template to the generator without changing the band', async () => {
+    const generate = vi.fn<GenerateBandPdf>().mockResolvedValue(new Uint8Array([1]));
+    const { pdf, state, templates } = setup(generate, true);
+    state.setBandName('Cuervos');
+    const band = state.band();
+    templates.select('second');
+    await pdf.generate();
+    expect(generate).toHaveBeenCalledWith(band, { configUrl: '/second.json', fontUrls: {} });
+    expect(state.band()).toBe(band);
+    expect(pdf.hasPdf()).toBe(true);
+    templates.select('first');
+    expect(pdf.hasPdf()).toBe(false);
+    templates.select('second');
+    expect(pdf.getPdfBytes()).toBeNull();
+    await pdf.generate();
+    expect(pdf.hasPdf()).toBe(true);
+  });
+
+  it('discards pending results when the template changes, even if the original is selected again', async () => {
+    let release!: (bytes: Uint8Array) => void;
+    const { pdf, templates } = setup(() => new Promise((resolve) => { release = resolve; }), true);
+    const pending = pdf.generate();
+    templates.select('second');
+    templates.select('first');
+    expect(pdf.hasPdf()).toBe(false);
+    release(new Uint8Array([1]));
+    await pending;
+    expect(pdf.hasPdf()).toBe(false);
+    expect(pdf.generating()).toBe(false);
+    expect(pdf.status().message).toContain('different template');
+  });
+
+  it('discards an error from a generation superseded by an edit', async () => {
+    let fail!: (reason: Error) => void;
+    const { pdf, state } = setup(() => new Promise((_, reject) => { fail = reject; }));
+    const pending = pdf.generate();
+    state.setBandName('New name');
+    fail(new Error('Old generation failed'));
+    await pending;
+    expect(pdf.status().phase).toBe('idle');
+    expect(pdf.status().message).not.toContain('Old generation failed');
   });
 });

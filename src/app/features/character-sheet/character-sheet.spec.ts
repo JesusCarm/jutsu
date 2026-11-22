@@ -3,10 +3,16 @@ import { describe, expect, it, vi } from 'vitest';
 import { CharacterSheet } from './character-sheet';
 import { BandState } from './band-state';
 import { GENERATE_BAND_PDF } from '../pdf-generator/pdf-generation';
+import { PdfBrowserFiles } from '../pdf-generator/pdf-browser-files';
+import { PdfTemplates } from '../pdf-generator/pdf-templates';
 
 async function setup() {
   const generate = vi.fn().mockResolvedValue(new Uint8Array([37, 80, 68, 70]));
-  TestBed.configureTestingModule({ imports: [CharacterSheet], providers: [{ provide: GENERATE_BAND_PDF, useValue: generate }] });
+  const files = { download: vi.fn(), openForPrinting: vi.fn() };
+  TestBed.configureTestingModule({ imports: [CharacterSheet], providers: [
+    { provide: GENERATE_BAND_PDF, useValue: generate },
+    { provide: PdfBrowserFiles, useValue: files },
+  ] });
   const fixture = TestBed.createComponent(CharacterSheet);
   await fixture.whenStable();
   const element = fixture.nativeElement as HTMLElement;
@@ -21,10 +27,10 @@ async function setup() {
     element.querySelector<HTMLButtonElement>(`button[aria-label="${label}"]`)!.click();
     await fixture.whenStable();
   };
-  return { fixture, element, state, select, click, generate };
+  return { fixture, element, state, select, click, generate, files };
 }
 
-describe('Character sheet migration', () => {
+describe('Character sheet', () => {
   it('edits independent ninjas and displays catalog stats and all three techniques', async () => {
     const { fixture, element, state, select } = await setup();
     expect(element.querySelectorAll('.ninja-editor')).toHaveLength(3);
@@ -68,13 +74,51 @@ describe('Character sheet migration', () => {
     expect(element.querySelector<HTMLButtonElement>('[aria-label="Add weapon to Ninja 1"]')!.disabled).toBe(false);
   });
 
-  it('generates the current form snapshot through the button and announces success', async () => {
-    const { fixture, element, state, generate } = await setup();
+  it('generates and downloads the current form snapshot through the button', async () => {
+    const { fixture, element, state, generate, files } = await setup();
     state.setName(2, 'Kaede');
     element.querySelector<HTMLButtonElement>('#generate-pdf')!.click();
     await fixture.whenStable();
-    expect(generate).toHaveBeenCalledWith(state.band());
-    expect(element.querySelector('#pdf-status')!.textContent).toBe('PDF generated successfully.');
+    const templates = TestBed.inject(PdfTemplates);
+    expect(generate).toHaveBeenCalledWith(state.band(), templates.getTemplate(templates.selectedId()));
+    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad.pdf');
+    expect(element.querySelector('#pdf-status')!.textContent).toBe('Download started.');
     expect(element.querySelector<HTMLButtonElement>('#generate-pdf')!.disabled).toBe(false);
+  });
+
+  it('exports the named squad and disables exports again after editing', async () => {
+    const { fixture, element, state, files } = await setup();
+    const download = element.querySelector<HTMLButtonElement>('#download-pdf')!;
+    const print = element.querySelector<HTMLButtonElement>('#print-pdf')!;
+    expect(download.disabled).toBe(true);
+    expect(print.disabled).toBe(true);
+    const templates = element.querySelector<HTMLSelectElement>('#pdf-template')!;
+    expect(templates.options).toHaveLength(1);
+    expect(templates.value).toBe('jutsu-fichas-rellenables');
+    const name = element.querySelector<HTMLInputElement>('#band-name')!;
+    name.value = 'Los Cuervos';
+    name.dispatchEvent(new Event('input', { bubbles: true }));
+    await fixture.whenStable();
+    expect(state.band().name).toBe('Los Cuervos');
+    element.querySelector<HTMLButtonElement>('#generate-pdf')!.click();
+    await fixture.whenStable();
+    expect(element.querySelector('.pdf-file-name')!.textContent).toBe('Los-Cuervos.pdf');
+    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'Los-Cuervos.pdf');
+    expect(download.disabled).toBe(false);
+    expect(print.disabled).toBe(false);
+    download.click();
+    await fixture.whenStable();
+    expect(files.download).toHaveBeenCalledWith(new Uint8Array([37, 80, 68, 70]), 'Los-Cuervos.pdf');
+    expect(files.download).toHaveBeenCalledTimes(2);
+    print.click();
+    await fixture.whenStable();
+    expect(files.openForPrinting).toHaveBeenCalledWith(new Uint8Array([37, 80, 68, 70]));
+    name.value = 'Águilas';
+    name.dispatchEvent(new Event('input', { bubbles: true }));
+    await fixture.whenStable();
+    expect(download.disabled).toBe(true);
+    expect(print.disabled).toBe(true);
+    expect(element.querySelector('.pdf-file-name')).toBeNull();
+    expect(element.querySelector('#pdf-status')!.textContent).toBe('Ready to generate your sheet.');
   });
 });

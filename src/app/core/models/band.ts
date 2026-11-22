@@ -1,6 +1,7 @@
 import { Ninja } from './ninja';
 
 export class Band {
+  name = '';
   readonly ninjas: Ninja[];
 
   constructor() {
