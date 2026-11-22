@@ -1,0 +1,43 @@
+{
+  "name": "jutsu-band-builder",
+  "version": "0.1.0",
+  "scripts": {
+    "ng": "ng",
+    "dev": "ng serve",
+    "start": "ng serve",
+    "build": "ng build",
+    "preview": "ng serve --configuration production",
+    "test": "ng test --watch=false",
+    "test:watch": "ng test",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+  },
+  "private": true,
+  "packageManager": "npm@9.2.0",
+  "dependencies": {
+    "@angular/common": "21.2.26",
+    "@angular/compiler": "21.2.26",
+    "@angular/core": "21.2.26",
+    "@angular/forms": "21.2.26",
+    "@angular/platform-browser": "21.2.26",
+    "@angular/router": "21.2.26",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "@angular/material": "21.2.14",
+    "@angular/cdk": "21.2.14",
+    "@pdf-lib/fontkit": "1.1.1",
+    "pdf-lib": "1.17.1"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.2.30",
+    "@angular/cli": "^21.2.30",
+    "@angular/compiler-cli": "21.2.26",
+    "jsdom": "28.0.0",
+    "typescript": "~5.9.3",
+    "vitest": "4.0.18",
+    "@types/node": "^22.0.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
+  }
+}

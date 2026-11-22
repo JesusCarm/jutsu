@@ -1,0 +1,41 @@
+{
+  "weapons": [
+    {
+      "name": "Kunai",
+      "description": "2D6 ranged attack.",
+      "cost": "1 action"
+    },
+    {
+      "name": "Shuriken",
+      "description": "3D6 ranged attack.",
+      "cost": "1 action"
+    },
+    {
+      "name": "Explosive Seal",
+      "description": "Kunai upgrade: +3D6. Push target 1\" per hit. Use Kunai and trigger Seal in the same turn.",
+      "cost": "2 actions"
+    }
+  ],
+  "items": [
+    {
+      "name": "Smoke Bomb",
+      "description": "Cancel incoming attack or Jutsu. Move up to full Movement in any direction. No Charge.",
+      "cost": "1 action"
+    },
+    {
+      "name": "Soldier Pill",
+      "description": "+2\" Movement, +2D6 Attack, +2D6 Defense until end of round.",
+      "cost": "1 action"
+    },
+    {
+      "name": "Curry Pill",
+      "description": "Recover up to 4 Health (max. normal value).",
+      "cost": "1 action"
+    },
+    {
+      "name": "Cake Pill",
+      "description": "Recover up to 3 Chakra (max. normal value).",
+      "cost": "1 action"
+    }
+  ]
+}
