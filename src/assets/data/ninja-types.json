@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Physical",
+    "stats": {
+      "attack": 6,
+      "defense": 5,
+      "movement": 7,
+      "skill": 4,
+      "chakra": 12,
+      "health": 10
+    }
+  },
+  {
+    "name": "Defensive",
+    "stats": {
+      "attack": 4,
+      "defense": 6,
+      "movement": 5,
+      "skill": 5,
+      "chakra": 12,
+      "health": 10
+    }
+  },
+  {
+    "name": "Offensive",
+    "stats": {
+      "attack": 8,
+      "defense": 3,
+      "movement": 7,
+      "skill": 4,
+      "chakra": 15,
+      "health": 10
+    }
+  },
+  {
+    "name": "Jutsu Master",
+    "stats": {
+      "attack": 5,
+      "defense": 4,
+      "movement": 5,
+      "skill": 5,
+      "chakra": 20,
+      "health": 10
+    }
+  }
+]
