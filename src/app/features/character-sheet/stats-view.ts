@@ -22,11 +22,11 @@ import type { IconName } from '../../shared/ui-icon';
 export class StatsView {
   readonly stats = input.required<NinjaSnapshot['stats']>();
   protected readonly fields: readonly { key: StatName; label: string; short: string; icon: IconName }[] = [
-    { key: 'chakra', label: 'Chakra', short: 'CHK', icon: 'flame' },
-    { key: 'attack', label: 'Ataque', short: 'ATQ', icon: 'swords' },
-    { key: 'defense', label: 'Defensa', short: 'DEF', icon: 'shield' },
+    { key: 'chakra', label: 'Chakra', short: 'CHK', icon: 'chakra' },
+    { key: 'attack', label: 'Ataque', short: 'ATQ', icon: 'attack' },
+    { key: 'defense', label: 'Defensa', short: 'DEF', icon: 'defense' },
     { key: 'movement', label: 'Movimiento', short: 'MOV', icon: 'movement' },
-    { key: 'skill', label: 'Habilidad', short: 'HAB', icon: 'sparkles' },
-    { key: 'health', label: 'Vida', short: 'VID', icon: 'heart' },
+    { key: 'skill', label: 'Habilidad', short: 'HAB', icon: 'skill' },
+    { key: 'health', label: 'Vida', short: 'VID', icon: 'health' },
   ];
 }

@@ -13,7 +13,7 @@ export class EquipmentPresentation {
       const entry = entries[index];
       return {
         index, name: entry?.name ?? '', description: entry?.description ?? '', cost: entry?.cost ?? '',
-        icon: entry?.name ? ICONS[entry.name] ?? (kind === 'weapons' ? 'swords' : 'bag') : 'minus',
+        icon: entry?.name ? ICONS[entry.name] ?? (kind === 'weapons' ? 'weapons' : 'equipment') : 'minus',
       };
     });
   }

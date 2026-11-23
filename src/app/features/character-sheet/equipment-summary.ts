@@ -10,7 +10,7 @@ import { EquipmentPresentation } from './equipment-presentation';
     <div class="mini-inventory" aria-label="Equipo">
       @for (group of groups(); track group.kind) {
         <div class="mini-inventory-group" [attr.aria-label]="group.label">
-          <app-ui-icon class="inventory-category" [name]="group.kind === 'weapons' ? 'swords' : 'bag'" />
+          <app-ui-icon class="inventory-category" [name]="group.kind === 'weapons' ? 'weapons' : 'equipment'" />
           @for (slot of group.slots; track slot.index) {
             <span class="equipment-token" [class.is-empty]="!slot.name" [attr.data-equipment]="slot.name"
               [title]="slot.name || group.empty" role="img" [attr.aria-label]="slot.name || group.empty">

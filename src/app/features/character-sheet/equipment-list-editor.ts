@@ -10,7 +10,7 @@ import { EquipmentPresentation } from './equipment-presentation';
   imports: [CatalogSelect, UiIcon],
   template: `
     <fieldset class="equipment-editor form-section">
-      <legend><app-ui-icon [name]="kind() === 'weapons' ? 'swords' : 'bag'" />{{ kind() === 'weapons' ? 'Armas' : 'Objetos' }}</legend>
+      <legend><app-ui-icon [name]="kind() === 'weapons' ? 'weapons' : 'equipment'" />{{ kind() === 'weapons' ? 'Armas' : 'Objetos' }}</legend>
       <div class="equipment-list">
         @for (slot of slots(); track slot.index) {
           <div class="equipment-row">

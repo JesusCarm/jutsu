@@ -17,9 +17,9 @@ import { NinjaLabels } from './ninja-labels';
       <div class="technique-list">
         @for (technique of group().techniques; track $index) {
           <article class="technique-card">
-            <div class="technique-heading"><h3>{{ technique.name }}</h3><span class="chakra-cost" title="Coste de chakra"><app-ui-icon name="flame" /><span class="sr-only">Chakra: </span>{{ technique.chakra }}</span></div>
+            <div class="technique-heading"><h3>{{ technique.name }}</h3><span class="chakra-cost" title="Coste de chakra"><app-ui-icon name="chakra" /><span class="sr-only">Chakra: </span>{{ technique.chakra }}</span></div>
             <p>{{ technique.description }}</p>
-            @if (technique.isMokushin) { <span class="mokushin-badge">Mokushin</span> }
+            @if (technique.isMokushin) { <span class="mokushin-badge"><app-ui-icon name="mokushin" />Mokushin</span> }
           </article>
         } @empty { <p class="empty-techniques">Elige una escuela para consultar sus tres técnicas.</p> }
       </div>

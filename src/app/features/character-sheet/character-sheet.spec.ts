@@ -98,6 +98,7 @@ describe('Character sheet', () => {
     expect(summaries[2].querySelector('[data-stat="chakra"] .stat-value')!.textContent).toBe('20');
     expect(element.querySelectorAll('input[type="number"]')).toHaveLength(0);
     expect(summaries[0].querySelectorAll('.mini-stat app-ui-icon')).toHaveLength(6);
+    expect(summaries[0].querySelector<HTMLImageElement>('[data-stat="health"] img')!.src).toContain('/assets/icons/vida_ico.svg');
   });
 
   it('switches the active editor without recreating forms, changing band data or invalidating the PDF', async () => {

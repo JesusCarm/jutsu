@@ -61,13 +61,14 @@ src/
       character-sheet/      # Editor, estado Signals y controles Material
       pdf-generator/        # Motor PDF, plantillas, generación y exportación local
     layout/                 # Estructura base y pie de la aplicación
-    shared/                 # Iconos SVG locales y tipados
+    shared/                 # Iconos SVG y recursos locales tipados
     app.ts
     app.config.ts
     app.routes.ts
   assets/
     data/                   # Catálogos JSON originales
     fonts/                  # Eagle Lake, DejaVu Sans y licencias
+    icons/                  # SVG _ico de estadísticas y equipo; PNG de Mokushin
     pdf/                    # Plantilla original y coordenadas exactas
   index.html
   main.ts
@@ -89,7 +90,7 @@ La presentación sigue las referencias del editor oscuro: cabecera compacta, bar
 
 En pantallas inferiores a **56 rem**, las tres minifichas aparecen arriba y solo se muestra debajo el formulario del personaje seleccionado. A partir de ese ancho se muestran tres columnas, cada una con su minificha y formulario; las minifichas pasan a ser informativas, sin selección por clic ni botones de selección en el recorrido de teclado. Se conserva una sola instancia de cada editor: cambiar de personaje o de tamaño de pantalla no borra las selecciones. La selección móvil es estado de interfaz y no invalida el PDF generado.
 
-`NinjaSummary`, `StatsView` y `EquipmentSummary` presentan el resumen sin modificar el modelo. `EquipmentPresentation` comparte el mapa de iconos y los huecos entre minifichas y selectores. `UiIcon`, en `shared/ui-icon.ts`, contiene los SVG provisionales; para sustituirlos no es necesario cambiar catálogos ni reglas. Las seis estadísticas incluyen movimiento y siguen siendo de solo lectura. Los detalles de armas y objetos se consultan mediante el desplegable «Ver efectos del equipo».
+`NinjaSummary`, `StatsView` y `EquipmentSummary` presentan el resumen sin modificar el modelo. `EquipmentPresentation` comparte el mapa de iconos y los huecos entre minifichas y selectores. `UiIcon`, en `shared/ui-icon.ts`, centraliza los SVG con sufijo `_ico` aportados en `src/assets/icons/` y los dibujos provisionales de los iconos que aún no tienen un recurso equivalente. Se utilizan SVG para las seis estadísticas, incluida vida, y las categorías de armas y objetos. Mokushin conserva su PNG porque no hay un SVG equivalente. `objetivo_ico.svg` está registrado como `target`, disponible para su asignación cuando se defina su uso. Las URLs respetan el `<base href>` y los iconos se muestran a **20 × 20 px**, sin recorte circular. Los SVG negros se presentan en claro mediante CSS para contrastar con el fondo oscuro. Para sustituir otro icono basta con registrar su archivo en ese componente; no es necesario modificar catálogos ni reglas. Las seis estadísticas incluyen movimiento y siguen siendo de solo lectura. Los detalles de armas y objetos se consultan mediante el desplegable «Ver efectos del equipo».
 
 ## Funciones actuales
 
@@ -129,4 +130,4 @@ Consulta [el informe de migración](docs/migration/angular-migration.md) para el
 
 El `.gitignore` excluye dependencias, compilaciones, cachés, cobertura, salidas generadas, copias de revisión y configuración local. Las plantillas PDF, fuentes, licencias, catálogos y `package-lock.json` forman parte del código versionado. La copia inicial `output/migration/vite-phase5-source.tar.gz` y el PDF de revisión permanecen únicamente en el entorno local.
 
-Verificación actual: 78 pruebas automatizadas, comprobación de tipos y compilación de producción correctas. El usuario confirmó la descarga de la fase 6 en Firefox desde `http://localhost:4200/`, tras resolver un error de `start` que mantenía una compilación anterior. Se ha comprobado por HTTP que el servidor entrega el nuevo editor con minifichas y las acciones de exportación. La revisión visual del nuevo diseño en escritorio y móvil, y la apertura manual para imprimir, siguen pendientes: el host de acceso al navegador no estaba disponible en la sesión de implementación.
+Verificación actual: 80 pruebas automatizadas, comprobación de tipos y compilación de producción correctas. Los nueve SVG `_ico` se sirven como `image/svg+xml` y se copian a producción idénticos a los originales. El usuario confirmó la descarga de la fase 6 en Firefox desde `http://localhost:4200/`, tras resolver un error de `start` que mantenía una compilación anterior. Se ha comprobado por HTTP que el servidor entrega el nuevo editor con minifichas y las acciones de exportación. La revisión visual del nuevo diseño en escritorio y móvil, y la apertura manual para imprimir, siguen pendientes: el host de acceso al navegador no estaba disponible en la sesión de implementación.

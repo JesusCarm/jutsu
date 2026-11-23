@@ -34,7 +34,6 @@ h1 { font-size: 1.625rem; line-height: 1.15; font-weight: 700; letter-spacing: -
 .pdf-toolbar { display: flex; align-items: center; gap: .125rem; }
 .icon-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 2.5rem; height: 2.75rem; padding: 0; border: 0; border-radius: .5rem; color: #d5d5d5; background: transparent; }
 .icon-button:not(:disabled):hover { background: #2a2a2a; }
-.icon-button app-ui-icon { width: 1.125rem; height: 1.125rem; }
 .band-form { margin: 0; }
 .squad-bar { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .75rem; margin-bottom: .875rem; border-radius: .875rem; background: #121212; }
 .squad-bar > div { min-width: 0; flex: 1; }
@@ -58,9 +57,8 @@ app-ninja-summary { display: block; min-width: 0; grid-column: var(--ninja-colum
 .ninja-name { font-size: .875rem; line-height: 1.5; }
 .ninja-type { color: var(--color-muted); font-size: .75rem; }
 .stat-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .25rem; padding-block: .875rem; }
-.mini-stat { display: grid; grid-template-columns: .875rem minmax(0, 1fr); align-items: center; gap: .125rem; min-width: 0; font-size: .875rem; }
+.mini-stat { display: flex; flex-wrap: wrap; align-items: center; gap: .125rem; min-width: 0; font-size: .875rem; }
 .mini-stat dt { display: flex; color: #b6b6b6; }
-.mini-stat app-ui-icon { width: .8125rem; height: .8125rem; }
 .mini-stat dd { color: #f2f2f2; font-variant-numeric: tabular-nums; }
 .stat-caption { display: none; }
 app-equipment-summary { margin-top: auto; }
@@ -69,7 +67,6 @@ app-equipment-summary { margin-top: auto; }
 // Include the element so the mobile rule takes precedence over UiIcon's :host styles.
 app-ui-icon.inventory-category { display: none; }
 .equipment-token { display: inline-flex; align-items: center; justify-content: center; width: 1.25rem; height: 1.5rem; border-radius: .3125rem; color: #e1e1e1; background: #292929; }
-.equipment-token app-ui-icon { width: .875rem; height: .875rem; }
 .equipment-token.is-empty { color: #777; }
 .ninja-panel { grid-column: 1 / -1; grid-row: 2; min-width: 0; margin-top: .75rem; padding-top: 1.25rem; border-top: 1px solid var(--color-line); }
 .ninja-column:not(.is-selected) .ninja-panel { display: none; }
@@ -88,11 +85,11 @@ input:hover, select:hover { border-color: #686868; }
 .select-wrap::after { content: ''; position: absolute; width: .375rem; height: .375rem; right: .875rem; top: calc(50% - .25rem); border-right: 1px solid #999; border-bottom: 1px solid #999; transform: rotate(45deg); pointer-events: none; }
 .form-section { margin-top: 1.25rem; }
 .form-section > legend { display: flex; align-items: center; gap: .5rem; margin-bottom: .625rem; font-size: .875rem; font-weight: 600; }
-.form-section > legend app-ui-icon { color: #aaa; width: 1rem; height: 1rem; }
+.form-section > legend app-ui-icon { color: #aaa; }
 .equipment-editor > legend app-ui-icon { display: none; }
 .equipment-list { display: grid; gap: .5rem; }
-.equipment-row { display: grid; grid-template-columns: 1.125rem minmax(0, 1fr); align-items: center; gap: .625rem; }
-.equipment-row > app-ui-icon { color: #b9b9b9; width: 1rem; height: 1rem; }
+.equipment-row { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: center; gap: .625rem; }
+.equipment-row > app-ui-icon { color: #b9b9b9; }
 .equipment-details { margin: .625rem 0 0 1.75rem; color: var(--color-muted); font-size: .75rem; }
 .equipment-details > summary { cursor: pointer; }
 .equipment-details > summary:hover { color: #ededed; }
@@ -106,11 +103,10 @@ input:hover, select:hover { border-color: #686868; }
 .technique-heading { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; }
 .technique-heading h3 { min-width: 0; font-size: .875rem; font-weight: 500; overflow-wrap: anywhere; }
 .chakra-cost { display: inline-flex; align-items: center; flex: 0 0 auto; gap: .25rem; color: #b8b8b8; font-size: .75rem; }
-.chakra-cost app-ui-icon { width: .75rem; height: .75rem; }
 .technique-card p, .empty-techniques { color: var(--color-muted); font-size: .875rem; line-height: 1.5; overflow-wrap: anywhere; }
 .technique-card p { margin-top: .375rem; white-space: pre-line; }
 .empty-techniques { padding: .75rem; }
-.mokushin-badge { display: inline-block; margin-top: .5rem; padding: .0625rem .375rem; border: 1px solid #444; border-radius: .25rem; color: #c6c6c6; font-size: .75rem; }
+.mokushin-badge { display: inline-flex; align-items: center; gap: .375rem; margin-top: .5rem; padding: .0625rem .375rem; border: 1px solid #444; border-radius: .25rem; color: #c6c6c6; font-size: .75rem; }
 .builder-actions { display: grid; gap: .875rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-line); }
 .primary-button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 2.75rem; padding: .625rem 1rem; border: 1px solid #ddd; border-radius: .625rem; background: #e8e8e8; color: #161616; font-size: .875rem; font-weight: 600; }
 .primary-button:not(:disabled):hover { background: #fff; }
@@ -142,12 +138,11 @@ input:hover, select:hover { border-color: #686868; }
   .ninja-select { display: none; }
   .ninja-static-heading { display: block; }
   .stat-fields { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .25rem; margin-top: .75rem; padding: .625rem .25rem .75rem; border-radius: .625rem; background: #141414; }
-  .mini-stat { display: flex; flex-direction: column; align-items: center; gap: .25rem; text-align: center; }
-  .mini-stat app-ui-icon { width: 1rem; height: 1rem; }
+  .mini-stat { display: flex; flex-direction: column; flex-wrap: nowrap; align-items: center; gap: .25rem; text-align: center; }
   .mini-stat dd { display: flex; flex-direction: column; align-items: center; gap: .25rem; }
   .stat-caption { display: block; color: #aaa; font-size: .75rem; line-height: 1.25; }
   .mini-inventory { flex-direction: row; justify-content: space-between; flex-wrap: wrap; gap: .5rem; padding-top: .75rem; margin-top: .625rem; }
-  app-ui-icon.inventory-category { display: inline-flex; width: .875rem; height: .875rem; margin-right: .125rem; color: #999; }
+  app-ui-icon.inventory-category { display: inline-flex; margin-right: .125rem; color: #999; }
   .equipment-editor > legend app-ui-icon { display: inline-flex; }
   .equipment-token { width: 1.25rem; height: 1.375rem; }
   .ninja-panel, .ninja-column:not(.is-selected) .ninja-panel { display: block; margin: 0; padding: 0 .75rem .875rem; border-top: 0; }
