@@ -1,0 +1,5 @@
+:host { display: block; min-width: 0; }
+.squad-name-field { display: flex; align-items: baseline; gap: .25rem; min-width: 0; font-size: .875rem; }
+.squad-name-field label { margin: 0; color: #eee; font-size: inherit; }
+.squad-name-field input { width: 100%; min-width: 0; height: 1.75rem; padding: .125rem .25rem; background: transparent; border: 1px solid transparent; border-radius: .25rem; font-size: inherit; }
+.squad-name-field input:hover { border-color: #3b3b3b; }

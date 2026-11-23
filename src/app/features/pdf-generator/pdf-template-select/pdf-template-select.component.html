@@ -1,0 +1,4 @@
+<label for="pdf-template">Plantilla de ficha</label>
+<span class="select-wrap"><select id="pdf-template" [formControl]="selection" (change)="templates.select(selection.value)">
+  @for (option of templates.options; track option.id) { <option [value]="option.id">{{ option.label }}</option> }
+</select></span>

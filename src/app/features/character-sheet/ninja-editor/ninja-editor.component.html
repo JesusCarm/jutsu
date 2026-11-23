@@ -1,0 +1,15 @@
+<fieldset class="ninja-editor">
+  <legend class="sr-only">Editar Ninja {{ index() + 1 }}</legend>
+  <div class="editor-heading"><h2>{{ ninja().name || 'Ninja ' + (index() + 1) }}</h2><span class="badge">{{ labels.type(ninja().type) || 'Sin tipo' }}</span></div>
+  <div class="identity-fields">
+    <div class="text-field"><label [for]="'ninja-' + (index() + 1) + '-name'">Nombre</label>
+      <input [id]="'ninja-' + (index() + 1) + '-name'" [formControl]="name" placeholder="Nombre del ninja"
+        (input)="state.setName(index(), name.value)" />
+    </div>
+    <app-catalog-select label="Tipo" placeholder="Elige un tipo" [controlId]="'ninja-' + (index() + 1) + '-type'"
+      [options]="types()" [value]="ninja().type" (selected)="state.selectType(index(), $event)" />
+  </div>
+  <app-equipment-list-editor kind="weapons" [entries]="ninja().equipment.weapons" [ninjaIndex]="index()" />
+  <app-equipment-list-editor kind="items" [entries]="ninja().equipment.items" [ninjaIndex]="index()" />
+  <app-technique-group-editor [group]="ninja().techniqueGroup" [ninjaIndex]="index()" />
+</fieldset>

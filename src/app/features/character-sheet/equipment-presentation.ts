@@ -1,6 +1,6 @@
 import { EQUIPMENT_LIMITS } from '../../core/models/game-types';
 import type { EquipmentDefinition, EquipmentKind } from '../../core/models/game-types';
-import type { IconName } from '../../shared/ui-icon';
+import type { IconName } from '../../shared/ui-icon/ui-icon.component';
 
 const ICONS: Readonly<Record<string, IconName>> = {
   Kunai: 'kunai', Shuriken: 'shuriken', 'Explosive Seal': 'seal', 'Smoke Bomb': 'smoke',

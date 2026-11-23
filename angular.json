@@ -11,7 +11,47 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "type": "component",
+          "style": "scss",
+          "flat": false,
+          "inlineTemplate": false,
+          "inlineStyle": false,
+          "addTypeToClassName": true
+        },
+        "@schematics/angular:service": {
+          "type": "service",
+          "addTypeToClassName": true
+        },
+        "@schematics/angular:directive": {
+          "type": "directive",
+          "addTypeToClassName": true
+        },
+        "@schematics/angular:pipe": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:application": {
+          "style": "scss",
+          "inlineTemplate": false,
+          "inlineStyle": false,
+          "fileNameStyleGuide": "2016"
+        },
+        "@schematics/angular:ng-new": {
+          "style": "scss",
+          "inlineTemplate": false,
+          "inlineStyle": false,
+          "fileNameStyleGuide": "2016"
+        },
+        "@schematics/angular:guard": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:resolver": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:interceptor": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:module": {
+          "typeSeparator": "."
         }
       },
       "root": "",
@@ -92,6 +132,51 @@
           }
         }
       }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component",
+      "style": "scss",
+      "flat": false,
+      "inlineTemplate": false,
+      "inlineStyle": false,
+      "addTypeToClassName": true
+    },
+    "@schematics/angular:service": {
+      "type": "service",
+      "addTypeToClassName": true
+    },
+    "@schematics/angular:directive": {
+      "type": "directive",
+      "addTypeToClassName": true
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:application": {
+      "style": "scss",
+      "inlineTemplate": false,
+      "inlineStyle": false,
+      "fileNameStyleGuide": "2016"
+    },
+    "@schematics/angular:ng-new": {
+      "style": "scss",
+      "inlineTemplate": false,
+      "inlineStyle": false,
+      "fileNameStyleGuide": "2016"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
     }
   }
 }

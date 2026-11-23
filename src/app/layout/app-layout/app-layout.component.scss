@@ -1,0 +1,14 @@
+:host { display: flex; flex-direction: column; min-height: 100dvh; }
+.container { width: calc(100% - 1rem); max-width: 70rem; margin-inline: auto; }
+.main-content { flex: 1; padding-top: .75rem; }
+.site-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; padding: .875rem .25rem 1.25rem; color: #999; font-size: .75rem; }
+.skip-link { position: absolute; top: .5rem; left: .5rem; z-index: 10; padding: .75rem; color: #111; background: #fff; transform: translateY(-200%); }
+.skip-link:focus { transform: translateY(0); }
+
+@media (min-width: 36rem) {
+  .container { width: calc(100% - 2rem); }
+}
+
+@media (min-width: 56rem) {
+  .main-content { padding-top: 1.25rem; }
+}

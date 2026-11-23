@@ -1,0 +1,10 @@
+:host { display: block; min-width: 0; }
+.editor-heading { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-bottom: 1rem; }
+.editor-heading h2 { min-width: 0; overflow-wrap: anywhere; font-size: 1.25rem; font-weight: 600; }
+.identity-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.text-field { min-width: 0; }
+
+@media (min-width: 56rem) {
+  .editor-heading { display: none; }
+  .identity-fields { gap: .5rem; padding-top: .5rem; }
+}

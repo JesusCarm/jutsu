@@ -58,11 +58,13 @@ src/
       models/               # Modelo de banda y reglas existentes, sin Angular
       services/             # Catálogo JSON y acceso a URLs de plataforma
     features/
-      character-sheet/      # Editor, estado Signals y controles Material
+      character-sheet/      # Editor, estado Signals y componentes en subcarpetas
       pdf-generator/        # Motor PDF, plantillas, generación y exportación local
     layout/                 # Estructura base y pie de la aplicación
     shared/                 # Iconos SVG y recursos locales tipados
-    app.ts
+    app.component.ts
+    app.component.html
+    app.component.scss
     app.config.ts
     app.routes.ts
   assets/
@@ -82,7 +84,20 @@ docs/migration/             # Inventario, decisiones e informe de verificación
 
 Los componentes son standalone, usan `OnPush`, `inject()`, entradas/salidas con Signals y control de flujo `@for`. No hay NgModules propios. Angular 21 funciona **sin Zone.js** por defecto; no se instala ni se carga.
 
-`BandState` conserva las reglas de los modelos y publica instantáneas tipadas mediante Signals de solo lectura y `computed()`. Los controles editables usan **Reactive Forms tipados**: Signal Forms de Angular 21 todavía declara su API como experimental, por lo que no cumple el requisito de estabilidad de esta migración. No se usan formularios template-driven ni RxJS para el estado síncrono. Los controles mantienen su instancia de `FormControl` y sincronizan los cambios externos mediante `effect()`, conservando el foco y el cursor al editar.
+Los 15 componentes tienen una carpeta propia, clases terminadas en `Component` y sus archivos separados. Por ejemplo:
+
+```text
+features/character-sheet/ninja-editor/
+  ninja-editor.component.ts
+  ninja-editor.component.html
+  ninja-editor.component.scss
+```
+
+Los servicios inyectables usan archivos `.service.ts` y clases terminadas en `Service`; las pruebas conservan el sufijo correspondiente, como `.component.spec.ts` o `.service.spec.ts`. Las plantillas se cargan con `templateUrl` y los estilos con `styleUrl`. Los estilos de cada componente viven en su SCSS; `src/styles.scss` contiene el tema, los controles compartidos y las utilidades globales. Las clases independientes del dominio y del motor PDF conservan sus nombres TypeScript.
+
+Las convenciones quedan registradas en [AGENTS.md](AGENTS.md) y en los schematics de `angular.json`: componentes en carpetas, HTML/SCSS externos y sufijos `.component`, `.service`, `.directive`, `.pipe`, `.guard`, `.resolver`, `.interceptor` y `.module`. Las aplicaciones nuevas usan la nomenclatura `fileNameStyleGuide: "2016"`. Se han comprobado esos ocho generadores y el generador de aplicaciones con `--dry-run`.
+
+`BandStateService` conserva las reglas de los modelos y publica instantáneas tipadas mediante Signals de solo lectura y `computed()`. Los controles editables usan **Reactive Forms tipados**: Signal Forms de Angular 21 todavía declara su API como experimental, por lo que no cumple el requisito de estabilidad de esta migración. No se usan formularios template-driven ni RxJS para el estado síncrono. Los controles mantienen su instancia de `FormControl` y sincronizan los cambios externos mediante `effect()`, conservando el foco y el cursor al editar.
 
 Solo existe una pantalla real. Angular Router la carga de forma diferida y redirige rutas desconocidas al editor. No se añaden pantallas ficticias ni carpetas para funciones futuras. El motor PDF y sus dependencias se cargan al generar por primera vez; no se añade `@defer` a un formulario que debe estar disponible inmediatamente.
 
@@ -90,7 +105,7 @@ La presentación sigue las referencias del editor oscuro: cabecera compacta, bar
 
 En pantallas inferiores a **56 rem**, las tres minifichas aparecen arriba y solo se muestra debajo el formulario del personaje seleccionado. A partir de ese ancho se muestran tres columnas, cada una con su minificha y formulario; las minifichas pasan a ser informativas, sin selección por clic ni botones de selección en el recorrido de teclado. Se conserva una sola instancia de cada editor: cambiar de personaje o de tamaño de pantalla no borra las selecciones. La selección móvil es estado de interfaz y no invalida el PDF generado.
 
-`NinjaSummary`, `StatsView` y `EquipmentSummary` presentan el resumen sin modificar el modelo. `EquipmentPresentation` comparte el mapa de iconos y los huecos entre minifichas y selectores. `UiIcon`, en `shared/ui-icon.ts`, centraliza los SVG con sufijo `_ico` aportados en `src/assets/icons/` y los dibujos provisionales de los iconos que aún no tienen un recurso equivalente. Se utilizan SVG para las seis estadísticas, incluida vida, y las categorías de armas y objetos. Mokushin conserva su PNG porque no hay un SVG equivalente. `objetivo_ico.svg` está registrado como `target`, disponible para su asignación cuando se defina su uso. Las URLs respetan el `<base href>` y los iconos se muestran a **20 × 20 px**, sin recorte circular. Los SVG negros se presentan en claro mediante CSS para contrastar con el fondo oscuro. Para sustituir otro icono basta con registrar su archivo en ese componente; no es necesario modificar catálogos ni reglas. Las seis estadísticas incluyen movimiento y siguen siendo de solo lectura. Los detalles de armas y objetos se consultan mediante el desplegable «Ver efectos del equipo».
+`NinjaSummaryComponent`, `StatsViewComponent` y `EquipmentSummaryComponent` presentan el resumen sin modificar el modelo. `EquipmentPresentation` comparte el mapa de iconos y los huecos entre minifichas y selectores. `UiIconComponent`, en `shared/ui-icon/ui-icon.component.ts`, centraliza los SVG con sufijo `_ico` aportados en `src/assets/icons/` y los dibujos provisionales de los iconos que aún no tienen un recurso equivalente. Se utilizan SVG para las seis estadísticas, incluida vida, y las categorías de armas y objetos. Mokushin conserva su PNG porque no hay un SVG equivalente. `objetivo_ico.svg` está registrado como `target`, disponible para su asignación cuando se defina su uso. Las URLs respetan el `<base href>` y los iconos se muestran a **20 × 20 px**, sin recorte circular. Los SVG negros se presentan en claro mediante CSS para contrastar con el fondo oscuro. Para sustituir otro icono basta con registrar su archivo en ese componente; no es necesario modificar catálogos ni reglas. Las seis estadísticas incluyen movimiento y siguen siendo de solo lectura. Los detalles de armas y objetos se consultan mediante el desplegable «Ver efectos del equipo».
 
 ## Funciones actuales
 
@@ -110,7 +125,7 @@ No se han añadido campos obligatorios ni restricciones al nombre que no existí
 
 ## PDF y funcionamiento local
 
-El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe datos, plantilla y una función de carga de recursos sustituible en pruebas. `PdfGeneration` lo conecta con el formulario y conserva los bytes válidos en memoria. `getPdfBytes()` devuelve una copia o `null` si cambió la banda o la plantilla. [Documentación del motor y exportación](src/app/features/pdf-generator/README.md).
+El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe datos, plantilla y una función de carga de recursos sustituible en pruebas. `PdfGenerationService` lo conecta con el formulario y conserva los bytes válidos en memoria. `getPdfBytes()` devuelve una copia o `null` si cambió la banda o la plantilla. [Documentación del motor y exportación](src/app/features/pdf-generator/README.md).
 
 1. Introduce el nombre de **Escuadra** si quieres personalizar el nombre del archivo y completa los ninjas. En móvil, toca su minificha para elegir el personaje que quieres editar.
 2. Elige **Plantilla de ficha**. Por ahora contiene únicamente la plantilla original con Eagle Lake.
@@ -120,7 +135,7 @@ El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe d
 
 Cualquier edición, incluido el nombre de la banda, o cambio de plantilla deshabilita las exportaciones hasta volver a generar. Una generación en curso que quede obsoleta se descarta. Los PDF ya abiertos conservan su recurso hasta cerrar su pestaña; las URLs temporales de descarga se liberan después de iniciarla y todos los recursos se limpian al destruir la aplicación.
 
-Plantilla, coordenadas, fuentes y catálogos se copian como recursos de la aplicación. `PlatformAssets` concentra la resolución respecto al `<base href>`, compatible con navegación estática y futuras adaptaciones de plataforma. No hay backend, autenticación, APIs remotas, IA en ejecución ni almacenamiento cloud. La versión anterior no persistía la banda: se sigue perdiendo al recargar; no se migra ni se introduce almacenamiento.
+Plantilla, coordenadas, fuentes y catálogos se copian como recursos de la aplicación. `PlatformAssetsService` concentra la resolución respecto al `<base href>`, compatible con navegación estática y futuras adaptaciones de plataforma. No hay backend, autenticación, APIs remotas, IA en ejecución ni almacenamiento cloud. La versión anterior no persistía la banda: se sigue perdiendo al recargar; no se migra ni se introduce almacenamiento.
 
 La incorporación posterior de PWA o Capacitor podrá reutilizar el motor y adaptar el acceso a plataforma. **No se instalan Capacitor, Service Worker ni caché offline en esta fase.**
 

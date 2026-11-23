@@ -1,0 +1,17 @@
+:host { display: block; min-width: 0; }
+.equipment-editor > legend app-ui-icon { display: none; }
+.equipment-list { display: grid; gap: .5rem; }
+.equipment-row { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: center; gap: .625rem; }
+.equipment-row > app-ui-icon { color: #b9b9b9; }
+.equipment-details { margin: .625rem 0 0 1.75rem; color: var(--color-muted); font-size: .75rem; }
+.equipment-details > summary { cursor: pointer; }
+.equipment-details > summary:hover { color: #ededed; }
+.equipment-effect { margin-top: .75rem; font-size: .875rem; overflow-wrap: anywhere; }
+.equipment-effect strong { color: #e4e4e4; font-weight: 500; }
+.action-cost { display: block; margin-top: .125rem; font-size: .75rem; }
+.equipment-effect p { margin-top: .375rem; }
+
+@media (min-width: 56rem) {
+  .equipment-editor > legend app-ui-icon { display: inline-flex; }
+  .equipment-row { gap: .375rem; }
+}

@@ -1,0 +1,29 @@
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+
+export interface CatalogOption { readonly name: string; readonly label?: string; readonly disabled?: boolean; }
+
+@Component({
+  selector: 'app-catalog-select',
+  imports: [ReactiveFormsModule],
+  templateUrl: './catalog-select.component.html',
+  styleUrl: './catalog-select.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class CatalogSelectComponent {
+  readonly label = input.required<string>();
+  readonly controlId = input.required<string>();
+  readonly placeholder = input('Elige una opción');
+  readonly options = input.required<readonly CatalogOption[]>();
+  readonly value = input.required<string>();
+  readonly hideLabel = input(false);
+  readonly describedBy = input('');
+  readonly selected = output<string>();
+  protected readonly control = new FormControl('', { nonNullable: true });
+
+  constructor() {
+    effect(() => {
+      if (this.control.value !== this.value()) this.control.setValue(this.value(), { emitEvent: false });
+    });
+  }
+}

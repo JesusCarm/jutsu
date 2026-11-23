@@ -1,0 +1,10 @@
+<label [for]="controlId()" [class.sr-only]="hideLabel()">{{ label() }}</label>
+<span class="select-wrap">
+  <select [id]="controlId()" [formControl]="control" [class.is-placeholder]="!control.value" [attr.aria-describedby]="describedBy() || null"
+    (change)="selected.emit(control.value)">
+    <option value="">{{ placeholder() }}</option>
+    @for (option of options(); track option.name) {
+      <option [value]="option.name" [disabled]="option.disabled ?? false">{{ option.label ?? option.name }}</option>
+    }
+  </select>
+</span>

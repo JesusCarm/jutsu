@@ -1,0 +1,13 @@
+:host { display: block; min-width: 0; }
+.stat-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .25rem; padding-block: .875rem; }
+.mini-stat { display: flex; flex-wrap: wrap; align-items: center; gap: .125rem; min-width: 0; font-size: .875rem; }
+.mini-stat dt { display: flex; color: #b6b6b6; }
+.mini-stat dd { color: #f2f2f2; font-variant-numeric: tabular-nums; }
+.stat-caption { display: none; }
+
+@media (min-width: 56rem) {
+  .stat-fields { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .25rem; margin-top: .75rem; padding: .625rem .25rem .75rem; border-radius: .625rem; background: #141414; }
+  .mini-stat { display: flex; flex-direction: column; flex-wrap: nowrap; align-items: center; gap: .25rem; text-align: center; }
+  .mini-stat dd { display: flex; flex-direction: column; align-items: center; gap: .25rem; }
+  .stat-caption { display: block; color: #aaa; font-size: .75rem; line-height: 1.25; }
+}

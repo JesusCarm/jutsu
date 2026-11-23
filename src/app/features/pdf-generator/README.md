@@ -1,6 +1,6 @@
 # Plantilla y generación de PDF
 
-La configuración activa es `fichas_rellenables_coordenadas.json`, junto a `fichas_rellenables.pdf`. La propiedad `pdf` es `./fichas_rellenables.pdf`, relativa al JSON. `JutsuPdfTemplate` recibe la URL base de los recursos locales. Angular CLI copia `src/assets/` a `assets/` sin modificar los archivos. `PlatformAssets` resuelve esa base respecto al `<base href>` de la aplicación, también cuando se sirve desde una subcarpeta.
+La configuración activa es `fichas_rellenables_coordenadas.json`, junto a `fichas_rellenables.pdf`. La propiedad `pdf` es `./fichas_rellenables.pdf`, relativa al JSON. `JutsuPdfTemplate` recibe la URL base de los recursos locales. Angular CLI copia `src/assets/` a `assets/` sin modificar los archivos. `PlatformAssetsService` resuelve esa base respecto al `<base href>` de la aplicación, también cuando se sirve desde una subcarpeta.
 
 ## Referencia y campos
 
@@ -88,11 +88,11 @@ El resultado de `AffinityCoordinateConverter.toPdfBox()` tiene origen inferior i
 | `PdfFieldRenderer` | Escritura del texto sobre la página. |
 | `BandPdfGenerator` | Coordinación de la generación. |
 | `JutsuPdfTemplate` | URLs de los recursos de esta plantilla. |
-| `PdfTemplates` | Catálogo de plantillas disponibles y selección independiente de la banda. |
-| `PdfGeneration` | Generación asíncrona, estado y bytes del último PDF válido. |
+| `PdfTemplatesService` | Catálogo de plantillas disponibles y selección independiente de la banda. |
+| `PdfGenerationService` | Generación asíncrona, estado y bytes del último PDF válido. |
 | `PdfFileName` | Nombre de archivo a partir del nombre de la banda. |
-| `PdfBrowserFiles` | Descargas, pestañas PDF y ciclo de vida de sus URLs temporales. |
-| `PdfExport` | Acciones de exportación del PDF vigente y mensajes de resultado. |
+| `PdfBrowserFilesService` | Descargas, pestañas PDF y ciclo de vida de sus URLs temporales. |
+| `PdfExportService` | Acciones de exportación del PDF vigente y mensajes de resultado. |
 
 ## Uso
 
@@ -105,17 +105,17 @@ const bytes = await new BandPdfGenerator().generate(band, template);
 
 El generador toma una copia JSON de la banda antes de cargar los recursos. Las clases del modelo conservan sus métodos y datos; la copia se utiliza únicamente para rellenar el documento. El PDF original no se modifica.
 
-La acción **Generar y descargar PDF**, en la barra de iconos y al pie del editor, llama a `PdfExport.generateAndDownload()`: espera a que `PdfGeneration` guarde los bytes válidos e inicia su descarga. Si la generación falla o queda obsoleta, no intenta descargar. Los clics repetidos durante una generación se ignoran. `getPdfBytes()` devuelve una copia del último resultado válido o `null`. Las ediciones del formulario y los cambios de plantilla lo invalidan; un resultado que se termina de generar después de alguno de esos cambios se descarta, incluso si se vuelve a elegir la plantilla anterior. Seleccionar otra minificha para editar no modifica los datos ni invalida el resultado.
+La acción **Generar y descargar PDF**, en la barra de iconos y al pie del editor, llama a `PdfExportService.generateAndDownload()`: espera a que `PdfGenerationService` guarde los bytes válidos e inicia su descarga. Si la generación falla o queda obsoleta, no intenta descargar. Los clics repetidos durante una generación se ignoran. `getPdfBytes()` devuelve una copia del último resultado válido o `null`. Las ediciones del formulario y los cambios de plantilla lo invalidan; un resultado que se termina de generar después de alguno de esos cambios se descarta, incluso si se vuelve a elegir la plantilla anterior. Seleccionar otra minificha para editar no modifica los datos ni invalida el resultado.
 
 El icono **Descargar PDF** permite repetir la descarga de esos mismos bytes como un Blob `application/pdf`, con un enlace temporal. `PdfFileName` conserva Unicode, sustituye caracteres incompatibles y utiliza `jutsu-squad.pdf` si el nombre está vacío. El icono **Abrir PDF para imprimir** abre un Blob independiente de forma síncrona desde el clic y deja la impresión a los controles del visor. Un bloqueo de la pestaña se muestra como error y permite reintentar sin regenerar.
 
-Las URLs de descarga se revocan a los 60 segundos. Las de impresión se conservan hasta detectar el cierre de su pestaña, aunque después se edite la banda. `PdfBrowserFiles` libera URLs y temporizadores al destruir la aplicación. Los datos y los bytes siguen en memoria local; no se suben archivos ni se introduce persistencia.
+Las URLs de descarga se revocan a los 60 segundos. Las de impresión se conservan hasta detectar el cierre de su pestaña, aunque después se edite la banda. `PdfBrowserFilesService` libera URLs y temporizadores al destruir la aplicación. Los datos y los bytes siguen en memoria local; no se suben archivos ni se introduce persistencia.
 
 ## Plantillas disponibles
 
 `PDF_TEMPLATE_OPTIONS`, en `pdf-templates.ts`, registra identificador, etiqueta y una función que crea los recursos de cada plantilla a partir de la base local. Solo está registrada la plantilla original **Jutsu — three ninjas per page**, según lo acordado para esta fase. El PDF de prueba de `public/templates/` no se ofrece como ficha.
 
-Para incorporar otra plantilla real, añade su PDF y JSON a `src/assets/pdf/` y registra una opción con identificador único y sus URLs de configuración, PDF y fuentes. `PdfTemplates` mantiene la selección fuera de `BandState`: cambiar el diseño no modifica los ninjas ni el nombre de la banda. El generador recibe la plantilla elegida como argumento y mantiene su independencia de Angular y del DOM.
+Para incorporar otra plantilla real, añade su PDF y JSON a `src/assets/pdf/` y registra una opción con identificador único y sus URLs de configuración, PDF y fuentes. `PdfTemplatesService` mantiene la selección fuera de `BandStateService`: cambiar el diseño no modifica los ninjas ni el nombre de la banda. El generador recibe la plantilla elegida como argumento y mantiene su independencia de Angular y del DOM.
 
 ## Edición de la configuración
 

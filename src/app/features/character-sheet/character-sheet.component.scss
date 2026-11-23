@@ -1,0 +1,30 @@
+:host { display: block; min-width: 0; }
+.builder { padding: .875rem .75rem 1rem; border: 1px solid var(--color-border); border-radius: 1.25rem; background: var(--color-surface); }
+.editor-toolbar { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: 1rem; }
+.editor-brand { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; gap: .125rem; }
+h1 { font-size: 1.625rem; line-height: 1.15; font-weight: 700; letter-spacing: -.04em; }
+.editor-subtitle { color: var(--color-muted); font-size: .75rem; }
+.band-form { margin: 0; }
+.squad-bar { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .75rem; margin-bottom: .875rem; border-radius: .875rem; background: #121212; }
+.squad-bar > div { min-width: 0; flex: 1; }
+.squad-bar p { margin-top: .25rem; color: var(--color-muted); font-size: .75rem; }
+.squad-count { flex: 0 0 auto; white-space: nowrap; }
+.ninja-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; align-items: start; }
+.ninja-column { display: contents; }
+app-ninja-summary { display: block; min-width: 0; grid-column: var(--ninja-column); grid-row: 1; height: 100%; }
+.ninja-panel { grid-column: 1 / -1; grid-row: 2; min-width: 0; margin-top: .75rem; padding-top: 1.25rem; border-top: 1px solid var(--color-line); }
+.ninja-column:not(.is-selected) .ninja-panel { display: none; }
+
+@media (min-width: 36rem) {
+  .builder { padding: 1.25rem; }
+  .ninja-grid { gap: .75rem; }
+  .editor-brand { flex-direction: row; align-items: center; gap: .625rem; }
+  .editor-subtitle { padding: .125rem .5rem; border-radius: 1rem; background: #252525; }
+}
+
+@media (min-width: 56rem) {
+  .ninja-grid { gap: 1rem; align-items: stretch; }
+  .ninja-column { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--color-border); border-radius: .875rem; }
+  app-ninja-summary { height: auto; flex: 0 0 auto; }
+  .ninja-panel, .ninja-column:not(.is-selected) .ninja-panel { display: block; margin: 0; padding: 0 .75rem .875rem; border-top: 0; }
+}
