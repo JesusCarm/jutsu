@@ -9,7 +9,7 @@ const ICONS = {
   skill: 'habilidad_ico.svg',
   weapons: 'armas_ico.svg',
   equipment: 'equipo_ico.svg',
-  mokushin: 'mokushin.png',
+  mokushin: 'mokushin_ico.svg',
   target: 'objetivo_ico.svg',
   health: 'vida_ico.svg',
   kunai: ['m15 3 6 6-9 8-5-5 8-9ZM8 15l-4 4M5 17l2 2M3 20a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z'],

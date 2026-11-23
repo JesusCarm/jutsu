@@ -47,7 +47,7 @@ npm run typecheck
 
 `npm run test:watch` mantiene las pruebas en observación. `ng test` usa Vitest a través del ejecutor oficial, sin configuración personalizada. Las pruebas originales JavaScript se conservan, adaptadas a Vitest y a las nuevas rutas; sus casos inválidos siguen comprobando las validaciones en tiempo de ejecución. Todo el código de la aplicación está en TypeScript estricto.
 
-Las pruebas cubren catálogo, modelos, límites de equipo, aislamiento entre ninjas, selecciones y limpieza de valores, foco de teclado, navegación, generación asíncrona, errores, descarte de resultados obsoletos, fuentes, Unicode, coordenadas y composición PDF. También verifican nombres de archivo, selección de plantilla, botones de exportación, descarga mediante Blob, ventanas bloqueadas y limpieza de URLs. El editor comprueba la sincronización de minifichas, estadísticas e iconos, los huecos de equipo seleccionados fuera de orden y el cambio de personaje sin recrear formularios ni invalidar el PDF. Una captura de referencia del motor original comprueba texto, cajas, estilos, saltos de línea, tamaños y líneas base para los doce grupos de técnicas.
+Las pruebas cubren catálogo, modelos, límites de equipo, aislamiento entre ninjas, selecciones y limpieza de valores, foco de teclado, navegación, generación asíncrona, errores, descarte de resultados obsoletos, fuentes, Unicode, coordenadas y composición PDF. También verifican nombres de archivo, selección de plantilla, botones de exportación, descarga mediante Blob, ventanas bloqueadas y limpieza de URLs. El editor comprueba la sincronización de minifichas, estadísticas e iconos, los huecos de equipo seleccionados fuera de orden y el cambio de personaje sin recrear formularios ni invalidar el PDF. Las pruebas AcroForm reabren cada ficha, verifican sus quince valores y apariencias, limpian datos anteriores y comprueban los doce grupos de técnicas. La exportación estática verifica tres fichas vectoriales independientes en A4, sin bordes de formulario ni notas, con costes separados e iconos Mokushin condicionales. Una captura de referencia conserva la equivalencia del motor de coordenadas original sobre un lienzo de sus dimensiones originales.
 
 ## Arquitectura
 
@@ -70,8 +70,8 @@ src/
   assets/
     data/                   # Catálogos JSON originales
     fonts/                  # Eagle Lake, DejaVu Sans y licencias
-    icons/                  # SVG _ico de estadísticas y equipo; PNG de Mokushin
-    pdf/                    # Plantilla original y coordenadas exactas
+    icons/                  # SVG _ico de estadísticas, equipo y Mokushin
+    pdf/                    # Formulario PDF y coordenadas del motor anterior
   index.html
   main.ts
   styles.scss
@@ -105,19 +105,19 @@ La presentación sigue las referencias del editor oscuro: cabecera compacta, bar
 
 En pantallas inferiores a **56 rem**, las tres minifichas aparecen arriba y solo se muestra debajo el formulario del personaje seleccionado. A partir de ese ancho se muestran tres columnas, cada una con su minificha y formulario; las minifichas pasan a ser informativas, sin selección por clic ni botones de selección en el recorrido de teclado. Se conserva una sola instancia de cada editor: cambiar de personaje o de tamaño de pantalla no borra las selecciones. La selección móvil es estado de interfaz y no invalida el PDF generado.
 
-`NinjaSummaryComponent`, `StatsViewComponent` y `EquipmentSummaryComponent` presentan el resumen sin modificar el modelo. `EquipmentPresentation` comparte el mapa de iconos y los huecos entre minifichas y selectores. `UiIconComponent`, en `shared/ui-icon/ui-icon.component.ts`, centraliza los SVG con sufijo `_ico` aportados en `src/assets/icons/` y los dibujos provisionales de los iconos que aún no tienen un recurso equivalente. Se utilizan SVG para las seis estadísticas, incluida vida, y las categorías de armas y objetos. Mokushin conserva su PNG porque no hay un SVG equivalente. `objetivo_ico.svg` está registrado como `target`, disponible para su asignación cuando se defina su uso. Las URLs respetan el `<base href>` y los iconos se muestran a **20 × 20 px**, sin recorte circular. Los SVG negros se presentan en claro mediante CSS para contrastar con el fondo oscuro. Para sustituir otro icono basta con registrar su archivo en ese componente; no es necesario modificar catálogos ni reglas. Las seis estadísticas incluyen movimiento y siguen siendo de solo lectura. Los detalles de armas y objetos se consultan mediante el desplegable «Ver efectos del equipo».
+`NinjaSummaryComponent`, `StatsViewComponent` y `EquipmentSummaryComponent` presentan el resumen sin modificar el modelo. `EquipmentPresentation` comparte el mapa de iconos y los huecos entre minifichas y selectores. `UiIconComponent`, en `shared/ui-icon/ui-icon.component.ts`, centraliza los SVG con sufijo `_ico` aportados en `src/assets/icons/` y los dibujos provisionales de los iconos que aún no tienen un recurso equivalente. Se utilizan SVG para las seis estadísticas, incluida vida, las categorías de armas y objetos y Mokushin. `mokushin_ico.svg` se comparte con el generador PDF. `objetivo_ico.svg` está registrado como `target`, disponible para su asignación cuando se defina su uso. Las URLs respetan el `<base href>` y los iconos se muestran a **20 × 20 px**, sin recorte circular. Los SVG negros se presentan en claro mediante CSS para contrastar con el fondo oscuro. Para sustituir otro icono basta con registrar su archivo en ese componente; no es necesario modificar catálogos ni reglas. Las seis estadísticas incluyen movimiento y siguen siendo de solo lectura. Los detalles de armas y objetos se consultan mediante el desplegable «Ver efectos del equipo».
 
 ## Funciones actuales
 
 - Nombre opcional de la banda para identificar el archivo descargado.
 - Tres ninjas independientes con nombre y uno de cuatro tipos.
 - Estadísticas derivadas de tipo, no editables, incluyendo valores cero.
-- Doce grupos de tres técnicas, descripción, coste de chakra fijo o variable e indicación Mokushin.
+- Doce grupos de tres técnicas, descripción, coste de chakra fijo o variable e icono Mokushin en el editor y junto al coste en el PDF.
 - Tres huecos de armas y dos de objetos por ninja, con datos derivados del catálogo. «Sin arma» y «Sin objeto» vacían un hueco sin desplazar los demás.
 - Minifichas con iconos de las seis estadísticas y del equipo, sincronizadas con su personaje.
 - Generación de PDF desde una instantánea de la banda, estados de carga, éxito y error, e invalidación al editar.
-- PDF original, 69 campos declarados y 54 activos; 15 campos sin coordenadas siguen desactivados.
-- Eagle Lake y respaldo DejaVu Sans, incrustación local de fuentes, precisión de coordenadas y algoritmos originales.
+- Plantilla de un ninja con quince campos por nombre y tres notas que marcan Mokushin; generación de tres fichas independientes en una página A4, sin cajas de formulario ni resaltados de edición.
+- Eagle Lake y respaldo DejaVu Sans, fuentes locales incrustadas y ajuste del texto a cada campo. El motor de coordenadas anterior sigue disponible para otras plantillas.
 - Selector con la plantilla actual de tres ninjas por página; solo se ofrecen plantillas disponibles.
 - Descarga del PDF y apertura en otra pestaña para imprimir desde el visor del navegador.
 
@@ -125,7 +125,9 @@ No se han añadido campos obligatorios ni restricciones al nombre que no existí
 
 ## PDF y funcionamiento local
 
-El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe datos, plantilla y una función de carga de recursos sustituible en pruebas. `PdfGenerationService` lo conecta con el formulario y conserva los bytes válidos en memoria. `getPdfBytes()` devuelve una copia o `null` si cambió la banda o la plantilla. [Documentación del motor y exportación](src/app/features/pdf-generator/README.md).
+El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe datos, plantilla y una función de carga de recursos sustituible en pruebas. La plantilla actual contiene una ficha con campos `Ninja1_…`; `JutsuFormFields` relaciona sus nombres con los datos y estilos. Cada ninja rellena una copia independiente, que se aplana antes de componer las tres en una página A4. Las posiciones se toman del PDF, sin cargar el JSON de coordenadas. Cada técnica incluye nombre y descripción; el chakra va en su campo `_cost`. Las notas cuyo contenido es `Ninja1_technique_1_mokushin`, y sus equivalentes para las técnicas 2 y 3, marcan las cajas donde se dibuja el SVG si corresponde. Se admiten diferencias de mayúsculas. Las notas se retiran del resultado y el inventario combina armas y objetos. La exportación conserva el diseño y la nitidez mediante aplanado vectorial. El PDF descargado ya no tiene campos editables; la plantilla original permanece rellenable y no se modifica.
+
+`PdfGenerationService` lo conecta con el formulario y conserva los bytes válidos en memoria. `getPdfBytes()` devuelve una copia o `null` si cambió la banda o la plantilla. [Documentación del motor y exportación](src/app/features/pdf-generator/README.md).
 
 1. Introduce el nombre de **Escuadra** si quieres personalizar el nombre del archivo y completa los ninjas. En móvil, toca su minificha para elegir el personaje que quieres editar.
 2. Elige **Plantilla de ficha**. Por ahora contiene únicamente la plantilla original con Eagle Lake.
@@ -145,4 +147,4 @@ Consulta [el informe de migración](docs/migration/angular-migration.md) para el
 
 El `.gitignore` excluye dependencias, compilaciones, cachés, cobertura, salidas generadas, copias de revisión y configuración local. Las plantillas PDF, fuentes, licencias, catálogos y `package-lock.json` forman parte del código versionado. La copia inicial `output/migration/vite-phase5-source.tar.gz` y el PDF de revisión permanecen únicamente en el entorno local.
 
-Verificación actual: 80 pruebas automatizadas, comprobación de tipos y compilación de producción correctas. Los nueve SVG `_ico` se sirven como `image/svg+xml` y se copian a producción idénticos a los originales. El usuario confirmó la descarga de la fase 6 en Firefox desde `http://localhost:4200/`, tras resolver un error de `start` que mantenía una compilación anterior. Se ha comprobado por HTTP que el servidor entrega el nuevo editor con minifichas y las acciones de exportación. La revisión visual del nuevo diseño en escritorio y móvil, y la apertura manual para imprimir, siguen pendientes: el host de acceso al navegador no estaba disponible en la sesión de implementación.
+Verificación actual: 91 pruebas automatizadas, comprobación de tipos y compilación de producción correctas. Se han renderizado y revisado las hojas de tres fichas de los doce grupos de técnicas, incluidos los símbolos Unicode. Las pruebas verifican los costes, los marcadores de nota, su limpieza, los iconos condicionales, la composición A4, el aislamiento de los ninjas y los errores de recursos. Los diez SVG `_ico` se copian a producción idénticos a los originales. El usuario confirmó la descarga de la fase 6 en Firefox desde `http://localhost:4200/`, tras resolver un error de `start` que mantenía una compilación anterior. Se ha comprobado por HTTP que el servidor entrega el nuevo editor con minifichas y las acciones de exportación. La revisión visual del editor en escritorio y móvil, y la apertura manual para imprimir, siguen pendientes: el host de acceso al navegador no estaba disponible en la sesión de implementación.

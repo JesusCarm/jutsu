@@ -9,7 +9,7 @@ import { PdfTemplateLoader } from '../src/app/features/pdf-generator/pdf-templat
 
 const templateUrl = pathToFileURL(resolve(process.cwd(), 'public/templates/test-template.pdf'));
 const suppliedTemplateUrl = pathToFileURL(resolve(process.cwd(), 'src/assets/pdf/fichas_rellenables.pdf'));
-const suppliedPage = { index: 0, width: 595.44, height: 841.92 };
+const suppliedPage = { index: 0, width: 595.44, height: 288 };
 const expectedPages = [
   { index: 0, width: 595.28, height: 841.89 },
   { index: 1, width: 419.53, height: 595.28 },

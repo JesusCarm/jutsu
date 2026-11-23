@@ -1,6 +1,7 @@
 import type { PDFFont } from 'pdf-lib';
-import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { PDFDocument, PDFName, StandardFonts } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
+import { PdfSvgIcon } from './pdf-svg-icon';
 
 export class PdfDocument {
   #document: PDFDocument;
@@ -35,14 +36,28 @@ export class PdfDocument {
     return Array.from({ length: this.getPageCount() }, (_, index) => this.getPageInfo(index));
   }
 
+  getForm() {
+    return this.#document.getForm();
+  }
+
+  flattenForm(): void {
+    // Keep our fitted, Unicode-aware appearances instead of regenerating them.
+    this.getForm().flatten({ updateFieldAppearances: false });
+    this.#document.catalog.delete(PDFName.of('AcroForm'));
+  }
+
   prepareForText() {
     this.#textFontPromise ??= this.#document.embedFont(StandardFonts.Helvetica);
     return this.#textFontPromise;
   }
 
-  async embedFont(source: string | Uint8Array) {
+  async embedFont(source: string | Uint8Array, subset = typeof source !== 'string') {
     if (typeof source !== 'string') this.#document.registerFontkit(fontkit);
-    return this.#document.embedFont(source, { subset: typeof source !== 'string' });
+    return this.#document.embedFont(source, { subset });
+  }
+
+  embedSvgIcon(source: string) {
+    return new PdfSvgIcon(this.#document.context).embed(source);
   }
 
   async save() {

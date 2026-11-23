@@ -6,6 +6,8 @@ import { PdfFieldRenderer } from './pdf-field-renderer';
 import { PdfFontProvider } from './pdf-font-provider';
 import { PdfTemplateConfigLoader } from './pdf-template-config-loader';
 import { PdfTemplateLoader } from './pdf-template-loader';
+import { BandFormPdfGenerator } from './band-form-pdf-generator';
+import { BandSheetPdfGenerator } from './band-sheet-pdf-generator';
 
 export class BandPdfGenerator {
   readonly fetchResource: FetchResource;
@@ -26,6 +28,8 @@ export class BandPdfGenerator {
 
   async generate(band: unknown, template: PdfTemplate): Promise<Uint8Array> {
     const data: unknown = JSON.parse(JSON.stringify(band));
+    if (template.repeatedSheet) return new BandSheetPdfGenerator(this.fetchResource).generate(data, template);
+    if (template.formFields) return new BandFormPdfGenerator(this.fetchResource).generate(data, template);
     const config = await this.configLoader.load(template.configUrl);
     config.assertReady();
     const pdf = await this.templateLoader.load(template.pdfUrl ?? config.resolvePdfUrl());

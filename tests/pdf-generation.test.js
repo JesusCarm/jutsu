@@ -13,8 +13,10 @@ import { PdfDocument } from '../src/app/features/pdf-generator/pdf-document';
 import { PdfFieldFormatter } from '../src/app/features/pdf-generator/pdf-field-formatter';
 import { PdfFontProvider } from '../src/app/features/pdf-generator/pdf-font-provider';
 import { PdfTextLayout } from '../src/app/features/pdf-generator/pdf-text-layout';
+import { fetchCoordinateTemplate } from './fixtures/coordinate-template';
 
 const template = new JutsuPdfTemplate(pathToFileURL(resolve(process.cwd(), 'src/assets') + '/'));
+const coordinateTemplate = { ...template, formFields: undefined, repeatedSheet: undefined };
 const catalog = new GameCatalog(GAME_DATA);
 
 async function fetchLocal(url) {
@@ -106,7 +108,7 @@ test('all twelve groups generate a complete document with Unicode and leave the 
     assert.ok(bytes instanceof Uint8Array);
     assert.notDeepEqual(bytes, new Uint8Array(original));
     const pdf = await PdfDocument.fromBytes(new Uint8Array(bytes));
-    assert.deepEqual(pdf.getPagesInfo(), [{ index: 0, width: 595.44, height: 841.92 }]);
+    assert.deepEqual(pdf.getPagesInfo(), [{ index: 0, width: 595.28, height: 841.89 }]);
     assert.equal(JSON.stringify(band), before);
   }
   assert.deepEqual(await readFile(new URL(template.pdfUrl)), original);
@@ -121,11 +123,11 @@ test('generation uses a snapshot taken before loading resources and combines inv
   const generator = new BandPdfGenerator({ fetchResource: async (url) => {
     requests.push(url);
     if (url === template.configUrl) await gate;
-    return fetchLocal(url);
+    return fetchCoordinateTemplate(url, template.pdfUrl);
   } });
   const rendered = [];
   generator.renderer = { render(page, text) { rendered.push(text); } };
-  const pending = generator.generate(band, template);
+  const pending = generator.generate(band, coordinateTemplate);
   band.ninjas[0].name = 'After';
   release();
   await pending;
@@ -146,6 +148,6 @@ test('unselected data produces empty fields and incomplete configuration stops b
     requests.push(url);
     return new Response(JSON.stringify(definition));
   } });
-  await assert.rejects(() => generator.generate(createBand(), template), /Complete the Affinity/);
+  await assert.rejects(() => generator.generate(createBand(), coordinateTemplate), /Complete the Affinity/);
   assert.deepEqual(requests, [template.configUrl]);
 });

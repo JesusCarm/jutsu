@@ -9,12 +9,14 @@ import { GameCatalog } from '../src/app/core/models/game-catalog';
 import { GAME_DATA } from '../src/app/core/services/game-data';
 import { BandPdfGenerator } from '../src/app/features/pdf-generator/band-pdf-generator';
 import { JutsuPdfTemplate } from '../src/app/features/pdf-generator/jutsu-pdf-template';
+import { fetchCoordinateTemplate } from './fixtures/coordinate-template';
 
 // Captured from the original phase 5 engine before migration. Covers all 12 groups.
 // Compare text, coordinates, styles, line breaks, font sizes and final baselines.
-test('the migrated engine matches the original phase 5 rendering for all twelve technique groups', async () => {
+test('the coordinate backend matches the original phase 5 rendering for all twelve technique groups', async () => {
   const catalog = new GameCatalog(GAME_DATA);
-  const template = new JutsuPdfTemplate(pathToFileURL(resolve(process.cwd(), 'src/assets') + '/'));
+  const template = { ...new JutsuPdfTemplate(pathToFileURL(resolve(process.cwd(), 'src/assets') + '/')),
+    formFields: undefined, repeatedSheet: undefined };
   for (let offset = 0; offset < 12; offset += 3) {
     const band = new Band();
     band.ninjas.forEach((ninja, i) => {
@@ -27,7 +29,7 @@ test('the migrated engine matches the original phase 5 rendering for all twelve 
       }
     });
     const operations = [];
-    const generator = new BandPdfGenerator({ fetchResource: async (url) => new Response(await readFile(new URL(url))) });
+    const generator = new BandPdfGenerator({ fetchResource: (url) => fetchCoordinateTemplate(url, template.pdfUrl) });
     const renderer = generator.renderer;
     generator.renderer = { render(page, text, box, style, family) {
       operations.push({ text, box, style, layout: renderer.layout.fit(text, family, box, style) });

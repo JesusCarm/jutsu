@@ -34,5 +34,8 @@ describe('UI icons', () => {
     await fixture.whenStable();
     expect(element.querySelector('svg path')).not.toBeNull();
     expect(element.querySelector('img')).toBeNull();
+    fixture.componentRef.setInput('name', 'mokushin');
+    await fixture.whenStable();
+    expect(element.querySelector('img')!.src).toContain('/assets/icons/mokushin_ico.svg');
   });
 });

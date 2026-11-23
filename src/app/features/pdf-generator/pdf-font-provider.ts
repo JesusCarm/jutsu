@@ -9,7 +9,7 @@ export class PdfFontProvider {
   readonly fonts = new Map<string, Promise<FontRecord>>();
   readonly families = new Map<string, Promise<PdfFontFamily>>();
 
-  constructor(readonly pdf: PdfDocument, readonly urls: Record<string, string> = {}, readonly fetchResource: FetchResource = (url) => globalThis.fetch(url)) {
+  constructor(readonly pdf: PdfDocument, readonly urls: Record<string, string> = {}, readonly fetchResource: FetchResource = (url) => globalThis.fetch(url), readonly subset = true) {
   }
 
   loadFont(name: string) {
@@ -28,7 +28,7 @@ export class PdfFontProvider {
       source = new Uint8Array(await response.arrayBuffer());
       raw = fontkit.create(source) as Font;
     }
-    const font = await this.pdf.embedFont(source);
+    const font = await this.pdf.embedFont(source, typeof source !== 'string' && this.subset);
     return { font, raw, characters: new Set(font.getCharacterSet()) };
   }
 

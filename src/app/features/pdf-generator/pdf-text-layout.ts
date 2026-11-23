@@ -1,7 +1,6 @@
-import type { PdfFontFamily } from './pdf-font-family';
-import type { PdfBox, ReadyTypography } from './pdf-types';
+import type { PdfBox, ReadyTypography, PdfTextMeasurer } from './pdf-types';
 export class PdfTextLayout {
-  wrap(text: string, family: PdfFontFamily, size: number, width: number) {
+  wrap(text: string, family: PdfTextMeasurer, size: number, width: number) {
     const lines = [];
     const measure = (value: string) => family.getTextMetrics(value, size).width;
     for (const paragraph of text.split('\n')) {
@@ -23,11 +22,11 @@ export class PdfTextLayout {
     return lines;
   }
 
-  fit(text: string, family: PdfFontFamily, box: PdfBox, style: ReadyTypography) {
+  fit(text: string, family: PdfTextMeasurer, box: PdfBox, style: ReadyTypography, { multiline = true } = {}) {
     const minimum = style.minFontSize ?? style.fontSize;
     let size = style.fontSize;
     while (true) {
-      const lines = this.wrap(text, family, size, box.width);
+      const lines = multiline ? this.wrap(text, family, size, box.width) : [text];
       if (lines) {
         const metrics = lines.map((line) => family.getTextMetrics(line, size));
         const maxAscent = Math.max(...metrics.map((entry) => entry.ascent));
@@ -36,7 +35,7 @@ export class PdfTextLayout {
           ? Math.max(size * 1.2, (maxAscent + maxDescent) * 1.05)
           : style.lineHeight * size / style.fontSize;
         const height = metrics[0].ascent + (lines.length - 1) * lineHeight + metrics.at(-1)!.descent;
-        if (height <= box.height + 1e-6 && (lines.length === 1 || lineHeight >= maxAscent + maxDescent)) {
+        if (metrics.every((entry) => entry.width <= box.width + 1e-6) && height <= box.height + 1e-6 && (lines.length === 1 || lineHeight >= maxAscent + maxDescent)) {
           const remaining = box.height - height;
           const offset = style.verticalAlignment === 'middle' ? remaining / 2
             : style.verticalAlignment === 'bottom' ? remaining : 0;
