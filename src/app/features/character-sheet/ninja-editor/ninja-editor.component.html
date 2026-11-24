@@ -1,6 +1,6 @@
 <section class="ninja-editor" [attr.aria-label]="i18n.t(Labels.editNinja, {number: index() + 1})">
-  <h2 class="editor-heading">{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</h2>
-  <app-equipment-effects [equipment]="ninja().equipment" />
+  @if (showName()) { <h2 class="editor-heading">{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</h2> }
+  <app-equipment-effects [equipment]="ninja().equipment" [expanded]="expandedEquipment()" />
   <h3 class="school-heading"><app-ui-icon name="book" />{{ text.groupName(ninja().techniqueGroup.id) || i18n.t(Labels.jutsuSchool) }}</h3>
   <app-technique-list [definitions]="ninja().techniqueGroup.techniques" />
 </section>

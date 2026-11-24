@@ -21,6 +21,7 @@ export class StatsViewComponent {
   protected readonly ShortStats = ShortStats;
 
   readonly stats = input.required<NinjaSnapshot['stats']>();
+  readonly showLabels = input(false);
   protected readonly fields: readonly { key: StatName; label: TranslationKey; short: TranslationKey; icon: IconName }[] = [
     { key: 'chakra', label: Stats.chakra, short: ShortStats.chakra, icon: 'chakra' },
     { key: 'attack', label: Stats.attack, short: ShortStats.attack, icon: 'attack' },

@@ -1,18 +1,62 @@
 <section class="builder" aria-labelledby="squad-heading">
-  <header class="editor-toolbar"><div class="editor-brand"><h1 id="squad-heading">{{ i18n.t(App.title) }}</h1><span class="editor-subtitle">{{ i18n.t(App.subtitle) }}</span></div><div class="toolbar-actions"><app-language-switcher /><app-pdf-toolbar /></div></header>
-  <form id="band-form" class="band-form" aria-labelledby="squad-heading" aria-describedby="band-help" (submit)="$event.preventDefault()">
-    <div class="squad-bar"><div><app-band-name-editor /><p id="band-help">{{ i18n.t(App.help, {count: state.band().ninjas.length}) }}</p></div><span class="badge squad-count">{{ i18n.t(App.count, {count: state.band().ninjas.length}) }}</span></div>
+  <header class="editor-toolbar">
+    <div class="editor-brand">
+      <h1 id="squad-heading">{{ i18n.t(App.title) }}</h1>
+      <span class="editor-subtitle">{{ i18n.t(App.subtitle) }}</span>
+    </div>
+    <div class="toolbar-actions">
+      <app-language-switcher /><app-pdf-toolbar />
+    </div>
+  </header>
+  <form
+    id="band-form"
+    class="band-form"
+    aria-labelledby="squad-heading"
+    aria-describedby="band-help"
+    (submit)="$event.preventDefault()"
+  >
+    <div class="squad-bar">
+      <div>
+        <app-band-name-editor />
+        <p id="band-help">
+          {{ i18n.t(App.help, { count: state.band().ninjas.length }) }}
+        </p>
+      </div>
+      <span class="badge squad-count">{{
+        i18n.t(App.count, { count: state.band().ninjas.length })
+      }}</span>
+    </div>
     <div class="ninja-grid">
       @for (ninja of state.band().ninjas; track $index) {
-        <article class="ninja-column" [class.is-selected]="selectedIndex() === $index" [style.--ninja-position]="$index + 1" [attr.aria-label]="ninja.name || i18n.t(Labels.ninja, {number: $index + 1})">
-          <app-ninja-summary [ninja]="ninja" [index]="$index" [active]="selectedIndex() === $index" (selected)="selectedIndex.set($index)" />
-          <div class="ninja-panel" [id]="'ninja-' + ($index + 1) + '-panel'" role="region" [attr.aria-label]="i18n.t(Labels.editNamedNinja, {name: ninja.name || i18n.t(Labels.ninja, {number: $index + 1})})">
+        <article
+          class="ninja-column"
+          [attr.aria-label]="
+            ninja.name || i18n.t(Labels.ninja, { number: $index + 1 })
+          "
+        >
+          <app-ninja-summary
+            [ninja]="ninja"
+            [index]="$index"
+          />
+          <div
+            class="ninja-panel"
+            [id]="'ninja-' + ($index + 1) + '-panel'"
+            role="region"
+            [attr.aria-label]="
+              i18n.t(Labels.editNamedNinja, {
+                name:
+                  ninja.name || i18n.t(Labels.ninja, { number: $index + 1 }),
+              })
+            "
+          >
             <app-ninja-editor [ninja]="ninja" [index]="$index" />
           </div>
         </article>
       }
     </div>
   </form>
-  @if (i18n.error()) { <p role="status">{{ i18n.error() }}</p> }
+  @if (i18n.error()) {
+    <p role="status">{{ i18n.error() }}</p>
+  }
   <app-pdf-actions />
 </section>

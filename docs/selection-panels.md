@@ -9,14 +9,15 @@ Each trigger opens a modal panel at the right edge. Panels use the installed Ang
 | Component or class | Responsibility |
 | --- | --- |
 | `NinjaNameEditorComponent` | Inline free-form ninja name and its stable form control. |
-| `NinjaSummaryComponent` | Mini sheet, type and school triggers, mobile detail selection. |
+| `NinjaSummaryComponent` | Mini sheet, type and school triggers, and the mobile sheet-dialog action. |
 | `EquipmentSummaryComponent` | Fixed weapon/item buttons, labels, and selected icons. |
-| `NinjaSelectionService` | Opening panels with the target ninja/slot and applying the result through `BandStateService`. |
+| `NinjaDialogsService` | Opening selection or sheet panels for the target ninja/slot and applying selection results through `BandStateService`. |
 | `NinjaTypeDialogComponent` | Four type profiles with read-only stats. |
 | `WeaponDialogComponent` | Weapon selection for one slot. |
 | `ItemDialogComponent` | Item selection for one slot. |
 | `EquipmentChoicesComponent` | Shared equipment choices with icons, action costs, and descriptions. |
 | `TechniqueSchoolDialogComponent` | All twelve schools with their three techniques. |
+| `NinjaDetailsDialogComponent` | Read-only full sheet: identity, labeled stats, school, techniques and expanded equipment effects. |
 | `SelectionPanelComponent` | Shared title, close control, and scrolling content. |
 | `TechniqueListComponent` | Shared read-only technique names, descriptions, Chakra costs, and Mokushin. |
 | `EquipmentEffectsComponent` | Selected equipment descriptions under “View equipment effects.” |
@@ -24,7 +25,7 @@ Each trigger opens a modal panel at the right edge. Panels use the installed Ang
 
 The school preview and the sheet use the same technique component. Weapon and item dialogs share equipment presentation and list code, while keeping separate dialog components. Empty-choice entries allow clearing a type, school, or equipment slot. The catalog still has three weapons and four items; a ninja can carry at most three weapons and two items. Selecting an empty slot out of order or clearing one does not shift other slots.
 
-Below 56 rem, the three mini sheets stack vertically at full width. “View details” selects which character's descriptions appear below the stack. At desktop width the three mini sheets appear in columns with all three detail panels visible, and clicking a summary does not change mobile selection state. The editing buttons work at both sizes. Existing name controls and equipment buttons remain in place as selections or language change.
+Below 56 rem, the three mini sheets stack vertically at full width. “View details” opens a separate panel for that ninja; the inline detail panels are hidden on mobile. The full sheet includes the name, type, six labeled stats, school, three techniques with Chakra costs and Mokushin, and equipment descriptions open by default. It is read-only and cannot launch nested selection dialogs. At desktop width the three mini sheets remain in columns with all three inline detail panels visible. Mini sheets have no selected/active state or card-wide click handler. Their editing buttons work at both sizes. Existing name controls and equipment buttons remain in place as choices or language change. Opening or closing the full sheet does not publish a squad revision or invalidate the PDF. The sheet supports close, Escape, backdrop dismissal and focus restoration, like the selection panels.
 
 ## Printing
 
@@ -36,4 +37,4 @@ The top toolbar retains Generate and download PDF and Open PDF for printing. The
 
 ## Verification
 
-Run `npm run typecheck`, `npm test`, and `npm run build`. Component tests exercise all four panels, profile stats, independent slots, all school previews, descriptions, clearing selections, keyboard dismissal, focus restoration, language updates, name-control identity, and desktop/mobile selection behavior. Export tests verify tab reservation before asynchronous generation, blocked/closed tabs, stale results, cleanup, and generating again after edits.
+Run `npm run typecheck`, `npm test`, and `npm run build`. Component tests exercise all four panels, profile stats, independent slots, all school previews, descriptions, clearing selections, keyboard dismissal, focus restoration, language updates, name-control identity, full-sheet dialogs for each ninja, and unselectable mini sheets. Export tests verify tab reservation before asynchronous generation, blocked/closed tabs, stale results, cleanup, and generating again after edits.

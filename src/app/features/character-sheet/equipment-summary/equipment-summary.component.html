@@ -6,7 +6,7 @@
         <button type="button" class="equipment-token" [class.is-empty]="!slot.id" [attr.data-equipment]="slot.id"
           [id]="'ninja-' + (ninjaIndex() + 1) + '-' + group.kind + '-' + (slot.index + 1)"
           aria-haspopup="dialog" [title]="slotLabel(group.kind, slot.index, slot.name)" [attr.aria-label]="slotLabel(group.kind, slot.index, slot.name)"
-          (click)="selections.equipment(ninjaIndex(), group.kind, slot.index)"><app-ui-icon [name]="slot.id ? slot.icon : 'plus'" /></button>
+          (click)="dialogs.equipment(ninjaIndex(), group.kind, slot.index)"><app-ui-icon [name]="slot.id ? slot.icon : 'plus'" /></button>
       }
     </div>
   }

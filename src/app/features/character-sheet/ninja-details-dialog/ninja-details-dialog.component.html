@@ -1,0 +1,8 @@
+<app-selection-panel [title]="ninja().name || i18n.t(Labels.ninja, {number: data.ninjaIndex + 1})" [subtitle]="i18n.t(Labels.ninjaSheet)">
+  <div class="ninja-profile">
+    @if (typeIcon(); as icon) { <app-ui-icon [name]="icon" /> }
+    <span>{{ text.typeName(ninja().type) || i18n.t(Labels.noType) }}</span>
+  </div>
+  <app-stats-view [stats]="ninja().stats" [showLabels]="true" />
+  <app-ninja-editor [ninja]="ninja()" [index]="data.ninjaIndex" [showName]="false" [expandedEquipment]="true" />
+</app-selection-panel>

@@ -142,29 +142,88 @@ describe('Compact character sheet', () => {
     }
   });
 
-  it('edits names in place and switches mobile details without recreating controls or changing data', async () => {
-    const { fixture, element, state, input } = await setup();
+  it('opens each complete ninja sheet without changing data, recreating name inputs or invalidating the PDF', async () => {
+    const { fixture, element, overlay, state, input, open } = await setup();
     const first = await input('ninja-1-name', 'Kragash');
     const third = await input('ninja-3-name', 'Zikka');
-    const band = state.band(); const revision = state.revision();
-    element.querySelector<HTMLButtonElement>('#ninja-3-select')!.click();
+    state.setName(1, 'Ugrok');
+    const profiles = [
+      { type: 'physical', group: 'taijutsu', weapon: 'kunai', item: 'curryPill', name: 'Kragash', typeName: 'Physical', technique: 'Protective Gate', equipment: 'Curry Pill', stats: ['12', '6', '5', '7', '4', '10'] },
+      { type: 'defensive', group: 'shadow', weapon: 'shuriken', item: 'smokeBomb', name: 'Ugrok', typeName: 'Defensive', technique: 'Shadow Bind', equipment: 'Smoke Bomb', stats: ['15', '4', '6', '5', '5', '10'] },
+      { type: 'jutsuMaster', group: 'medical', weapon: 'explosiveSeal', item: 'cakePill', name: 'Zikka', typeName: 'Jutsu Master', technique: 'Healing', equipment: 'Cake Pill', stats: ['20', '5', '4', '5', '5', '10'] },
+    ];
+    for (const [index, profile] of profiles.entries()) {
+      state.selectType(index, profile.type);
+      state.selectGroup(index, profile.group);
+      state.selectEquipmentSlot(index, 'weapons', 0, profile.weapon);
+      state.selectEquipmentSlot(index, 'items', 0, profile.item);
+    }
     await fixture.whenStable();
-    expect(element.querySelector('.is-selected .ninja-panel')!.id).toBe('ninja-3-panel');
-    expect(element.querySelector('#ninja-3-panel .editor-heading')!.textContent).toBe('Zikka');
-    expect(element.querySelector('#ninja-1-name')).toBe(first);
-    expect(element.querySelector('#ninja-3-name')).toBe(third);
-    expect(state.band()).toBe(band); expect(state.revision()).toBe(revision);
+    const pdf = TestBed.inject(PdfGenerationService);
+    await pdf.generate();
+    const band = state.band(); const revision = state.revision();
+    for (const [index, profile] of profiles.entries()) {
+      const trigger = await open(`ninja-${index + 1}-details`);
+      expect(trigger.getAttribute('aria-haspopup')).toBe('dialog');
+      expect(trigger.hasAttribute('aria-pressed')).toBe(false);
+      expect(overlay.querySelector('#selection-panel-title')!.textContent).toBe(profile.name);
+      expect(overlay.querySelector('.ninja-profile')!.textContent).toContain(profile.typeName);
+      expect([...overlay.querySelectorAll('.stat-value')].map((node) => node.textContent)).toEqual(profile.stats);
+      expect(overlay.querySelectorAll('.stat-caption')).toHaveLength(6);
+      expect(overlay.querySelector('[data-stat="attack"] .stat-caption')!.textContent).toBe('Attack');
+      expect(overlay.querySelectorAll('.technique-card')).toHaveLength(3);
+      expect(overlay.textContent).toContain(profile.technique);
+      expect(overlay.textContent).toContain(profile.equipment);
+      expect(overlay.querySelectorAll('.equipment-effect')).toHaveLength(2);
+      expect(overlay.querySelector<HTMLDetailsElement>('.equipment-details')!.open).toBe(true);
+      expect(overlay.querySelector('.action-cost')!.textContent).toContain('action');
+      expect(overlay.querySelector('.chakra-cost')).not.toBeNull();
+      expect(overlay.querySelector('.mokushin-badge')).not.toBeNull();
+      expect(overlay.querySelectorAll('input, select, [aria-haspopup="dialog"]')).toHaveLength(0);
+      overlay.querySelector<HTMLButtonElement>('.close-panel')!.click();
+      await fixture.whenStable();
+      expect(overlay.querySelector('[role="dialog"]')).toBeNull();
+      expect(document.activeElement).toBe(trigger);
+      expect(element.querySelector('#ninja-1-name')).toBe(first);
+      expect(element.querySelector('#ninja-3-name')).toBe(third);
+      expect(state.band()).toBe(band); expect(state.revision()).toBe(revision);
+      expect(pdf.hasPdf()).toBe(true);
+    }
   });
 
-  it('keeps desktop summaries independent while their buttons edit the correct ninja', async () => {
-    vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true }) as MediaQueryList));
-    const { fixture, element, state, choose } = await setup();
-    element.querySelector<HTMLButtonElement>('#ninja-3-select')!.click();
+  it('keeps mini sheets unselectable and their editing buttons independent', async () => {
+    const { fixture, element, overlay, state, choose } = await setup();
+    const band = state.band(); const revision = state.revision();
+    element.querySelectorAll<HTMLElement>('.ninja-summary').forEach((summary) => summary.click());
     await fixture.whenStable();
-    expect(element.querySelector('.is-selected .ninja-panel')!.id).toBe('ninja-1-panel');
+    expect(overlay.querySelector('[role="dialog"]')).toBeNull();
+    expect(element.querySelector('.ninja-grid .is-selected, .ninja-grid .is-active')).toBeNull();
+    expect(element.querySelectorAll('app-ninja-summary[role="button"]')).toHaveLength(0);
+    expect(state.band()).toBe(band); expect(state.revision()).toBe(revision);
+    expect(element.querySelectorAll('.ninja-panel')).toHaveLength(3);
     await choose('ninja-3-type', 'offensive');
     expect(state.band().ninjas[2].stats.attack).toBe(8);
     expect(state.band().ninjas[0].type).toBe('');
+  });
+
+  it('shows an unconfigured ninja sheet and supports Escape and backdrop dismissal', async () => {
+    const { fixture, overlay, state, open } = await setup();
+    const band = state.band(); const revision = state.revision();
+    for (const dismiss of ['escape', 'backdrop']) {
+      const trigger = await open('ninja-2-details');
+      expect(overlay.querySelector('#selection-panel-title')!.textContent).toBe('Ninja 2');
+      expect(overlay.querySelector('.ninja-profile')!.textContent).toContain('No type');
+      expect(overlay.querySelectorAll('.stat-value')).toHaveLength(6);
+      expect(overlay.querySelectorAll('.stat-value')[0].textContent).toBe('—');
+      expect(overlay.querySelectorAll('.technique-card, .equipment-effect')).toHaveLength(0);
+      expect(overlay.querySelector('.empty-techniques')).not.toBeNull();
+      if (dismiss === 'escape') document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', keyCode: 27, bubbles: true }));
+      else overlay.querySelector<HTMLElement>('.cdk-overlay-backdrop')!.click();
+      await fixture.whenStable();
+      expect(overlay.querySelector('[role="dialog"]')).toBeNull();
+      expect(document.activeElement).toBe(trigger);
+      expect(state.band()).toBe(band); expect(state.revision()).toBe(revision);
+    }
   });
 
   it('updates language in the UI and dialogs without losing controls or selections', async () => {
@@ -180,6 +239,15 @@ describe('Compact character sheet', () => {
     expect(element.querySelector('#ninja-1-panel')!.textContent).toContain(spanish.techniques.protectiveGate.name);
     expect(element.querySelector('#ninja-1-name')).toBe(name); expect(name.value).toBe('Renée');
     expect(state.band()).toBe(band); expect(state.revision()).toBe(revision);
+    await open('ninja-1-details');
+    expect(overlay.querySelector('#selection-panel-title')!.textContent).toBe('Renée');
+    expect(overlay.querySelector('.ninja-profile')!.textContent).toContain(spanish.ninjaTypes.physical);
+    expect(overlay.querySelector('[data-stat="attack"] .stat-caption')!.textContent).toBe(spanish.stats.attack);
+    expect(overlay.textContent).toContain(spanish.techniques.protectiveGate.name);
+    expect(overlay.textContent).toContain(spanish.items.smokeBomb.name);
+    expect(overlay.querySelector<HTMLDetailsElement>('.equipment-details')!.open).toBe(true);
+    overlay.querySelector<HTMLButtonElement>('.close-panel')!.click();
+    await fixture.whenStable();
     await open('ninja-2-type');
     expect(overlay.textContent).toContain('Escoger tipo de ninja');
     expect(overlay.textContent).toContain(spanish.stats.attack);

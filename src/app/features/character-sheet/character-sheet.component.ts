@@ -1,6 +1,6 @@
 import { I18nService } from '../../core/i18n/i18n.service';
 import { App, Labels } from '../../core/i18n/i18n-keys';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NinjaEditorComponent } from './ninja-editor/ninja-editor.component';
 import { NinjaSummaryComponent } from './ninja-summary/ninja-summary.component';
 import { BandStateService } from './band-state.service';
@@ -22,5 +22,4 @@ export class CharacterSheetComponent {
   protected readonly Labels = Labels;
 
   protected readonly state = inject(BandStateService);
-  protected readonly selectedIndex = signal(0);
 }

@@ -6,7 +6,7 @@ import type { NinjaSnapshot } from '../../../core/models/band-snapshot';
 import type { EquipmentKind } from '../../../core/models/game-types';
 import { UiIconComponent } from '../../../shared/ui-icon/ui-icon.component';
 import { EquipmentPresentation } from '../equipment-presentation';
-import { NinjaSelectionService } from '../ninja-selection.service';
+import { NinjaDialogsService } from '../ninja-dialogs.service';
 
 @Component({
   selector: 'app-equipment-summary', imports: [UiIconComponent],
@@ -18,7 +18,7 @@ export class EquipmentSummaryComponent {
   readonly ninjaIndex = input.required<number>();
   protected readonly i18n = inject(I18nService);
   protected readonly Labels = Labels;
-  protected readonly selections = inject(NinjaSelectionService);
+  protected readonly dialogs = inject(NinjaDialogsService);
   private readonly text = inject(GameTextService);
   private readonly presentation = new EquipmentPresentation();
   protected readonly groups = computed(() => (['weapons', 'items'] as const).map((kind) => ({

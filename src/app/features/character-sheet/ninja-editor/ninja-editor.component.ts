@@ -15,6 +15,8 @@ import { UiIconComponent } from '../../../shared/ui-icon/ui-icon.component';
 export class NinjaEditorComponent {
   readonly ninja = input.required<NinjaSnapshot>();
   readonly index = input.required<number>();
+  readonly showName = input(true);
+  readonly expandedEquipment = input(false);
   protected readonly i18n = inject(I18nService);
   protected readonly Labels = Labels;
   protected readonly text = inject(GameTextService);

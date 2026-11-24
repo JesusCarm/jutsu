@@ -13,6 +13,7 @@ import { UiIconComponent } from '../../../shared/ui-icon/ui-icon.component';
 })
 export class EquipmentEffectsComponent {
   readonly equipment = input.required<NinjaSnapshot['equipment']>();
+  readonly expanded = input(false);
   protected readonly i18n = inject(I18nService);
   protected readonly Actions = Actions;
   private readonly text = inject(GameTextService);

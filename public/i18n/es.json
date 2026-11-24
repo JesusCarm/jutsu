@@ -43,7 +43,8 @@
     "chooseItem": "Escoger objeto {number}",
     "changeSchool": "Cambiar escuela: {name}",
     "close": "Cerrar",
-    "viewDetails": "Ver ficha"
+    "viewDetails": "Ver ficha",
+    "viewNinjaDetails": "Ver ficha de {name}"
   },
   "labels": {
     "squad": "Escuadra:",
@@ -79,7 +80,8 @@
     "weaponSelection": "Escoger arma",
     "itemSelection": "Escoger objeto",
     "schoolSelection": "Seleccionar escuela",
-    "equipmentSlot": "{slot}: {name}"
+    "equipmentSlot": "{slot}: {name}",
+    "ninjaSheet": "Ficha del ninja"
   },
   "messages": {
     "ready": "Listo para generar tu ficha.",

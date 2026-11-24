@@ -1,3 +1,5 @@
 :host { display: block; min-width: 0; }
-input { display: block; width: 100%; min-width: 0; height: 1.875rem; padding: .125rem .25rem; border: 1px solid transparent; border-radius: .25rem; background: transparent; color: #eee; font-size: .875rem; text-overflow: ellipsis; }
-input:hover { border-color: #3b3b3b; }
+input { display: block; width: 100%; min-width: 0; height: 1.875rem; padding: .125rem .25rem; border: 1px solid #4a4a4a; border-radius: .25rem; background: #303030; color: #eee; font-size: .875rem; text-overflow: ellipsis; }
+input::placeholder { color: #b8b8b8; }
+input:hover { border-color: #686868; }
+input:focus { background: #383838; }

@@ -43,7 +43,8 @@
     "chooseItem": "Choose item {number}",
     "changeSchool": "Change school: {name}",
     "close": "Close",
-    "viewDetails": "View details"
+    "viewDetails": "View details",
+    "viewNinjaDetails": "View {name}'s sheet"
   },
   "labels": {
     "squad": "Squad:",
@@ -79,7 +80,8 @@
     "weaponSelection": "Choose weapon",
     "itemSelection": "Choose item",
     "schoolSelection": "Choose school",
-    "equipmentSlot": "{slot}: {name}"
+    "equipmentSlot": "{slot}: {name}",
+    "ninjaSheet": "Ninja sheet"
   },
   "messages": {
     "ready": "Ready to generate your sheet.",

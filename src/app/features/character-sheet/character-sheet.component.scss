@@ -10,10 +10,9 @@ h1 { font-size: 1.625rem; line-height: 1.15; font-weight: 700; letter-spacing: -
 .squad-bar p { margin-top: .25rem; color: var(--color-muted); font-size: .75rem; }
 .squad-count { flex: 0 0 auto; white-space: nowrap; }
 .ninja-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: .5rem; align-items: start; }
-.ninja-column { display: contents; }
-app-ninja-summary { display: block; min-width: 0; grid-column: 1; grid-row: var(--ninja-position); }
-.ninja-panel { grid-column: 1; grid-row: 4; min-width: 0; margin-top: .75rem; padding-top: 1.25rem; border-top: 1px solid var(--color-line); }
-.ninja-column:not(.is-selected) .ninja-panel { display: none; }
+.ninja-column { min-width: 0; }
+app-ninja-summary { display: block; min-width: 0; }
+.ninja-panel { display: none; min-width: 0; }
 
 @media (min-width: 36rem) {
   .builder { padding: 1.25rem; }
@@ -26,6 +25,6 @@ app-ninja-summary { display: block; min-width: 0; grid-column: 1; grid-row: var(
   .ninja-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; align-items: stretch; }
   .ninja-column { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--color-border); border-radius: .875rem; }
   app-ninja-summary { height: auto; flex: 0 0 auto; }
-  .ninja-panel, .ninja-column:not(.is-selected) .ninja-panel { display: block; margin: 0; padding: 0 .75rem .875rem; border-top: 0; }
+  .ninja-panel { display: block; padding: 0 .75rem .875rem; }
 }
 :host .toolbar-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .5rem; min-width: 0; }

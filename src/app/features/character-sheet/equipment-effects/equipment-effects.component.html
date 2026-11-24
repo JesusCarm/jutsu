@@ -1,5 +1,5 @@
 @if (groups().length) {
-  <details class="equipment-details">
+  <details class="equipment-details" [open]="expanded()">
     <summary>{{ i18n.t(Actions.viewEquipment) }}</summary>
     @for (group of groups(); track group.kind) {
       <section><h3>{{ group.label }}</h3>

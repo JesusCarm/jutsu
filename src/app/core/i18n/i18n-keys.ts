@@ -46,7 +46,8 @@ export const Actions = {
   "chooseItem": "actions.chooseItem",
   "changeSchool": "actions.changeSchool",
   "close": "actions.close",
-  "viewDetails": "actions.viewDetails"
+  "viewDetails": "actions.viewDetails",
+  "viewNinjaDetails": "actions.viewNinjaDetails"
 } as const;
 
 export const Labels = {
@@ -83,7 +84,8 @@ export const Labels = {
   "weaponSelection": "labels.weaponSelection",
   "itemSelection": "labels.itemSelection",
   "schoolSelection": "labels.schoolSelection",
-  "equipmentSlot": "labels.equipmentSlot"
+  "equipmentSlot": "labels.equipmentSlot",
+  "ninjaSheet": "labels.ninjaSheet"
 } as const;
 
 export const Messages = {
@@ -358,6 +360,7 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "actions.changeSchool",
   "actions.close",
   "actions.viewDetails",
+  "actions.viewNinjaDetails",
   "labels.squad",
   "labels.squadName",
   "labels.ninjaName",
@@ -392,6 +395,7 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "labels.itemSelection",
   "labels.schoolSelection",
   "labels.equipmentSlot",
+  "labels.ninjaSheet",
   "messages.ready",
   "messages.loading",
   "messages.generated",
