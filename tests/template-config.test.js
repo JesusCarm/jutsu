@@ -1,3 +1,4 @@
+import { localizeBand } from './fixtures/localized-band.js';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
@@ -110,11 +111,11 @@ test('every field ID in the JSON corresponds to a real property of the band', as
   const band = new Band();
   const catalog = new GameCatalog(GAME_DATA);
   for (const ninja of band.ninjas) {
-    ninja.selectType(catalog.getNinjaType('Physical'));
-    ninja.techniqueGroup.selectGroup(catalog.getTechniqueGroup('Taijutsu'));
+    ninja.selectType(catalog.getNinjaType('physical'));
+    ninja.techniqueGroup.selectGroup(catalog.getTechniqueGroup('taijutsu'));
   }
   for (const field of definition.fields) {
-    const value = field.id.split('.').reduce((current, key) => current?.[key], band);
+    const value = field.id.split('.').reduce((current, key) => current?.[key], localizeBand(band));
     assert.notEqual(value, undefined, field.id);
     if (field.type === 'list') assert.ok(Array.isArray(value), field.id);
     if (field.type === 'number') assert.equal(typeof value, 'number', field.id);

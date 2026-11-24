@@ -13,20 +13,20 @@ import { NINJA_TYPES } from '../src/app/core/models/ninja-options';
 
 test('fixed equipment slots can be selected out of order and cleared without shifting other selections', () => {
   const equipment = new Equipment();
-  const kunai = { name: 'Kunai', description: 'Ranged attack', cost: '1 action' };
-  const shuriken = { name: 'Shuriken', description: 'Ranged attack', cost: '1 action' };
+  const kunai = { id: 'kunai', parameters: {}, cost: { amount: 1, unit: 'action' } };
+  const shuriken = { id: 'shuriken', parameters: {}, cost: { amount: 1, unit: 'action' } };
   equipment.selectSlot('weapons', 2, shuriken);
-  assert.deepEqual(equipment.weapons.map((entry) => entry.name), ['', '', 'Shuriken']);
+  assert.deepEqual(equipment.weapons.map((entry) => entry.id), ['', '', 'shuriken']);
   equipment.selectSlot('weapons', 0, kunai);
   equipment.selectSlot('weapons', 1, kunai);
   equipment.selectSlot('weapons', 0, null);
-  assert.deepEqual(equipment.weapons.map((entry) => entry.name), ['', 'Kunai', 'Shuriken']);
+  assert.deepEqual(equipment.weapons.map((entry) => entry.id), ['', 'kunai', 'shuriken']);
   equipment.selectSlot('weapons', 2, null);
-  assert.deepEqual(equipment.weapons.map((entry) => entry.name), ['', 'Kunai']);
+  assert.deepEqual(equipment.weapons.map((entry) => entry.id), ['', 'kunai']);
   equipment.selectSlot('weapons', 1, null);
   assert.equal(equipment.weapons.length, 0);
-  equipment.selectSlot('items', 1, { name: 'Smoke Bomb', description: 'Escape' });
-  assert.equal(equipment.items[1].name, 'Smoke Bomb');
+  equipment.selectSlot('items', 1, { id: 'smokeBomb', parameters: {}, cost: { amount: 1, unit: 'action' } });
+  assert.equal(equipment.items[1].id, 'smokeBomb');
   assert.equal(equipment.weapons.length, 0);
   equipment.selectSlot('items', 1, null);
   assert.equal(equipment.items.length, 0);
@@ -34,12 +34,12 @@ test('fixed equipment slots can be selected out of order and cleared without shi
 
 test('fixed equipment slots reject invalid indices and definitions without altering the inventory', () => {
   const equipment = new Equipment();
-  equipment.selectSlot('weapons', 0, { name: 'Kunai', description: 'Ranged attack' });
+  equipment.selectSlot('weapons', 0, { id: 'kunai', parameters: {}, cost: { amount: 1, unit: 'action' } });
   const before = JSON.stringify(equipment);
   for (const slot of [-1, 3, 0.5, NaN]) assert.throws(() => equipment.selectSlot('weapons', slot, null), RangeError);
   assert.throws(() => equipment.selectSlot('items', 2, null), RangeError);
   assert.throws(() => equipment.selectSlot('weapons', 0, undefined), TypeError);
-  assert.throws(() => equipment.selectSlot('weapons', 0, { name: 'Broken' }), TypeError);
+  assert.throws(() => equipment.selectSlot('weapons', 0, { id: 'Broken' }), TypeError);
   assert.equal(JSON.stringify(equipment), before);
 });
 
@@ -52,7 +52,7 @@ test('a band starts with exactly three independent ninjas and no selected defini
     assert.ok(ninja.equipment instanceof Equipment);
     assert.ok(ninja.techniqueGroup instanceof TechniqueGroup);
     assert.equal(ninja.type, '');
-    assert.equal(ninja.techniqueGroup.name, '');
+    assert.equal(ninja.techniqueGroup.id, '');
     assert.equal(ninja.techniqueGroup.techniques.length, 0);
     assert.ok(Object.values(ninja.stats).every((value) => value === null));
   }
@@ -62,15 +62,15 @@ test('selecting a ninja type defines all stats, preserves zero and prevents edit
   const data = createTestGameData();
   const ninja = new Ninja();
   ninja.selectType(data.ninjaTypes[0]);
-  assert.equal(ninja.type, 'Physical');
+  assert.equal(ninja.type, 'physical');
   assert.deepEqual({ ...ninja.stats }, data.ninjaTypes[0].stats);
   assert.equal(ninja.stats.chakra, 0);
   assert.throws(() => { ninja.stats.chakra = 99; }, TypeError);
   assert.throws(() => { ninja.stats = new NinjaStats(); }, TypeError);
-  assert.throws(() => { ninja.type = 'Defensive'; }, TypeError);
+  assert.throws(() => { ninja.type = 'defensive'; }, TypeError);
 
   ninja.selectType(data.ninjaTypes[1]);
-  assert.equal(ninja.type, 'Defensive');
+  assert.equal(ninja.type, 'defensive');
   assert.deepEqual({ ...ninja.stats }, data.ninjaTypes[1].stats);
   ninja.selectType(null);
   assert.equal(ninja.type, '');
@@ -95,16 +95,16 @@ test('switching from a configured type to one with pending stats clears the prev
   const ninja = new Ninja();
   ninja.name = 'Preserved name';
   ninja.techniqueGroup.selectGroup(data.techniqueGroups[0]);
-  ninja.selectType(catalog.getNinjaType('Physical'));
+  ninja.selectType(catalog.getNinjaType('physical'));
   assert.equal(ninja.stats.chakra, 0);
 
-  ninja.selectType(catalog.getNinjaType('Defensive'));
-  assert.equal(ninja.type, 'Defensive');
+  ninja.selectType(catalog.getNinjaType('defensive'));
+  assert.equal(ninja.type, 'defensive');
   assert.ok(Object.values(ninja.stats).every((value) => value === null));
   assert.equal(ninja.name, 'Preserved name');
-  assert.equal(ninja.techniqueGroup.name, 'Taijutsu');
+  assert.equal(ninja.techniqueGroup.id, 'taijutsu');
 
-  ninja.selectType(catalog.getNinjaType('Physical'));
+  ninja.selectType(catalog.getNinjaType('physical'));
   assert.deepEqual({ ...ninja.stats }, data.ninjaTypes[0].stats);
 });
 
@@ -112,20 +112,20 @@ test('a selected group supplies exactly three immutable techniques and switching
   const data = createTestGameData();
   const group = new TechniqueGroup();
   group.selectGroup(data.techniqueGroups[0]);
-  assert.equal(group.name, 'Taijutsu');
+  assert.equal(group.id, 'taijutsu');
   assert.equal(group.techniques.length, 3);
   assert.ok(group.techniques.every((technique) => technique instanceof Technique));
   assert.deepEqual(JSON.parse(JSON.stringify(group.techniques)), data.techniqueGroups[0].techniques);
-  assert.throws(() => { group.name = 'Medical'; }, TypeError);
-  assert.throws(() => { group.techniques[0].name = 'Changed'; }, TypeError);
+  assert.throws(() => { group.id = 'medical'; }, TypeError);
+  assert.throws(() => { group.techniques[0].id = 'Changed'; }, TypeError);
   assert.throws(() => { group.techniques[1].isMokushin = false; }, TypeError);
   assert.throws(() => group.techniques.pop(), TypeError);
 
   group.selectGroup(data.techniqueGroups[1]);
-  assert.equal(group.name, 'Medical');
+  assert.equal(group.id, 'medical');
   assert.deepEqual(JSON.parse(JSON.stringify(group.techniques)), data.techniqueGroups[1].techniques);
   group.selectGroup(null);
-  assert.equal(group.name, '');
+  assert.equal(group.id, '');
   assert.deepEqual(group.techniques, []);
 });
 
@@ -136,14 +136,14 @@ test('incomplete definitions leave the previous selected type and technique grou
   ninja.techniqueGroup.selectGroup(data.techniqueGroups[0]);
 
   assert.throws(() => ninja.selectType(undefined), TypeError);
-  assert.throws(() => ninja.selectType({ name: 'Defensive', stats: { chakra: 1 } }), TypeError);
-  assert.throws(() => ninja.techniqueGroup.selectGroup({ name: 'Medical', techniques: [] }), TypeError);
+  assert.throws(() => ninja.selectType({ id: 'defensive', stats: { chakra: 1 } }), TypeError);
+  assert.throws(() => ninja.techniqueGroup.selectGroup({ id: 'medical', techniques: [] }), TypeError);
   const invalidGroup = structuredClone(data.techniqueGroups[1]);
   invalidGroup.techniques[2].chakra = null;
   assert.throws(() => ninja.techniqueGroup.selectGroup(invalidGroup), TypeError);
-  assert.equal(ninja.type, 'Physical');
+  assert.equal(ninja.type, 'physical');
   assert.equal(ninja.stats.chakra, 0);
-  assert.equal(ninja.techniqueGroup.name, 'Taijutsu');
+  assert.equal(ninja.techniqueGroup.id, 'taijutsu');
   assert.equal(ninja.techniqueGroup.techniques.length, 3);
 });
 
@@ -176,17 +176,17 @@ test('equipment selection copies its definition and removal preserves other entr
   const second = equipment.selectEntry('weapons', 1, data.weapons[1]);
   const item = equipment.selectEntry('items', 0, data.items[0]);
   assert.notEqual(first, data.weapons[0]);
-  assert.throws(() => { first.name = 'Edited'; }, TypeError);
-  assert.throws(() => { first.description = 'Edited'; }, TypeError);
-  assert.equal(first.cost, data.weapons[0].cost);
+  assert.throws(() => { first.id = 'Edited'; }, TypeError);
+  assert.throws(() => { first.parameters.value = 1; }, TypeError);
+  assert.deepEqual(first.cost, data.weapons[0].cost);
   assert.throws(() => { first.cost = 'Edited'; }, TypeError);
 
   assert.equal(equipment.removeEntry('weapons', 0), first);
   assert.deepEqual(equipment.weapons, [second]);
   assert.deepEqual(equipment.items, [item]);
   const blank = equipment.selectEntry('weapons', 0, null);
-  assert.equal(blank.name, '');
-  assert.equal(blank.description, '');
+  assert.equal(blank.id, '');
+  assert.deepEqual(blank.parameters, {});
 });
 
 test('invalid equipment operations cannot remove or overwrite an existing entry', () => {
@@ -198,7 +198,7 @@ test('invalid equipment operations cannot remove or overwrite an existing entry'
   }
   assert.throws(() => equipment.addEntry('unknown'), TypeError);
   assert.throws(() => equipment.getEntries('addEntry'), TypeError);
-  assert.throws(() => equipment.selectEntry('weapons', 0, { name: 'Incomplete' }), TypeError);
+  assert.throws(() => equipment.selectEntry('weapons', 0, { id: 'Incomplete' }), TypeError);
   assert.throws(() => equipment.selectEntry('weapons', 0, undefined), TypeError);
   assert.deepEqual(equipment.weapons, [entry]);
 });
@@ -218,8 +218,8 @@ test('changing selections on one ninja does not change another ninja or the cata
   first.selectType(data.ninjaTypes[1]);
   first.techniqueGroup.selectGroup(data.techniqueGroups[1]);
   first.equipment.removeEntry('weapons', 0);
-  assert.equal(second.type, 'Physical');
-  assert.equal(second.techniqueGroup.name, 'Taijutsu');
+  assert.equal(second.type, 'physical');
+  assert.equal(second.techniqueGroup.id, 'taijutsu');
   assert.equal(second.equipment.weapons.length, 1);
   assert.equal(data.weapons.length, 4);
   assert.equal(band.ninjas[2].type, '');
@@ -230,14 +230,14 @@ test('catalog lookups and JSON serialization preserve selected definitions and d
   const catalog = new GameCatalog(data);
   const ninja = new Ninja();
   ninja.name = 'Edited name';
-  ninja.selectType(catalog.getNinjaType('Physical'));
-  ninja.techniqueGroup.selectGroup(catalog.getTechniqueGroup('Taijutsu'));
+  ninja.selectType(catalog.getNinjaType('physical'));
+  ninja.techniqueGroup.selectGroup(catalog.getTechniqueGroup('taijutsu'));
   ninja.equipment.addEntry('items');
   ninja.equipment.selectEntry('items', 0, catalog.getEquipment('items')[0]);
 
   assert.deepEqual(JSON.parse(JSON.stringify(ninja)), {
     name: 'Edited name',
-    type: 'Physical',
+    type: 'physical',
     stats: data.ninjaTypes[0].stats,
     techniqueGroup: data.techniqueGroups[0],
     equipment: { weapons: [], items: [data.items[0]] },

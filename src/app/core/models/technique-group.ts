@@ -3,11 +3,11 @@ import { Technique } from './technique';
 import { TECHNIQUE_GROUPS } from './ninja-options';
 
 export class TechniqueGroup {
-  #name = '';
+  #id = '';
   #techniques: readonly Technique[] = Object.freeze([]);
 
-  get name() {
-    return this.#name;
+  get id() {
+    return this.#id;
   }
 
   get techniques() {
@@ -16,21 +16,21 @@ export class TechniqueGroup {
 
   selectGroup(definition: TechniqueGroupDefinition | null | undefined) {
     if (definition === null) {
-      this.#name = '';
+      this.#id = '';
       this.#techniques = Object.freeze([]);
       return;
     }
-    if (!definition || !TECHNIQUE_GROUPS.includes(definition.name)
+    if (!definition || !TECHNIQUE_GROUPS.includes(definition.id)
       || !Array.isArray(definition.techniques) || definition.techniques.length !== 3) {
       throw new TypeError('A technique group must define exactly three techniques.');
     }
 
     const techniques = definition.techniques.map((technique) => new Technique(technique));
-    this.#name = definition.name;
+    this.#id = definition.id;
     this.#techniques = Object.freeze(techniques);
   }
 
   toJSON() {
-    return { name: this.name, techniques: this.techniques };
+    return { id: this.id, techniques: this.techniques };
   }
 }

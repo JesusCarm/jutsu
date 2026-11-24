@@ -1,11 +1,11 @@
-<div class="pdf-toolbar" role="group" aria-label="Sheet actions">
-  <button class="icon-button" id="generate-pdf" type="button" [disabled]="pdf.generating()"
-    title="Generate and download PDF" aria-label="Generate and download PDF" aria-describedby="pdf-status"
+<div class="pdf-toolbar" role="group" [attr.aria-label]="i18n.t(Labels.sheetActions)">
+  <button class="icon-button" id="generate-pdf" type="button" [disabled]="pdf.generating() || i18n.loading()"
+    [title]="i18n.t(Actions.generate)" [attr.aria-label]="i18n.t(Actions.generate)" aria-describedby="pdf-status"
     (click)="exports.generateAndDownload()"><app-ui-icon name="file" /></button>
   <button class="icon-button" id="download-pdf" type="button" [disabled]="!pdf.hasPdf()"
-    title="Download PDF" aria-label="Download PDF" aria-describedby="pdf-status"
+    [title]="i18n.t(Actions.download)" [attr.aria-label]="i18n.t(Actions.download)" aria-describedby="pdf-status"
     (click)="exports.download()"><app-ui-icon name="download" /></button>
   <button class="icon-button" id="print-pdf" type="button" [disabled]="!pdf.hasPdf()"
-    title="Open PDF for printing" aria-label="Open PDF for printing" aria-describedby="pdf-status"
+    [title]="i18n.t(Actions.print)" [attr.aria-label]="i18n.t(Actions.print)" aria-describedby="pdf-status"
     (click)="exports.openForPrinting()"><app-ui-icon name="printer" /></button>
 </div>

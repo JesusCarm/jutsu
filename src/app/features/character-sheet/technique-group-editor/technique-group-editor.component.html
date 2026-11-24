@@ -1,14 +1,14 @@
-<fieldset class="form-section technique-editor"><legend><app-ui-icon name="book" />Jutsu school</legend>
-  <app-catalog-select label="Jutsu school" [hideLabel]="true" placeholder="Choose a school"
-    [controlId]="'ninja-' + (ninjaIndex() + 1) + '-technique-group'" [options]="options()" [value]="group().name"
+<fieldset class="form-section technique-editor"><legend><app-ui-icon name="book" />{{ i18n.t(Labels.jutsuSchool) }}</legend>
+  <app-catalog-select [label]="i18n.t(Labels.jutsuSchool)" [hideLabel]="true" [placeholder]="i18n.t(Labels.chooseSchool)"
+    [controlId]="'ninja-' + (ninjaIndex() + 1) + '-technique-group'" [options]="options()" [value]="group().id"
     (selected)="state.selectGroup(ninjaIndex(), $event)" />
   <div class="technique-list">
-    @for (technique of group().techniques; track $index) {
+    @for (technique of techniques(); track $index) {
       <article class="technique-card">
-        <div class="technique-heading"><h3>{{ technique.name }}</h3><span class="chakra-cost" title="Chakra cost"><app-ui-icon name="chakra" /><span class="sr-only">Chakra: </span>{{ technique.chakra }}</span></div>
+        <div class="technique-heading"><h3>{{ technique.name }}</h3><span class="chakra-cost" [title]="i18n.t(Labels.chakraCost)"><app-ui-icon name="chakra" /><span class="sr-only">{{ i18n.t(Stats.chakra) }}: </span>{{ technique.chakra }}</span></div>
         <p>{{ technique.description }}</p>
-        @if (technique.isMokushin) { <span class="mokushin-badge"><app-ui-icon name="mokushin" />Mokushin</span> }
+        @if (technique.isMokushin) { <span class="mokushin-badge"><app-ui-icon name="mokushin" />{{ i18n.t(Labels.mokushin) }}</span> }
       </article>
-    } @empty { <p class="empty-techniques">Choose a school to view its three techniques.</p> }
+    } @empty { <p class="empty-techniques">{{ i18n.t(Labels.emptyTechniques) }}</p> }
   </div>
 </fieldset>

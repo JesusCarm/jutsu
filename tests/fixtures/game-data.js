@@ -3,32 +3,32 @@ export function createTestGameData() {
   return {
     ninjaTypes: [
       {
-        name: 'Physical',
+        id: 'physical',
         stats: { chakra: 0, movement: 1, attack: 2, defense: 3, skill: 4, health: 5 },
       },
       {
-        name: 'Defensive',
+        id: 'defensive',
         stats: { chakra: 6, movement: 7, attack: 8, defense: 9, skill: 10, health: 11 },
       },
     ],
-    techniqueGroups: ['Taijutsu', 'Medical'].map((name, groupIndex) => ({
-      name,
+    techniqueGroups: ['taijutsu', 'medical'].map((id, groupIndex) => ({
+      id,
       techniques: Array.from({ length: 3 }, (_, index) => ({
-        name: `Test technique ${groupIndex}-${index}`,
-        description: `Test description ${groupIndex}-${index}`,
+        id: `Test technique ${groupIndex}-${index}`,
+        parameters: {},
         chakra: index,
         isMokushin: index === 1,
       })),
     })),
     weapons: Array.from({ length: 4 }, (_, index) => ({
-      name: `Test weapon ${index + 1}`,
-      description: `Weapon description ${index + 1}`,
-      cost: index === 0 ? '1 action' : '2 actions',
+      id: `Test weapon ${index + 1}`,
+      parameters: {},
+      cost: {amount: index === 0 ? 1 : 2, unit: 'action'},
     })),
     items: Array.from({ length: 3 }, (_, index) => ({
-      name: `Test item ${index + 1}`,
-      description: `Item description ${index + 1}`,
-      cost: '1 action',
+      id: `Test item ${index + 1}`,
+      parameters: {},
+      cost: {amount: 1, unit: 'action'},
     })),
   };
 }

@@ -1,9 +1,9 @@
-<div class="mini-inventory" aria-label="Equipment">
+<div class="mini-inventory" [attr.aria-label]="i18n.t(Labels.equipment)">
   @for (group of groups(); track group.kind) {
     <div class="mini-inventory-group" [attr.aria-label]="group.label">
       <app-ui-icon class="inventory-category" [name]="group.kind === 'weapons' ? 'weapons' : 'equipment'" />
       @for (slot of group.slots; track slot.index) {
-        <span class="equipment-token" [class.is-empty]="!slot.name" [attr.data-equipment]="slot.name"
+        <span class="equipment-token" [class.is-empty]="!slot.name" [attr.data-equipment]="slot.id"
           [title]="slot.name || group.empty" role="img" [attr.aria-label]="slot.name || group.empty">
           <app-ui-icon [name]="slot.icon" />
         </span>

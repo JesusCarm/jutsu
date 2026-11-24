@@ -1,8 +1,8 @@
-<dl class="stat-fields" aria-label="Statistics">
+<dl class="stat-fields" [attr.aria-label]="i18n.t(Labels.statistics)">
   @for (stat of fields; track stat.key) {
-    <div class="mini-stat" [attr.data-stat]="stat.key" [title]="stat.label">
-      <dt><app-ui-icon [name]="stat.icon" /><span class="sr-only">{{ stat.label }}</span></dt>
-      <dd><span class="stat-value">{{ stats()[stat.key] ?? '—' }}</span><span class="stat-caption" aria-hidden="true">{{ stat.short }}</span></dd>
+    <div class="mini-stat" [attr.data-stat]="stat.key" [title]="i18n.t(stat.label)">
+      <dt><app-ui-icon [name]="stat.icon" /><span class="sr-only">{{ i18n.t(stat.label) }}</span></dt>
+      <dd><span class="stat-value">{{ stats()[stat.key] ?? '—' }}</span><span class="stat-caption" aria-hidden="true">{{ i18n.t(stat.short) }}</span></dd>
     </div>
   }
 </dl>

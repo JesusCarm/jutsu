@@ -15,13 +15,13 @@ export class GameCatalog {
   }
 
   getNinjaType(name: string) {
-    const definition = this.ninjaTypes.find((entry) => entry.name === name);
+    const definition = this.ninjaTypes.find((entry) => entry.id === name);
     if (definition) return definition;
-    return NINJA_TYPES.includes(name) ? { name, stats: null } : undefined;
+    return NINJA_TYPES.includes(name) ? { id: name, stats: null } : undefined;
   }
 
   getTechniqueGroup(name: string) {
-    return this.techniqueGroups.find((definition) => definition.name === name);
+    return this.techniqueGroups.find((definition) => definition.id === name);
   }
 
   getEquipment(kind: EquipmentKind) {

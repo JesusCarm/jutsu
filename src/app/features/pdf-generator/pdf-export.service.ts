@@ -3,21 +3,29 @@ import { BandStateService } from '../character-sheet/band-state.service';
 import { PdfBrowserFilesService } from './pdf-browser-files.service';
 import { PdfFileName } from './pdf-file-name';
 import { PdfGenerationService } from './pdf-generation.service';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { Messages, type TranslationKey } from '../../core/i18n/i18n-keys';
+import type { TranslationMessage } from '../../core/i18n/translation-dictionary';
+import { TranslationError } from '../../core/i18n/translation-error';
 
-interface ExportNotice { phase: 'success' | 'error'; message: string; }
+interface ExportNotice { phase: 'success' | 'error'; message: TranslationMessage; }
 
 @Injectable({ providedIn: 'root' })
 export class PdfExportService {
   private readonly band = inject(BandStateService);
   private readonly generation = inject(PdfGenerationService);
   private readonly files = inject(PdfBrowserFilesService);
+  private readonly i18n = inject(I18nService);
   private readonly names = new PdfFileName();
   private readonly notice = linkedSignal<ExportNotice | null>(() => {
     this.generation.status();
     return null;
   });
   readonly fileName = computed(() => this.names.fromBandName(this.band.band().name));
-  readonly status = computed(() => this.notice() ?? this.generation.status());
+  readonly status = computed(() => {
+    const notice = this.notice();
+    return notice ? { phase: notice.phase, message: this.i18n.t(notice.message.key, notice.message.params) } : this.generation.status();
+  });
 
   async generateAndDownload(): Promise<void> {
     if (this.generation.generating()) return;
@@ -26,24 +34,25 @@ export class PdfExportService {
   }
 
   download(): void {
-    this.run((bytes) => this.files.download(bytes, this.fileName()), 'Download started.');
+    this.run((bytes) => this.files.download(bytes, this.fileName()), Messages.downloadStarted);
   }
 
   openForPrinting(): void {
-    this.run((bytes) => this.files.openForPrinting(bytes), 'PDF opened in a new tab. Use the PDF viewer’s print controls.');
+    this.run((bytes) => this.files.openForPrinting(bytes), Messages.pdfOpened);
   }
 
-  private run(action: (bytes: Uint8Array) => void, message: string): void {
+  private run(action: (bytes: Uint8Array) => void, key: TranslationKey): void {
     const bytes = this.generation.getPdfBytes();
     if (!bytes) {
-      this.notice.set({ phase: 'error', message: 'Generate your sheet before downloading or printing.' });
+      this.notice.set({ phase: 'error', message: { key: Messages.generateFirst } });
       return;
     }
     try {
       action(bytes);
-      this.notice.set({ phase: 'success', message });
+      this.notice.set({ phase: 'success', message: { key } });
     } catch (error: unknown) {
-      this.notice.set({ phase: 'error', message: error instanceof Error ? error.message : String(error) });
+      this.notice.set({ phase: 'error', message: error instanceof TranslationError ? { key: error.key }
+        : { key: Messages.exportFailed, params: { message: error instanceof Error ? error.message : String(error) } } });
     }
   }
 }

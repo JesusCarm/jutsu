@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { App } from '../../core/i18n/i18n-keys';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -6,4 +8,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './app-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppLayoutComponent {}
+export class AppLayoutComponent {
+  protected readonly i18n = inject(I18nService);
+  protected readonly App = App;
+}

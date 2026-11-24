@@ -1,3 +1,4 @@
+import { localizeBand } from './fixtures/localized-band.js';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
@@ -104,7 +105,7 @@ test('all twelve groups generate a complete document with Unicode and leave the 
   for (let offset = 0; offset < catalog.techniqueGroups.length; offset += 3) {
     const band = createBand(offset);
     const before = JSON.stringify(band);
-    const bytes = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate(band, template);
+    const bytes = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate(localizeBand(band), template);
     assert.ok(bytes instanceof Uint8Array);
     assert.notDeepEqual(bytes, new Uint8Array(original));
     const pdf = await PdfDocument.fromBytes(new Uint8Array(bytes));
@@ -127,7 +128,7 @@ test('generation uses a snapshot taken before loading resources and combines inv
   } });
   const rendered = [];
   generator.renderer = { render(page, text) { rendered.push(text); } };
-  const pending = generator.generate(band, coordinateTemplate);
+  const pending = generator.generate(localizeBand(band), coordinateTemplate);
   band.ninjas[0].name = 'After';
   release();
   await pending;
@@ -139,7 +140,7 @@ test('generation uses a snapshot taken before loading resources and combines inv
 });
 
 test('unselected data produces empty fields and incomplete configuration stops before loading the PDF', async () => {
-  const bytes = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate(new Band(), template);
+  const bytes = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate(localizeBand(new Band()), template);
   assert.equal((await PdfDocument.fromBytes(new Uint8Array(bytes))).getPageCount(), 1);
   const definition = JSON.parse(await readFile(new URL(template.configUrl), 'utf8'));
   definition.typography.font = null;
@@ -148,6 +149,6 @@ test('unselected data produces empty fields and incomplete configuration stops b
     requests.push(url);
     return new Response(JSON.stringify(definition));
   } });
-  await assert.rejects(() => generator.generate(createBand(), coordinateTemplate), /Complete the Affinity/);
+  await assert.rejects(() => generator.generate(localizeBand(createBand()), coordinateTemplate), /Complete the Affinity/);
   assert.deepEqual(requests, [template.configUrl]);
 });

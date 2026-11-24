@@ -1,6 +1,6 @@
 [
   {
-    "name": "Physical",
+    "id": "physical",
     "stats": {
       "attack": 6,
       "defense": 5,
@@ -11,7 +11,7 @@
     }
   },
   {
-    "name": "Defensive",
+    "id": "defensive",
     "stats": {
       "attack": 4,
       "defense": 6,
@@ -22,7 +22,7 @@
     }
   },
   {
-    "name": "Offensive",
+    "id": "offensive",
     "stats": {
       "attack": 8,
       "defense": 3,
@@ -33,7 +33,7 @@
     }
   },
   {
-    "name": "Jutsu Master",
+    "id": "jutsuMaster",
     "stats": {
       "attack": 5,
       "defense": 4,

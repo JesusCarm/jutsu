@@ -1,12 +1,12 @@
 <fieldset class="ninja-editor">
-  <legend class="sr-only">Edit Ninja {{ index() + 1 }}</legend>
-  <div class="editor-heading"><h2>{{ ninja().name || 'Ninja ' + (index() + 1) }}</h2><span class="badge">{{ labels.type(ninja().type) || 'No type' }}</span></div>
+  <legend class="sr-only">{{ i18n.t(Labels.editNinja, {number: index() + 1}) }}</legend>
+  <div class="editor-heading"><h2>{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</h2><span class="badge">{{ text.typeName(ninja().type) || i18n.t(Labels.noType) }}</span></div>
   <div class="identity-fields">
-    <div class="text-field"><label [for]="'ninja-' + (index() + 1) + '-name'">Name</label>
-      <input [id]="'ninja-' + (index() + 1) + '-name'" [formControl]="name" placeholder="Ninja name"
+    <div class="text-field"><label [for]="'ninja-' + (index() + 1) + '-name'">{{ i18n.t(Labels.ninjaName) }}</label>
+      <input [id]="'ninja-' + (index() + 1) + '-name'" [formControl]="name" [placeholder]="i18n.t(Labels.ninjaPlaceholder)"
         (input)="state.setName(index(), name.value)" />
     </div>
-    <app-catalog-select label="Type" placeholder="Choose a type" [controlId]="'ninja-' + (index() + 1) + '-type'"
+    <app-catalog-select [label]="i18n.t(Labels.type)" [placeholder]="i18n.t(Labels.chooseType)" [controlId]="'ninja-' + (index() + 1) + '-type'"
       [options]="types()" [value]="ninja().type" (selected)="state.selectType(index(), $event)" />
   </div>
   <app-equipment-list-editor kind="weapons" [entries]="ninja().equipment.weapons" [ninjaIndex]="index()" />

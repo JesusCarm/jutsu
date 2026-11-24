@@ -56,10 +56,10 @@ export class Equipment {
     if (definition === undefined) throw new TypeError('Choose an equipment definition or clear the selection.');
     const entry = new EquipmentEntry(definition);
     const entries = [...this.getEntries(kind)];
-    if (!entry.name && index >= entries.length) return;
+    if (!entry.id && index >= entries.length) return;
     while (entries.length <= index) entries.push(new EquipmentEntry());
     entries[index] = entry;
-    while (entries.at(-1)?.name === '') entries.pop();
+    while (entries.at(-1)?.id === '') entries.pop();
     this.#entries[kind] = Object.freeze(entries);
   }
 

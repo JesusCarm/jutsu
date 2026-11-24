@@ -1,4 +1,4 @@
-<label for="pdf-template">Sheet template</label>
+<label for="pdf-template">{{ i18n.t(Labels.sheetTemplate) }}</label>
 <span class="select-wrap"><select id="pdf-template" [formControl]="selection" (change)="templates.select(selection.value)">
-  @for (option of templates.options; track option.id) { <option [value]="option.id">{{ option.label }}</option> }
+  @for (option of templates.options; track option.id) { <option [value]="option.id">{{ i18n.t(option.labelKey) }}</option> }
 </select></span>

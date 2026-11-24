@@ -1,12 +1,12 @@
 <fieldset class="equipment-editor form-section">
-  <legend><app-ui-icon [name]="kind() === 'weapons' ? 'weapons' : 'equipment'" />{{ kind() === 'weapons' ? 'Weapons' : 'Items' }}</legend>
+  <legend><app-ui-icon [name]="kind() === 'weapons' ? 'weapons' : 'equipment'" />{{ i18n.t(kind() === 'weapons' ? Labels.weapons : Labels.items) }}</legend>
   <div class="equipment-list">
     @for (slot of slots(); track slot.index) {
       <div class="equipment-row">
         <app-ui-icon [name]="slot.icon" [title]="slot.name || emptyLabel()" />
-        <app-catalog-select [label]="(kind() === 'weapons' ? 'Weapon ' : 'Item ') + (slot.index + 1)"
+        <app-catalog-select [label]="i18n.t(kind() === 'weapons' ? Labels.weapon : Labels.item, {number: slot.index + 1})"
           [hideLabel]="true" [placeholder]="emptyLabel()" [controlId]="controlId(slot.index)"
-          [value]="slot.name" [options]="options()" [describedBy]="slot.name ? controlId(slot.index) + '-details' : ''"
+          [value]="slot.id" [options]="options()" [describedBy]="slot.name ? controlId(slot.index) + '-details' : ''"
           (selected)="state.selectEquipmentSlot(ninjaIndex(), kind(), slot.index, $event)" />
         @if (slot.name) {
           <span class="sr-only" [id]="controlId(slot.index) + '-details'">{{ slot.description }} {{ slot.cost }}</span>
@@ -16,7 +16,7 @@
   </div>
   @if (hasEquipment()) {
     <details class="equipment-details">
-      <summary>View equipment effects</summary>
+      <summary>{{ i18n.t(Actions.viewEquipment) }}</summary>
       @for (slot of slots(); track slot.index) {
         @if (slot.name) {
           <div class="equipment-effect"><strong>{{ slot.name }}</strong><span class="action-cost">{{ slot.cost }}</span><p>{{ slot.description }}</p></div>

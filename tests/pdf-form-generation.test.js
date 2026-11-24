@@ -1,3 +1,4 @@
+import { localizeBand } from './fixtures/localized-band.js';
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -66,11 +67,11 @@ test('fills the single-card fields, separate chakra costs and named note positio
   const source = await readFile(new URL(exportTemplate.pdfUrl));
   const band = createBand();
   band.ninjas[0].name = 'Renée → ≥';
-  band.ninjas[0].selectType({ name: 'Physical', stats: { ...catalog.ninjaTypes[0].stats, chakra: 0 } });
+  band.ninjas[0].selectType({ id: 'physical', stats: { ...catalog.ninjaTypes[0].stats, chakra: 0 } });
   const before = JSON.stringify(band);
   const requests = [];
   const bytes = await new BandPdfGenerator({ fetchResource: async (url) => { requests.push(url); return fetchLocal(url); } })
-    .generate(band, editableTemplate);
+    .generate(localizeBand(band), editableTemplate);
   const document = await PDFDocument.load(bytes, { updateMetadata: false });
   const form = document.getForm();
   assert.equal(form.getFields().length, 15);
@@ -99,9 +100,27 @@ test('fills the single-card fields, separate chakra costs and named note positio
   assert.deepEqual(await readFile(new URL(exportTemplate.pdfUrl)), source);
 });
 
+test('fills translated technique and equipment text with English fallback, preserving costs and the original layout', async () => {
+  const band = localizeBand(createBand(), 'es');
+  const bytes = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate(band, editableTemplate);
+  const document = await PDFDocument.load(bytes);
+  const form = document.getForm();
+  assert.equal(form.getTextField('Ninja1_name').getText(), 'Renée');
+  assert.equal(form.getTextField('Ninja1_technique_1').getText(), 'Puerta protectora\nMokushin: Cancela 1 éxito del atacante por Chakra gastado. Máximo 5.');
+  assert.equal(form.getTextField('Ninja1_technique_2').getText(), 'Gate of Speed\nMove: +1" Movement per Chakra spent. Max +3".');
+  assert.equal(form.getTextField('Ninja1_technique_1_cost').getText(), '1–5');
+  assert.match(form.getTextField('Ninja1_items_and_weapons').getText(), /Bomba de humo/);
+  assert.equal(iconEntries(document.getPage(0).node.Resources()).length, 1);
+  const flattened = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate(band, exportTemplate);
+  const exported = await PDFDocument.load(flattened);
+  assert.equal(exported.catalog.has(PDFName.of('AcroForm')), false);
+  assert.equal(exported.getPage(0).node.Annots()?.size() ?? 0, 0);
+  await preview('i18n-spanish-samples.pdf', flattened);
+});
+
 test('all twelve groups fill body and cost separately and use case-insensitive note identifiers for Mokushin', async () => {
   for (let offset = 0; offset < 12; offset += 3) {
-    for (const ninja of createBand(offset).ninjas) {
+    for (const ninja of localizeBand(createBand(offset)).ninjas) {
       const bytes = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate({ ninjas: [ninja] }, editableTemplate);
       const document = await PDFDocument.load(bytes);
       const form = document.getForm();
@@ -123,7 +142,7 @@ test('the default export composes three independent vector cards on A4 with all 
     const requests = [];
     const before = JSON.stringify(band);
     const bytes = await new BandPdfGenerator({ fetchResource: async (url) => { requests.push(url); return fetchLocal(url); } })
-      .generate(band, exportTemplate);
+      .generate(localizeBand(band), exportTemplate);
     const document = await PDFDocument.load(bytes, { updateMetadata: false });
     assert.equal(document.getPageCount(), 1);
     assert.deepEqual(document.getPage(0).getSize(), { width: 595.28, height: 841.89 });
@@ -168,7 +187,7 @@ test('unselected data clears stale card values and cost fields, removes all note
   const bytes = await new BandPdfGenerator({ fetchResource: async (url) => {
     requests.push(url);
     return url === exportTemplate.pdfUrl ? new Response(modified) : fetchLocal(url);
-  } }).generate(band, editableTemplate);
+  } }).generate(localizeBand(band), editableTemplate);
   const document = await PDFDocument.load(bytes);
   for (const name of ['Ninja1_name', 'Ninja1_stats_life', 'Ninja1_technique_1', 'Ninja1_technique_1_cost']) {
     const field = document.getForm().getTextField(name);
@@ -192,7 +211,7 @@ test('missing, duplicate or invalid note markers fail before loading fonts', asy
     const modified = await document.save();
     const requests = [];
     await assert.rejects(() => new BandPdfGenerator({ fetchResource: async (url) => { requests.push(url); return new Response(modified); } })
-      .generate(createBand(), cardTemplate), new RegExp(problem === 'missing' ? 'Missing PDF icon marker' : problem === 'duplicate' ? 'Duplicate PDF icon marker' : 'Invalid PDF icon marker rectangle'));
+      .generate(localizeBand(createBand()), cardTemplate), new RegExp(problem === 'missing' ? 'Missing PDF icon marker' : problem === 'duplicate' ? 'Duplicate PDF icon marker' : 'Invalid PDF icon marker rectangle'));
     assert.deepEqual(requests, [exportTemplate.pdfUrl]);
   }
 });
@@ -204,7 +223,7 @@ test('missing or duplicate form field names fail before loading fonts', async ()
     const modified = await document.save();
     const requests = [];
     await assert.rejects(() => new BandPdfGenerator({ fetchResource: async (url) => { requests.push(url); return new Response(modified); } })
-      .generate(createBand(), cardTemplate), replacement === 'Renamed_field'
+      .generate(localizeBand(createBand()), cardTemplate), replacement === 'Renamed_field'
       ? /Missing PDF form field: Ninja1_items_and_weapons/ : /Duplicate PDF form field: Ninja1_name/);
     assert.deepEqual(requests, [exportTemplate.pdfUrl]);
   }
@@ -216,13 +235,13 @@ test('orphan widgets are rejected instead of writing an inconsistent AcroForm', 
   document.getPage(0).node.addAnnot(document.context.register(orphan));
   const modified = await document.save();
   await assert.rejects(() => new BandPdfGenerator({ fetchResource: async () => new Response(modified) })
-    .generate(createBand(), cardTemplate), /orphaned form widget/);
+    .generate(localizeBand(createBand()), cardTemplate), /orphaned form widget/);
 });
 
 test('overflow reports both the ninja and affected field', async () => {
   const band = createBand();
   band.ninjas[1].name = 'W'.repeat(1000);
-  await assert.rejects(() => new BandPdfGenerator({ fetchResource: fetchLocal }).generate(band, exportTemplate),
+  await assert.rejects(() => new BandPdfGenerator({ fetchResource: fetchLocal }).generate(localizeBand(band), exportTemplate),
     /Unable to generate ninja 2: Unable to fill Ninja1_name: Text does not fit/);
 });
 
@@ -237,12 +256,12 @@ test('technique bodies preserve rules and Unicode while separate costs accept nu
 
 test('a missing SVG identifies the named Mokushin marker and ninja', async () => {
   await assert.rejects(() => new BandPdfGenerator({ fetchResource: async (url) => url === exportTemplate.iconUrls.mokushin
-    ? new Response('Missing', { status: 404 }) : fetchLocal(url) }).generate(createBand(), exportTemplate),
+    ? new Response('Missing', { status: 404 }) : fetchLocal(url) }).generate(localizeBand(createBand()), exportTemplate),
   /Unable to generate ninja 1: Unable to render Ninja1_technique_1_mokushin: Unable to load PDF icon mokushin: 404/);
 });
 
 test('a repeated sheet requires exactly three ninjas and static output', async () => {
   const generator = new BandPdfGenerator({ fetchResource: fetchLocal });
   await assert.rejects(() => generator.generate({ ninjas: [{}] }, exportTemplate), /requires exactly 3 ninjas/);
-  await assert.rejects(() => generator.generate(createBand(), { ...exportTemplate, formOutput: 'editable' }), /flattened form output/);
+  await assert.rejects(() => generator.generate(localizeBand(createBand()), { ...exportTemplate, formOutput: 'editable' }), /flattened form output/);
 });

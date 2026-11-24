@@ -1,276 +1,375 @@
 [
   {
-    "name": "Taijutsu",
+    "id": "taijutsu",
     "techniques": [
       {
-        "name": "Protective Gate",
-        "description": "Mokushin: Cancel 1 attacker success per Chakra spent. Max 5.",
-        "chakra": "1–5",
+        "id": "protectiveGate",
+        "parameters": {
+          "successes": 1,
+          "maxChakra": 5
+        },
+        "chakra": {
+          "min": 1,
+          "max": 5
+        },
         "isMokushin": true
       },
       {
-        "name": "Gate of Speed",
-        "description": "Move: +1\" Movement per Chakra spent. Max +3\".",
-        "chakra": "1–3",
+        "id": "gateOfSpeed",
+        "parameters": {
+          "movementPerChakra": 1,
+          "maximumMovement": 3
+        },
+        "chakra": {
+          "min": 1,
+          "max": 3
+        },
         "isMokushin": false
       },
       {
-        "name": "Gate of Strength",
-        "description": "Attack: +1D6 per Chakra spent. Max +3D6.",
-        "chakra": "1–3",
+        "id": "gateOfStrength",
+        "parameters": {
+          "attackDicePerChakra": 1,
+          "maximumDice": 3
+        },
+        "chakra": {
+          "min": 1,
+          "max": 3
+        },
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Medical",
+    "id": "medical",
     "techniques": [
       {
-        "name": "Surgery",
-        "description": "Attack (ER): +1D6. Each hit removes 1 target Chakra and reduces its maximum by 1 for the game (cumulative).",
-        "chakra": "5",
+        "id": "surgery",
+        "parameters": {
+          "bonusDice": 1,
+          "chakraLoss": 1,
+          "maximumLoss": 1
+        },
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Substitution",
-        "description": "Mokushin: Cancel incoming attack. Move up to 4\".",
-        "chakra": "3",
+        "id": "substitution",
+        "parameters": {
+          "distance": 4
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Healing",
-        "description": "Action (LoS): Ally recovers 3 Health or 3 Chakra. Cannot exceed maximum.",
-        "chakra": "3",
+        "id": "healing",
+        "parameters": {
+          "health": 3,
+          "chakra": 3
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Shadow",
+    "id": "shadow",
     "techniques": [
       {
-        "name": "Branching Shadow",
-        "description": "Action (8\"): Two separate 4D6 ranged attacks. Same target or two different targets.",
-        "chakra": "5",
+        "id": "branchingShadow",
+        "parameters": {
+          "range": 8,
+          "attackDice": 4
+        },
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Transport",
-        "description": "Action/Mokushin (LoS, 6\"): Teleport, ignoring units and terrain. No Movement spent or Charge.",
-        "chakra": "3",
+        "id": "transport",
+        "parameters": {
+          "range": 6
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Shadow Bind",
-        "description": "Action (LoS, 8\"): Immobilize enemy. Escape: 1 action + 1D6 vs caster's Skill. Caster cannot move. Bind breaks if either unit moves.",
-        "chakra": "3",
+        "id": "shadowBind",
+        "parameters": {
+          "range": 8,
+          "actions": 1,
+          "escapeDice": 1
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Soft Techniques",
+    "id": "softTechniques",
     "techniques": [
       {
-        "name": "Pressure Points",
-        "description": "Action (ER): Target cannot spend Chakra until the end of its next activation.",
-        "chakra": "5",
+        "id": "pressurePoints",
+        "parameters": {},
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Nullification",
-        "description": "Mokushin: Cancel attack directly targeting you.",
-        "chakra": "3",
+        "id": "nullification",
+        "parameters": {},
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "White Eye",
-        "description": "Action: 360° LoS. Ignore Charge and Rear Attack penalties. Maintain for 1 Chakra at start of each round.",
-        "chakra": "3 + 1/round",
+        "id": "whiteEye",
+        "parameters": {
+          "visionDegrees": 360,
+          "upkeep": 1
+        },
+        "chakra": {
+          "initial": 3,
+          "upkeep": 1,
+          "unit": "round"
+        },
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Soft Defense",
+    "id": "softDefense",
     "techniques": [
       {
-        "name": "Anti-Chakra",
-        "description": "Mokushin: Enemy Jutsu requires double its original Chakra cost. Otherwise canceled; action spent.",
-        "chakra": "5",
+        "id": "antiChakra",
+        "parameters": {},
+        "chakra": 5,
         "isMokushin": true
       },
       {
-        "name": "Void Palm",
-        "description": "Action/Mokushin (ER): Displace enemy 4\" away. In Mokushin, cancel incoming attack. No Move or Charge.",
-        "chakra": "3",
+        "id": "voidPalm",
+        "parameters": {
+          "distance": 4
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Village Whirlwind",
-        "description": "Mokushin: Redirect half the hits received (round down) to the attacker.",
-        "chakra": "3",
+        "id": "villageWhirlwind",
+        "parameters": {},
+        "chakra": 3,
         "isMokushin": true
       }
     ]
   },
   {
-    "name": "Illusion Techniques",
+    "id": "illusionTechniques",
     "techniques": [
       {
-        "name": "Swap",
-        "description": "Action/Mokushin (LoS, 8\"): Swap positions with any unit. No Move or Charge.",
-        "chakra": "5",
+        "id": "swap",
+        "parameters": {
+          "range": 8
+        },
+        "chakra": 5,
         "isMokushin": true
       },
       {
-        "name": "Red Pupil",
-        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Move action or Charge.",
-        "chakra": "3",
+        "id": "redPupil",
+        "parameters": {
+          "distance": 4
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Red Eye",
-        "description": "Reaction: Copy incoming Jutsu. Use once during next activation at half Chakra cost (round down). Costs 1 available action.",
-        "chakra": "3",
+        "id": "redEye",
+        "parameters": {
+          "actions": 1
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Fire Techniques",
+    "id": "fireTechniques",
     "techniques": [
       {
-        "name": "Phoenix",
-        "description": "Action (8\" path): Separate 4D6 attack per unit crossed, friend or foe. Units and terrain do not block path.",
-        "chakra": "5",
+        "id": "phoenix",
+        "parameters": {
+          "distance": 8,
+          "attackDice": 4
+        },
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Flare",
-        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Move action or Charge.",
-        "chakra": "3",
+        "id": "flare",
+        "parameters": {
+          "distance": 4
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Fireball",
-        "description": "Action (8\"): 4D6 ranged attack.",
-        "chakra": "3",
+        "id": "fireball",
+        "parameters": {
+          "range": 8,
+          "attackDice": 4
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Weather Techniques",
+    "id": "weatherTechniques",
     "techniques": [
       {
-        "name": "Storm",
-        "description": "Action (8\" radius): 3D6 attack against every enemy. Each hit deals 2 damage.",
-        "chakra": "5",
+        "id": "storm",
+        "parameters": {
+          "radius": 8,
+          "attackDice": 3,
+          "damage": 2
+        },
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Wind",
-        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Move action or Charge.",
-        "chakra": "3",
+        "id": "wind",
+        "parameters": {
+          "distance": 4
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Lightning",
-        "description": "Action: Each hit from your next attack deals 2 damage instead of 1.",
-        "chakra": "3",
+        "id": "lightning",
+        "parameters": {
+          "damage": 2,
+          "normalDamage": 1
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Earth Techniques",
+    "id": "earthTechniques",
     "techniques": [
       {
-        "name": "Desert Tomb",
-        "description": "Action (LoS, 8\"): 5D6 attack. Immobilize until next activation. Escape then: 1D6 vs caster's Skill. While trapped, cannot move, attack or be targeted by attacks/Jutsus.",
-        "chakra": "5",
+        "id": "desertTomb",
+        "parameters": {
+          "range": 8,
+          "attackDice": 5,
+          "escapeDice": 1
+        },
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Sand Cloak",
-        "description": "Mokushin: Cancel incoming hits, including damage and displacement. Ends after absorbing 4 hits.",
-        "chakra": "3",
+        "id": "sandCloak",
+        "parameters": {
+          "hits": 4
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Quicksand",
-        "description": "Action (LoS): Immobilize until end of next activation. At its start, target may spend 1 action to escape: 1D6 vs own Skill.",
-        "chakra": "3",
+        "id": "quicksand",
+        "parameters": {
+          "actions": 1,
+          "escapeDice": 1
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Hidden Techniques",
+    "id": "hiddenTechniques",
     "techniques": [
       {
-        "name": "Body Multiplication",
-        "description": "Attack (ER): Two separate consecutive attacks against same target. Defender cannot Trade Blows.",
-        "chakra": "5",
+        "id": "bodyMultiplication",
+        "parameters": {},
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Clone",
-        "description": "Mokushin: Cancel incoming attack or Jutsu. Move up to 4\". No Move action or Charge.",
-        "chakra": "3",
+        "id": "clone",
+        "parameters": {
+          "distance": 4
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Energy Ball",
-        "description": "Attack (ER): 3D6 attack. If ≥1 hit, displace target 3\" in direction chosen by attacker. No Move or Charge.",
-        "chakra": "3",
+        "id": "energyBall",
+        "parameters": {
+          "attackDice": 3,
+          "hits": 1,
+          "distance": 3
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Animal Spirit",
+    "id": "animalSpirit",
     "techniques": [
       {
-        "name": "Four Claws",
-        "description": "Action: 6D6 attack → leap to another enemy within 8\" (4D6) → third within 6\" (2D6). Continue if previous target is defeated or leaves ER. If no new target is reachable, move 6\". No Move or Charge.",
-        "chakra": "5",
+        "id": "fourClaws",
+        "parameters": {
+          "firstDice": 6,
+          "firstLeap": 8,
+          "secondDice": 4,
+          "secondLeap": 6,
+          "thirdDice": 2,
+          "finalMove": 6
+        },
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Skin Shedding",
-        "description": "Mokushin: Cancel incoming attack or Jutsu. Move up to 4\". No Move action or Charge.",
-        "chakra": "3",
+        "id": "skinShedding",
+        "parameters": {
+          "distance": 4
+        },
+        "chakra": 3,
         "isMokushin": true
       },
       {
-        "name": "Animal Power",
-        "description": "Action: +50% (round down) to Movement, Attack or Defense on its next use.",
-        "chakra": "3",
+        "id": "animalPower",
+        "parameters": {
+          "percent": 50
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]
   },
   {
-    "name": "Weapon Summoning",
+    "id": "weaponSummoning",
     "techniques": [
       {
-        "name": "Fireworks",
-        "description": "Action (LoS, 10\"): Two separate 4D6 attacks. Same target or different targets.",
-        "chakra": "5",
+        "id": "fireworks",
+        "parameters": {
+          "range": 10,
+          "attackDice": 4
+        },
+        "chakra": 5,
         "isMokushin": false
       },
       {
-        "name": "Arsenal",
-        "description": "Action: Summon and immediately use a throwing weapon or Smoke Bomb for free. Ignores equipment limit.",
-        "chakra": "3",
+        "id": "arsenal",
+        "parameters": {},
+        "chakra": 3,
         "isMokushin": false
       },
       {
-        "name": "Steel Rain",
-        "description": "Action (LoS): Summon and throw 2 Kunai at one enemy. Resolve using Kunai rules.",
-        "chakra": "3",
+        "id": "steelRain",
+        "parameters": {
+          "weapons": 2
+        },
+        "chakra": 3,
         "isMokushin": false
       }
     ]

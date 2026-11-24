@@ -1,3 +1,7 @@
+import { I18nService } from '../../core/i18n/i18n.service';
+import { provideTestI18n } from '../../../../tests/fixtures/i18n-testing';
+import { GameTextService } from '../../core/i18n/game-text.service';
+import { Labels } from '../../core/i18n/i18n-keys';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CharacterSheetComponent } from './character-sheet.component';
@@ -11,9 +15,11 @@ async function setup() {
   const generate = vi.fn().mockResolvedValue(new Uint8Array([37, 80, 68, 70]));
   const files = { download: vi.fn(), openForPrinting: vi.fn() };
   TestBed.configureTestingModule({ imports: [CharacterSheetComponent], providers: [
+    ...provideTestI18n(),
     { provide: GENERATE_BAND_PDF, useValue: generate },
     { provide: PdfBrowserFilesService, useValue: files },
   ] });
+  await TestBed.inject(I18nService).initialize();
   const fixture = TestBed.createComponent(CharacterSheetComponent);
   await fixture.whenStable();
   const element = fixture.nativeElement as HTMLElement;
@@ -28,6 +34,43 @@ async function setup() {
 }
 
 describe('Character sheet', () => {
+  it('switches languages through the header without recreating controls or changing game data', async () => {
+    const { fixture, element, state, select } = await setup();
+    const name = element.querySelector<HTMLInputElement>('#ninja-1-name')!;
+    name.value = 'Renée';
+    name.dispatchEvent(new Event('input', { bubbles: true }));
+    await select('ninja-1-type', 'physical');
+    await select('ninja-1-technique-group', 'taijutsu');
+    await select('ninja-1-item-2-name', 'smokeBomb');
+    const type = element.querySelector<HTMLSelectElement>('#ninja-1-type')!;
+    type.focus();
+    const band = state.band();
+    const revision = state.revision();
+    const es = element.querySelector<HTMLButtonElement>('[data-language="es"]')!;
+    const en = element.querySelector<HTMLButtonElement>('[data-language="en"]')!;
+    expect(es.title).toBe('Switch to Spanish');
+    expect(es.getAttribute('aria-label')).toBe(es.title);
+    es.click();
+    await fixture.whenStable();
+    expect(es.getAttribute('aria-pressed')).toBe('true');
+    expect(en.getAttribute('aria-pressed')).toBe('false');
+    expect(element.querySelector('.editor-subtitle')!.textContent).toBe('Editor de escuadra');
+    expect(element.textContent).toContain('Puerta protectora');
+    expect(element.textContent).toContain('Gate of Speed');
+    expect(element.querySelector('#ninja-1-item-2-name')!.textContent).toContain('Bomba de humo');
+    expect(state.band()).toBe(band);
+    expect(state.revision()).toBe(revision);
+    expect(element.querySelector('#ninja-1-name')).toBe(name);
+    expect(element.querySelector('#ninja-1-type')).toBe(type);
+    expect(name.value).toBe('Renée');
+    expect(type.value).toBe('physical');
+    expect(document.activeElement).toBe(type);
+    en.click();
+    await fixture.whenStable();
+    expect(element.textContent).toContain('Protective Gate');
+    expect(state.band()).toBe(band);
+  });
+
   afterEach(() => vi.unstubAllGlobals());
   it('edits independent ninjas and displays catalog stats and all three techniques', async () => {
     const { fixture, element, state, select } = await setup();
@@ -36,8 +79,8 @@ describe('Character sheet', () => {
     name.value = 'Renée';
     name.dispatchEvent(new Event('input', { bubbles: true }));
     await fixture.whenStable();
-    await select('ninja-1-type', 'Physical');
-    await select('ninja-1-technique-group', 'Taijutsu');
+    await select('ninja-1-type', 'physical');
+    await select('ninja-1-technique-group', 'taijutsu');
     expect(state.band().ninjas[0].name).toBe('Renée');
     expect(state.band().ninjas[0].stats.attack).toBe(6);
     expect(element.querySelector('.stat-fields')!.textContent).toContain('6');
@@ -57,28 +100,28 @@ describe('Character sheet', () => {
     expect(element.querySelectorAll('#ninja-1-panel .equipment-row')).toHaveLength(5);
     const third = element.querySelector<HTMLSelectElement>('#ninja-1-weapon-3-name')!;
     third.focus();
-    await select('ninja-1-weapon-3-name', 'Shuriken');
+    await select('ninja-1-weapon-3-name', 'shuriken');
     expect(document.activeElement).toBe(third);
-    expect(state.band().ninjas[0].equipment.weapons.map((entry) => entry.name)).toEqual(['', '', 'Shuriken']);
-    await select('ninja-1-weapon-1-name', 'Kunai');
-    await select('ninja-1-weapon-2-name', 'Explosive Seal');
-    await select('ninja-1-item-2-name', 'Smoke Bomb');
+    expect(state.band().ninjas[0].equipment.weapons.map((entry) => entry.id)).toEqual(['', '', 'shuriken']);
+    await select('ninja-1-weapon-1-name', 'kunai');
+    await select('ninja-1-weapon-2-name', 'explosiveSeal');
+    await select('ninja-1-item-2-name', 'smokeBomb');
     expect(state.band().ninjas[0].equipment.weapons).toHaveLength(3);
     expect(state.band().ninjas[0].equipment.items).toHaveLength(2);
     expect(element.querySelector('.equipment-details')!.textContent).toContain('2D6 ranged attack.');
     expect(element.querySelector('.equipment-details')!.textContent).toContain('1 action');
     const summary = element.querySelector('app-ninja-summary')!;
     expect(summary.querySelectorAll('.equipment-token:not(.is-empty)')).toHaveLength(4);
-    const weaponIcon = summary.querySelector('[data-equipment="Kunai"] path')!.getAttribute('d');
-    const itemIcon = summary.querySelector('[data-equipment="Smoke Bomb"] path')!.getAttribute('d');
+    const weaponIcon = summary.querySelector('[data-equipment="kunai"] path')!.getAttribute('d');
+    const itemIcon = summary.querySelector('[data-equipment="smokeBomb"] path')!.getAttribute('d');
     const emptyIcon = summary.querySelector('.is-empty path')!.getAttribute('d');
     expect(weaponIcon).not.toBe(emptyIcon);
     expect(itemIcon).not.toBe(weaponIcon);
-    expect(summary.querySelector('[data-equipment="Smoke Bomb"]')).not.toBeNull();
+    expect(summary.querySelector('[data-equipment="smokeBomb"]')).not.toBeNull();
     await select('ninja-1-weapon-2-name', '');
-    expect(state.band().ninjas[0].equipment.weapons.map((entry) => entry.name)).toEqual(['Kunai', '', 'Shuriken']);
-    expect(third.value).toBe('Shuriken');
-    expect(summary.querySelector('[data-equipment="Explosive Seal"]')).toBeNull();
+    expect(state.band().ninjas[0].equipment.weapons.map((entry) => entry.id)).toEqual(['kunai', '', 'shuriken']);
+    expect(third.value).toBe('shuriken');
+    expect(summary.querySelector('[data-equipment="explosiveSeal"]')).toBeNull();
     await select('ninja-1-weapon-3-name', '');
     expect(state.band().ninjas[0].equipment.weapons).toHaveLength(1);
     expect(element.querySelectorAll('#ninja-1-panel .equipment-row')).toHaveLength(5);
@@ -87,9 +130,9 @@ describe('Character sheet', () => {
 
   it('updates all six stats in the associated mini sheet without editable stat controls', async () => {
     const { element, select } = await setup();
-    await select('ninja-1-type', 'Physical');
-    await select('ninja-2-type', 'Defensive');
-    await select('ninja-3-type', 'Jutsu Master');
+    await select('ninja-1-type', 'physical');
+    await select('ninja-2-type', 'defensive');
+    await select('ninja-3-type', 'jutsuMaster');
     const summaries = element.querySelectorAll('app-ninja-summary');
     expect(summaries).toHaveLength(3);
     const stats = [...summaries[0].querySelectorAll('.stat-value')].map((value) => value.textContent);
@@ -159,7 +202,7 @@ describe('Character sheet', () => {
     element.querySelector<HTMLButtonElement>('#generate-pdf')!.click();
     await fixture.whenStable();
     const templates = TestBed.inject(PdfTemplatesService);
-    expect(generate).toHaveBeenCalledWith(state.band(), templates.getTemplate(templates.selectedId()));
+    expect(generate).toHaveBeenCalledWith(TestBed.inject(GameTextService).snapshot().band(state.band()), templates.getTemplate(templates.selectedId()));
     expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad.pdf');
     expect(element.querySelector('#pdf-status')!.textContent).toBe('Download started.');
     expect(element.querySelector<HTMLButtonElement>('#generate-pdf')!.disabled).toBe(false);

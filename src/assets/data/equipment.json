@@ -1,41 +1,77 @@
 {
   "weapons": [
     {
-      "name": "Kunai",
-      "description": "2D6 ranged attack.",
-      "cost": "1 action"
+      "id": "kunai",
+      "parameters": {
+        "attackDice": 2
+      },
+      "cost": {
+        "amount": 1,
+        "unit": "action"
+      }
     },
     {
-      "name": "Shuriken",
-      "description": "3D6 ranged attack.",
-      "cost": "1 action"
+      "id": "shuriken",
+      "parameters": {
+        "attackDice": 3
+      },
+      "cost": {
+        "amount": 1,
+        "unit": "action"
+      }
     },
     {
-      "name": "Explosive Seal",
-      "description": "Kunai upgrade: +3D6. Push target 1\" per hit. Kunai and Seal require 2 actions in the same activation.",
-      "cost": "2 actions"
+      "id": "explosiveSeal",
+      "parameters": {
+        "bonusDice": 3,
+        "pushDistance": 1,
+        "actions": 2
+      },
+      "cost": {
+        "amount": 2,
+        "unit": "action"
+      }
     }
   ],
   "items": [
     {
-      "name": "Smoke Bomb",
-      "description": "Cancel incoming attack or Jutsu. Move up to full Movement in any direction. No Move action or Charge.",
-      "cost": "1 action"
+      "id": "smokeBomb",
+      "parameters": {},
+      "cost": {
+        "amount": 1,
+        "unit": "action"
+      }
     },
     {
-      "name": "Soldier Pill",
-      "description": "+2\" Movement, +2D6 Attack and Defense until end of round.",
-      "cost": "1 action"
+      "id": "soldierPill",
+      "parameters": {
+        "movement": 2,
+        "attackDice": 2
+      },
+      "cost": {
+        "amount": 1,
+        "unit": "action"
+      }
     },
     {
-      "name": "Curry Pill",
-      "description": "Recover 4 Health, up to maximum.",
-      "cost": "1 action"
+      "id": "curryPill",
+      "parameters": {
+        "health": 4
+      },
+      "cost": {
+        "amount": 1,
+        "unit": "action"
+      }
     },
     {
-      "name": "Cake Pill",
-      "description": "Recover 3 Chakra, up to maximum.",
-      "cost": "1 action"
+      "id": "cakePill",
+      "parameters": {
+        "chakra": 3
+      },
+      "cost": {
+        "amount": 1,
+        "unit": "action"
+      }
     }
   ]
 }

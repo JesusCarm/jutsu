@@ -140,16 +140,17 @@ The real `MediaBox` dimensions and origin coordinates are used. Other templates 
 
 ## Usage
 
-Inside an application module:
+At the presentation boundary, using a `GameText` dictionary snapshot:
 
 ```ts
 const template = new JutsuPdfTemplate(assetBaseUrl);
-const bytes = await new BandPdfGenerator().generate(band, template);
+const localizedBand = gameText.band(bandSnapshot);
+const bytes = await new BandPdfGenerator().generate(localizedBand, template);
 ```
 
 The generator takes a JSON snapshot before loading resources. Model instances retain their methods and data; only the snapshot is used to fill the document. The original PDF is not modified.
 
-**Generate and download PDF**, available in the toolbar and below the editor, calls `PdfExportService.generateAndDownload()`: it waits for `PdfGenerationService` to store valid bytes and starts download. Failed or stale generation does not download. Repeated clicks while generating are ignored. `getPdfBytes()` returns a copy of the latest valid result or `null`. Form edits and template changes invalidate it; a result completed after either change is discarded, even if the previous template is selected again. Selecting another mini sheet does not change data or invalidate the PDF.
+**Generate and download PDF**, available in the toolbar and below the editor, calls `PdfExportService.generateAndDownload()`: it waits for `PdfGenerationService` to store valid bytes and starts download. Failed or stale generation does not download. Repeated clicks while generating are ignored. `getPdfBytes()` returns a copy of the latest valid result or `null`. Form edits, language changes, and template changes invalidate it; a result completed after either change is discarded, even if the previous template is selected again. Selecting another mini sheet does not change data or invalidate the PDF.
 
 **Download PDF** downloads those same bytes again as an `application/pdf` Blob through a temporary link. `PdfFileName` uses `jutsu-squad-[name].pdf` for a named squad and `jutsu-squad.pdf` for an empty name. It preserves Unicode and replaces unsupported characters. **Open PDF for printing** opens an independent Blob synchronously from the click and leaves printing to the viewer. A blocked tab becomes a visible error that can be retried without regenerating.
 
@@ -157,7 +158,7 @@ Download URLs are revoked after 60 seconds. Printing URLs remain until their tab
 
 ## Available templates
 
-`PDF_TEMPLATE_OPTIONS`, in `pdf-templates.service.ts`, registers each template's identifier, label, and asset factory. Only **Jutsu — three ninjas per page** is registered, as agreed for this phase. The test PDF in `public/templates/` is not offered as a character sheet.
+`PDF_TEMPLATE_OPTIONS`, in `pdf-templates.service.ts`, registers each template's identifier, typed `labelKey`, and asset factory. Only **Jutsu — three ninjas per page** is registered, as agreed for this phase. The test PDF in `public/templates/` is not offered as a character sheet.
 
 To add another real template, place its PDF in `src/assets/pdf/` and register an option with a unique identifier, fonts, and `formFields` mapping. `formIcons` defines note markers and their indicators; `repeatedSheet` composes ninja copies on one page. For coordinate templates, provide their JSON and omit `formFields` and `repeatedSheet`. `PdfTemplatesService` keeps selection outside `BandStateService`: changing the design does not modify ninjas or the squad name. The generator receives the selected template as an argument and remains independent of Angular and the DOM.
 
@@ -171,3 +172,9 @@ To add another real template, place its PDF in `src/assets/pdf/` and register an
 4. For coordinate templates only, edit boxes or styles in their JSON; complete a pending field's box and set `enabled` to `true` to activate it.
 
 In coordinate configuration, `null` still means pending data, not zero. `getPendingPages()`, `getPendingFields()`, and `isReady()` report configuration state. `assertReady()` rejects incomplete active configuration before loading the PDF.
+
+## Localized input
+
+The editable domain stores stable IDs, numeric parameters, and structured costs. `GameText` converts these into a `LocalizedBandSnapshot` with the existing engine paths and text fields. `PdfGenerationService` captures the active dictionary once at generation start and invalidates bytes or pending results when language changes. Free-form names and filenames are preserved. See [the i18n guide](../../../../docs/i18n.md) for the full boundary and fallback behavior.
+
+An option can provide `localized: { es: (base) => new SpanishTemplate(base) }`; `PdfTemplatesService.getTemplate(id, language)` uses it when present, otherwise the shared `create` factory. The current shared design remains the only registered template. Its artwork and coordinates are unchanged; it has no fields for ninja type or equipment descriptions, although the localized DTO includes them.

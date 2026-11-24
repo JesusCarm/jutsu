@@ -1,5 +1,5 @@
 @if (imageUrl(); as url) {
-  <img [src]="url" alt="" width="20" height="20" aria-hidden="true" draggable="false" />
+  <img [src]="url" [class.colored]="colored()" alt="" width="20" height="20" aria-hidden="true" draggable="false" />
 } @else {
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">

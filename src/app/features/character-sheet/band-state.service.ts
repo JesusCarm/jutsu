@@ -39,13 +39,13 @@ export class BandStateService {
   }
 
   selectEquipment(index: number, kind: EquipmentKind, entry: number, name: string): void {
-    const definition = name === '' ? null : this.catalog.getEquipment(kind).find((item) => item.name === name);
+    const definition = name === '' ? null : this.catalog.getEquipment(kind).find((item) => item.id === name);
     this.ninja(index).equipment.selectEntry(kind, entry, definition);
     this.publish();
   }
 
   selectEquipmentSlot(index: number, kind: EquipmentKind, slot: number, name: string): void {
-    const definition = name === '' ? null : this.catalog.getEquipment(kind).find((item) => item.name === name);
+    const definition = name === '' ? null : this.catalog.getEquipment(kind).find((item) => item.id === name);
     this.ninja(index).equipment.selectSlot(kind, slot, definition);
     this.publish();
   }

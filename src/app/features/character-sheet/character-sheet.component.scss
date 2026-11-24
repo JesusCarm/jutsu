@@ -28,3 +28,4 @@ app-ninja-summary { display: block; min-width: 0; grid-column: var(--ninja-colum
   app-ninja-summary { height: auto; flex: 0 0 auto; }
   .ninja-panel, .ninja-column:not(.is-selected) .ninja-panel { display: block; margin: 0; padding: 0 .75rem .875rem; border-top: 0; }
 }
+:host .toolbar-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .5rem; min-width: 0; }

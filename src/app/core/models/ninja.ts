@@ -32,12 +32,12 @@ export class Ninja {
       this.#stats = new NinjaStats();
       return;
     }
-    if (!definition || !NINJA_TYPES.includes(definition.name)) {
+    if (!definition || !NINJA_TYPES.includes(definition.id)) {
       throw new TypeError('Choose a known ninja type.');
     }
 
     const stats = new NinjaStats(definition.stats ?? null);
-    this.#type = definition.name;
+    this.#type = definition.id;
     this.#stats = stats;
   }
 

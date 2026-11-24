@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import type { TranslationKey } from '../../../core/i18n/i18n-keys';
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { Labels, Stats, ShortStats } from '../../../core/i18n/i18n-keys';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import type { NinjaSnapshot } from '../../../core/models/band-snapshot';
 import type { StatName } from '../../../core/models/game-types';
 import { UiIconComponent } from '../../../shared/ui-icon/ui-icon.component';
@@ -12,13 +15,18 @@ import type { IconName } from '../../../shared/ui-icon/ui-icon.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatsViewComponent {
+  protected readonly i18n = inject(I18nService);
+  protected readonly Labels = Labels;
+  protected readonly Stats = Stats;
+  protected readonly ShortStats = ShortStats;
+
   readonly stats = input.required<NinjaSnapshot['stats']>();
-  protected readonly fields: readonly { key: StatName; label: string; short: string; icon: IconName }[] = [
-    { key: 'chakra', label: 'Chakra', short: 'CHK', icon: 'chakra' },
-    { key: 'attack', label: 'Attack', short: 'ATK', icon: 'attack' },
-    { key: 'defense', label: 'Defense', short: 'DEF', icon: 'defense' },
-    { key: 'movement', label: 'Movement', short: 'MOV', icon: 'movement' },
-    { key: 'skill', label: 'Skill', short: 'SKL', icon: 'skill' },
-    { key: 'health', label: 'Health', short: 'HP', icon: 'health' },
+  protected readonly fields: readonly { key: StatName; label: TranslationKey; short: TranslationKey; icon: IconName }[] = [
+    { key: 'chakra', label: Stats.chakra, short: ShortStats.chakra, icon: 'chakra' },
+    { key: 'attack', label: Stats.attack, short: ShortStats.attack, icon: 'attack' },
+    { key: 'defense', label: Stats.defense, short: ShortStats.defense, icon: 'defense' },
+    { key: 'movement', label: Stats.movement, short: ShortStats.movement, icon: 'movement' },
+    { key: 'skill', label: Stats.skill, short: ShortStats.skill, icon: 'skill' },
+    { key: 'health', label: Stats.health, short: ShortStats.health, icon: 'health' },
   ];
 }

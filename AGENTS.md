@@ -1,6 +1,7 @@
 # Project conventions
 
-- Keep repository documentation, comments, and user-facing text in English.
+- Keep repository documentation and comments in English. English UI copy is the reference in `public/i18n/en.json`; other language files intentionally contain localized text.
+- Use generated translation constants from `core/i18n/i18n-keys.ts` for UI text. After changing English keys, run `npm run i18n:generate`; never edit generated constants manually. Game catalogs contain stable IDs and numeric mechanics, with names and descriptions in the dictionaries.
 - Angular components use `name.component.ts` files and `NameComponent` classes.
 - Give each component its own directory, with `name.component.html` and `name.component.scss` next to its TypeScript file. The root component lives in `src/app/`; a feature's main component may live directly in that feature's directory.
 - Use `templateUrl` and `styleUrl`. Keep static HTML and styles outside the TypeScript file.

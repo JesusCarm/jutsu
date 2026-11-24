@@ -1,5 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { DestroyRef, inject, Injectable } from '@angular/core';
+import { Messages } from '../../core/i18n/i18n-keys';
+import { TranslationError } from '../../core/i18n/translation-error';
 
 @Injectable({ providedIn: 'root' })
 export class PdfBrowserFilesService {
@@ -38,7 +40,7 @@ export class PdfBrowserFilesService {
     let viewer: Window | null;
     try {
       viewer = this.document.defaultView?.open(url, '_blank') ?? null;
-      if (!viewer) throw new Error('The PDF tab was blocked. Allow pop-ups for this site and try again.');
+      if (!viewer) throw new TranslationError(Messages.popupBlocked);
       viewer.opener = null;
     } catch (error) {
       URL.revokeObjectURL(url);
@@ -49,7 +51,7 @@ export class PdfBrowserFilesService {
   }
 
   private createUrl(bytes: Uint8Array): string {
-    if (bytes.byteLength === 0) throw new Error('The PDF is empty. Generate the sheet again.');
+    if (bytes.byteLength === 0) throw new TranslationError(Messages.emptyPdf);
     return URL.createObjectURL(new Blob([new Uint8Array(bytes).buffer], { type: 'application/pdf' }));
   }
 

@@ -1,20 +1,18 @@
-import type { TechniqueDefinition } from './game-types';
+import type { ChakraCost, RuleParameters, TechniqueDefinition } from './game-types';
+import { copyChakra, copyParameters } from './rule-values';
 export class Technique {
-  readonly name: string;
-  readonly description: string;
-  readonly chakra: number | string;
+  readonly id: string;
+  readonly parameters: RuleParameters;
+  readonly chakra: ChakraCost;
   readonly isMokushin: boolean;
 
-  constructor({ name, description, chakra, isMokushin }: TechniqueDefinition) {
-    const validChakra = Number.isFinite(chakra)
-      || (typeof chakra === 'string' && chakra.trim().length > 0);
-    if (typeof name !== 'string' || typeof description !== 'string'
-      || !validChakra || typeof isMokushin !== 'boolean') {
-      throw new TypeError('A technique must define its name, description, chakra and Mokushin value.');
+  constructor({ id, parameters, chakra, isMokushin }: TechniqueDefinition) {
+    if (typeof id !== 'string' || !id || typeof isMokushin !== 'boolean') {
+      throw new TypeError('A technique must define its ID and Mokushin value.');
     }
-    this.name = name;
-    this.description = description;
-    this.chakra = chakra;
+    this.id = id;
+    this.parameters = copyParameters(parameters);
+    this.chakra = copyChakra(chakra);
     this.isMokushin = isMokushin;
     Object.freeze(this);
   }

@@ -4,6 +4,18 @@ import { PlatformAssetsService } from '../../core/services/platform-assets.servi
 import { UiIconComponent } from './ui-icon.component';
 
 describe('UI icons', () => {
+  it('keeps flag colors while retaining the monochrome treatment for game assets', async () => {
+    const fixture = TestBed.createComponent(UiIconComponent);
+    const element = fixture.nativeElement as HTMLElement;
+    fixture.componentRef.setInput('name', 'flagEn');
+    await fixture.whenStable();
+    expect(element.querySelector('img')!.src).toContain('/assets/icons/flag-en.svg');
+    expect(element.querySelector('img')!.classList.contains('colored')).toBe(true);
+    fixture.componentRef.setInput('name', 'health');
+    await fixture.whenStable();
+    expect(element.querySelector('img')!.classList.contains('colored')).toBe(false);
+  });
+
   it('loads a supplied SVG beneath the application base path as a decorative image', async () => {
     TestBed.configureTestingModule({ providers: [
       { provide: PlatformAssetsService, useValue: { baseUrl: 'https://example.test/jutsu/assets/' } },

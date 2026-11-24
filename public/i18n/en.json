@@ -1,0 +1,291 @@
+{
+  "app": {
+    "title": "JUTSU",
+    "documentTitle": "Jutsu Band Builder | Gipsy Games",
+    "subtitle": "Squad editor",
+    "tagline": "{count} ninjas. One squad.",
+    "help": "Customize the {count} ninjas in your squad",
+    "count": "{count} ninjas",
+    "skip": "Skip to the squad editor",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "description": "Create your ninja squad and generate your character sheet with Jutsu Band Builder by Gipsy Games.",
+    "product": "Jutsu",
+    "publisher": "Gipsy Games"
+  },
+  "stats": {
+    "attack": "Attack",
+    "defense": "Defense",
+    "movement": "Movement",
+    "skill": "Skill",
+    "chakra": "Chakra",
+    "health": "Health"
+  },
+  "shortStats": {
+    "attack": "ATK",
+    "defense": "DEF",
+    "movement": "MOV",
+    "skill": "SKL",
+    "chakra": "CHK",
+    "health": "HP"
+  },
+  "actions": {
+    "generate": "Generate and download PDF",
+    "generating": "Generating…",
+    "download": "Download PDF",
+    "print": "Open PDF for printing",
+    "viewEquipment": "View equipment effects",
+    "selectLanguage": "Switch to {language}"
+  },
+  "labels": {
+    "squad": "Squad:",
+    "squadName": "Squad name",
+    "ninjaName": "Name",
+    "ninjaPlaceholder": "Ninja name",
+    "ninja": "Ninja {number}",
+    "editNinja": "Edit Ninja {number}",
+    "editNamedNinja": "Edit {name}",
+    "type": "Type",
+    "noType": "No type",
+    "chooseType": "Choose a type",
+    "weapon": "Weapon {number}",
+    "item": "Item {number}",
+    "weapons": "Weapons",
+    "items": "Items",
+    "equipment": "Equipment",
+    "noWeapon": "No weapon",
+    "noItem": "No item",
+    "jutsuSchool": "Jutsu school",
+    "chooseSchool": "Choose a school",
+    "chooseOption": "Choose an option",
+    "emptyTechniques": "Choose a school to view its three techniques.",
+    "chakraCost": "Chakra cost",
+    "statistics": "Statistics",
+    "sheetTemplate": "Sheet template",
+    "sheetActions": "Sheet actions",
+    "mokushin": "Mokushin",
+    "jutsuTemplate": "Jutsu — three ninjas per page"
+  },
+  "messages": {
+    "ready": "Ready to generate your sheet.",
+    "loading": "Generating your sheet…",
+    "generated": "PDF generated successfully.",
+    "failed": "Could not generate the PDF. {message}",
+    "obsolete": "Your squad, language or template changed. Generate your sheet again.",
+    "downloadStarted": "Download started.",
+    "pdfOpened": "PDF opened in a new tab. Use the PDF viewer’s print controls.",
+    "generateFirst": "Generate your sheet before downloading or printing.",
+    "popupBlocked": "The PDF tab was blocked. Allow pop-ups for this site and try again.",
+    "emptyPdf": "The PDF is empty. Generate the sheet again.",
+    "invalidPdfBytes": "The generator must return PDF bytes.",
+    "exportFailed": "Could not export the PDF. {message}",
+    "languageLoadFailed": "The requested language could not be loaded. English is shown instead."
+  },
+  "costs": {
+    "number": "{amount}",
+    "range": "{min}–{max}",
+    "maintenance": "{initial} + {upkeep}/{unit}",
+    "actionOne": "{amount} action",
+    "actionOther": "{amount} actions",
+    "round": "round"
+  },
+  "ninjaTypes": {
+    "physical": "Physical",
+    "defensive": "Defensive",
+    "offensive": "Offensive",
+    "jutsuMaster": "Jutsu Master"
+  },
+  "techniqueGroups": {
+    "taijutsu": "Taijutsu",
+    "medical": "Medical Techniques",
+    "shadow": "Shadow Techniques",
+    "softTechniques": "Gentle Techniques",
+    "softDefense": "Gentle Defense",
+    "illusionTechniques": "Illusion Techniques",
+    "fireTechniques": "Fire Techniques",
+    "weatherTechniques": "Atmospheric Techniques",
+    "earthTechniques": "Earth Techniques",
+    "hiddenTechniques": "Hidden Techniques",
+    "animalSpirit": "Animal Spirit",
+    "weaponSummoning": "Weapon Summoning"
+  },
+  "techniques": {
+    "protectiveGate": {
+      "name": "Protective Gate",
+      "description": "Mokushin: Cancel {successes} attacker success per Chakra spent. Max {maxChakra}."
+    },
+    "gateOfSpeed": {
+      "name": "Gate of Speed",
+      "description": "Move: +{movementPerChakra}\" Movement per Chakra spent. Max +{maximumMovement}\"."
+    },
+    "gateOfStrength": {
+      "name": "Gate of Strength",
+      "description": "Attack: +{attackDicePerChakra}D{dieSides} per Chakra spent. Max +{maximumDice}D{dieSides}."
+    },
+    "surgery": {
+      "name": "Surgery",
+      "description": "Attack (ER): +{bonusDice}D{dieSides}. Each hit removes {chakraLoss} target Chakra and reduces its maximum by {maximumLoss} for the game (cumulative)."
+    },
+    "substitution": {
+      "name": "Substitution",
+      "description": "Mokushin: Cancel incoming attack. Move up to {distance}\"."
+    },
+    "healing": {
+      "name": "Healing",
+      "description": "Action (LoS): Ally recovers {health} Health or {chakra} Chakra. Cannot exceed maximum."
+    },
+    "branchingShadow": {
+      "name": "Branching Shadow",
+      "description": "Action ({range}\"): Two separate {attackDice}D{dieSides} ranged attacks. Same target or two different targets."
+    },
+    "transport": {
+      "name": "Transport",
+      "description": "Action/Mokushin (LoS, {range}\"): Teleport, ignoring units and terrain. No Movement spent or Charge."
+    },
+    "shadowBind": {
+      "name": "Shadow Bind",
+      "description": "Action (LoS, {range}\"): Immobilize enemy. Escape: {actions} action + {escapeDice}D{dieSides} vs caster's Skill. Caster cannot move. Bind breaks if either unit moves."
+    },
+    "pressurePoints": {
+      "name": "Pressure Points",
+      "description": "Action (ER): Target cannot spend Chakra until the end of its next activation."
+    },
+    "nullification": {
+      "name": "Nullification",
+      "description": "Mokushin: Cancel attack directly targeting you."
+    },
+    "whiteEye": {
+      "name": "White Eye",
+      "description": "Action: {visionDegrees}° LoS. Ignore Charge and Rear Attack penalties. Maintain for {upkeep} Chakra at start of each round."
+    },
+    "antiChakra": {
+      "name": "Anti-Chakra",
+      "description": "Mokushin: Enemy Jutsu requires double its original Chakra cost. Otherwise canceled; action spent."
+    },
+    "voidPalm": {
+      "name": "Void Palm",
+      "description": "Action/Mokushin (ER): Displace enemy {distance}\" away. In Mokushin, cancel incoming attack. No Move or Charge."
+    },
+    "villageWhirlwind": {
+      "name": "Village Whirlwind",
+      "description": "Mokushin: Redirect half the hits received (round down) to the attacker."
+    },
+    "swap": {
+      "name": "Swap",
+      "description": "Action/Mokushin (LoS, {range}\"): Swap positions with any unit. No Move or Charge."
+    },
+    "redPupil": {
+      "name": "Red Pupil",
+      "description": "Mokushin: Cancel incoming attack. Move up to {distance}\". No Move action or Charge."
+    },
+    "redEye": {
+      "name": "Red Eye",
+      "description": "Reaction: Copy incoming Jutsu. Use once during next activation at half Chakra cost (round down). Costs {actions} available action."
+    },
+    "phoenix": {
+      "name": "Phoenix",
+      "description": "Action ({distance}\" path): Separate {attackDice}D{dieSides} attack per unit crossed, friend or foe. Units and terrain do not block path."
+    },
+    "flare": {
+      "name": "Flare",
+      "description": "Mokushin: Cancel incoming attack. Move up to {distance}\". No Move action or Charge."
+    },
+    "fireball": {
+      "name": "Fireball",
+      "description": "Action ({range}\"): {attackDice}D{dieSides} ranged attack."
+    },
+    "storm": {
+      "name": "Storm",
+      "description": "Action ({radius}\" radius): {attackDice}D{dieSides} attack against every enemy. Each hit deals {damage} damage."
+    },
+    "wind": {
+      "name": "Wind",
+      "description": "Mokushin: Cancel incoming attack. Move up to {distance}\". No Move action or Charge."
+    },
+    "lightning": {
+      "name": "Lightning",
+      "description": "Action: Each hit from your next attack deals {damage} damage instead of {normalDamage}."
+    },
+    "desertTomb": {
+      "name": "Desert Tomb",
+      "description": "Action (LoS, {range}\"): {attackDice}D{dieSides} attack. Immobilize until next activation. Escape then: {escapeDice}D{dieSides} vs caster's Skill. While trapped, cannot move, attack or be targeted by attacks/Jutsus."
+    },
+    "sandCloak": {
+      "name": "Sand Cloak",
+      "description": "Mokushin: Cancel incoming hits, including damage and displacement. Ends after absorbing {hits} hits."
+    },
+    "quicksand": {
+      "name": "Quicksand",
+      "description": "Action (LoS): Immobilize until end of next activation. At its start, target may spend {actions} action to escape: {escapeDice}D{dieSides} vs own Skill."
+    },
+    "bodyMultiplication": {
+      "name": "Body Multiplication",
+      "description": "Attack (ER): Two separate consecutive attacks against same target. Defender cannot Trade Blows."
+    },
+    "clone": {
+      "name": "Clone",
+      "description": "Mokushin: Cancel incoming attack or Jutsu. Move up to {distance}\". No Move action or Charge."
+    },
+    "energyBall": {
+      "name": "Energy Ball",
+      "description": "Attack (ER): {attackDice}D{dieSides} attack. If ≥{hits} hit, displace target {distance}\" in direction chosen by attacker. No Move or Charge."
+    },
+    "fourClaws": {
+      "name": "Four Claws",
+      "description": "Action: {firstDice}D{dieSides} attack → leap to another enemy within {firstLeap}\" ({secondDice}D{dieSides}) → third within {secondLeap}\" ({thirdDice}D{dieSides}). Continue if previous target is defeated or leaves ER. If no new target is reachable, move {finalMove}\". No Move or Charge."
+    },
+    "skinShedding": {
+      "name": "Skin Shedding",
+      "description": "Mokushin: Cancel incoming attack or Jutsu. Move up to {distance}\". No Move action or Charge."
+    },
+    "animalPower": {
+      "name": "Animal Power",
+      "description": "Action: +{percent}% (round down) to Movement, Attack or Defense on its next use."
+    },
+    "fireworks": {
+      "name": "Fireworks",
+      "description": "Action (LoS, {range}\"): Two separate {attackDice}D{dieSides} attacks. Same target or different targets."
+    },
+    "arsenal": {
+      "name": "Arsenal",
+      "description": "Action: Summon and immediately use a throwing weapon or {smokeBomb} for free. Ignores equipment limit."
+    },
+    "steelRain": {
+      "name": "Steel Rain",
+      "description": "Action (LoS): Summon and throw {weapons} {kunai} at one enemy. Resolve using {kunai} rules."
+    }
+  },
+  "weapons": {
+    "kunai": {
+      "name": "Kunai",
+      "description": "{attackDice}D{dieSides} ranged attack."
+    },
+    "shuriken": {
+      "name": "Shuriken",
+      "description": "{attackDice}D{dieSides} ranged attack."
+    },
+    "explosiveSeal": {
+      "name": "Explosive Seal",
+      "description": "{kunai} upgrade: +{bonusDice}D{dieSides}. Push target {pushDistance}\" per hit. {kunai} and Seal require {actions} actions in the same activation."
+    }
+  },
+  "items": {
+    "smokeBomb": {
+      "name": "Smoke Bomb",
+      "description": "Cancel incoming attack or Jutsu. Move up to full Movement in any direction. No Move action or Charge."
+    },
+    "soldierPill": {
+      "name": "Soldier Pill",
+      "description": "+{movement}\" Movement, +{attackDice}D{dieSides} Attack and Defense until end of round."
+    },
+    "curryPill": {
+      "name": "Curry Pill",
+      "description": "Recover {health} Health, up to maximum."
+    },
+    "cakePill": {
+      "name": "Cake Pill",
+      "description": "Recover {chakra} Chakra, up to maximum."
+    }
+  }
+}

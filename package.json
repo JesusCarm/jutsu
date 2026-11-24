@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "scripts": {
     "ng": "ng",
-    "dev": "ng serve",
-    "start": "ng serve",
-    "build": "ng build",
-    "preview": "ng serve --configuration production",
-    "test": "ng test --watch=false",
-    "test:watch": "ng test",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+    "dev": "npm run i18n:generate && ng serve",
+    "start": "npm run i18n:generate && ng serve",
+    "build": "npm run i18n:generate && ng build",
+    "preview": "npm run i18n:generate && ng serve --configuration production",
+    "test": "npm run i18n:check && ng test --watch=false",
+    "test:watch": "npm run i18n:check && ng test",
+    "typecheck": "npm run i18n:check && tsc --noEmit -p tsconfig.app.json",
+    "i18n:generate": "node scripts/generate-i18n-keys.mjs",
+    "i18n:check": "node scripts/generate-i18n-keys.mjs --check"
   },
   "private": true,
   "packageManager": "npm@9.2.0",

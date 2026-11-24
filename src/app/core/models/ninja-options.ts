@@ -1,26 +1,10 @@
 import type { StatName } from './game-types';
 
-export const NINJA_TYPES = [
-  'Physical',
-  'Defensive',
-  'Offensive',
-  'Jutsu Master',
-];
+import ninjaTypes from '../../../assets/data/ninja-types.json';
+import techniqueGroups from '../../../assets/data/technique-groups.json';
 
-export const TECHNIQUE_GROUPS = [
-  'Taijutsu',
-  'Medical',
-  'Shadow',
-  'Soft Techniques',
-  'Soft Defense',
-  'Illusion Techniques',
-  'Fire Techniques',
-  'Weather Techniques',
-  'Earth Techniques',
-  'Hidden Techniques',
-  'Animal Spirit',
-  'Weapon Summoning',
-];
+export const NINJA_TYPES: readonly string[] = ninjaTypes.map((type) => type.id);
+export const TECHNIQUE_GROUPS: readonly string[] = techniqueGroups.map((group) => group.id);
 
 export const NINJA_STATS: readonly StatName[] = [
   'attack',

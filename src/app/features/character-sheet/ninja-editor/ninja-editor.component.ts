@@ -1,3 +1,6 @@
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { Labels } from '../../../core/i18n/i18n-keys';
+import { GameTextService } from '../../../core/i18n/game-text.service';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import type { NinjaSnapshot } from '../../../core/models/band-snapshot';
@@ -5,7 +8,6 @@ import { BandStateService } from '../band-state.service';
 import { CatalogSelectComponent } from '../catalog-select/catalog-select.component';
 import { TechniqueGroupEditorComponent } from '../technique-group-editor/technique-group-editor.component';
 import { EquipmentListEditorComponent } from '../equipment-list-editor/equipment-list-editor.component';
-import { NinjaLabels } from '../ninja-labels';
 
 @Component({
   selector: 'app-ninja-editor',
@@ -15,11 +17,14 @@ import { NinjaLabels } from '../ninja-labels';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NinjaEditorComponent {
+  protected readonly i18n = inject(I18nService);
+  protected readonly Labels = Labels;
+  protected readonly text = inject(GameTextService);
+
   readonly ninja = input.required<NinjaSnapshot>();
   readonly index = input.required<number>();
   protected readonly state = inject(BandStateService);
-  protected readonly labels = new NinjaLabels();
-  protected readonly types = computed(() => this.state.catalog.ninjaTypes.map((type) => ({ name: type.name, label: this.labels.type(type.name) })));
+  protected readonly types = computed(() => this.state.catalog.ninjaTypes.map((type) => ({ id: type.id, label: this.text.typeName(type.id) })));
   protected readonly name = new FormControl('', { nonNullable: true });
 
   constructor() {

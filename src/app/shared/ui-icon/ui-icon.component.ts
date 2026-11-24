@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { PlatformAssetsService } from '../../core/services/platform-assets.service';
 
 const ICONS = {
+  flagEn: 'flag-en.svg',
+  flagEs: 'flag-es.svg',
   chakra: 'chakra_ico.svg',
   attack: 'ataque_ico.svg',
   defense: 'defensa_ico.svg',
@@ -36,6 +38,7 @@ export type IconName = keyof typeof ICONS;
 })
 export class UiIconComponent {
   readonly name = input<IconName>('minus');
+  protected readonly colored = computed(() => this.name() === 'flagEn' || this.name() === 'flagEs');
   private readonly assets = inject(PlatformAssetsService);
   private readonly icon = computed(() => ICONS[this.name()]);
   protected readonly imageUrl = computed(() => {

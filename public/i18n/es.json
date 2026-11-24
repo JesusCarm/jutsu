@@ -1,0 +1,291 @@
+{
+  "app": {
+    "title": "JUTSU",
+    "documentTitle": "Editor de escuadras de Jutsu | Gipsy Games",
+    "subtitle": "Editor de escuadra",
+    "tagline": "{count} ninjas. Una escuadra.",
+    "help": "Personaliza los {count} ninjas de tu escuadra",
+    "count": "{count} ninjas",
+    "skip": "Ir al editor de escuadra",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "description": "Crea tu escuadra ninja y genera tu ficha de personaje con el editor de Jutsu de Gipsy Games.",
+    "product": "Jutsu",
+    "publisher": "Gipsy Games"
+  },
+  "stats": {
+    "attack": "Ataque",
+    "defense": "Defensa",
+    "movement": "Movimiento",
+    "skill": "Habilidad",
+    "chakra": "Chakra",
+    "health": "Vida"
+  },
+  "shortStats": {
+    "attack": "ATQ",
+    "defense": "DEF",
+    "movement": "MOV",
+    "skill": "HAB",
+    "chakra": "CHK",
+    "health": "VID"
+  },
+  "actions": {
+    "generate": "Generar y descargar PDF",
+    "generating": "Generando…",
+    "download": "Descargar PDF",
+    "print": "Abrir PDF para imprimir",
+    "viewEquipment": "Ver efectos del equipamiento",
+    "selectLanguage": "Cambiar a {language}"
+  },
+  "labels": {
+    "squad": "Escuadra:",
+    "squadName": "Nombre de la escuadra",
+    "ninjaName": "Nombre",
+    "ninjaPlaceholder": "Nombre del ninja",
+    "ninja": "Ninja {number}",
+    "editNinja": "Editar ninja {number}",
+    "editNamedNinja": "Editar {name}",
+    "type": "Tipo",
+    "noType": "Sin tipo",
+    "chooseType": "Elige un tipo",
+    "weapon": "Arma {number}",
+    "item": "Objeto {number}",
+    "weapons": "Armas",
+    "items": "Objetos",
+    "equipment": "Equipamiento",
+    "noWeapon": "Sin arma",
+    "noItem": "Sin objeto",
+    "jutsuSchool": "Escuela de Jutsu",
+    "chooseSchool": "Elige una escuela",
+    "chooseOption": "Elige una opción",
+    "emptyTechniques": "Elige una escuela para ver sus tres técnicas.",
+    "chakraCost": "Coste de Chakra",
+    "statistics": "Atributos",
+    "sheetTemplate": "Plantilla de ficha",
+    "sheetActions": "Acciones de la ficha",
+    "mokushin": "Mokushin",
+    "jutsuTemplate": "Jutsu — tres ninjas por página"
+  },
+  "messages": {
+    "ready": "Listo para generar tu ficha.",
+    "loading": "Generando tu ficha…",
+    "generated": "PDF generado correctamente.",
+    "failed": "No se pudo generar el PDF. {message}",
+    "obsolete": "La escuadra, el idioma o la plantilla han cambiado. Genera la ficha de nuevo.",
+    "downloadStarted": "Descarga iniciada.",
+    "pdfOpened": "PDF abierto en una nueva pestaña. Utiliza los controles de impresión del visor.",
+    "generateFirst": "Genera tu ficha antes de descargarla o imprimirla.",
+    "popupBlocked": "Se ha bloqueado la pestaña del PDF. Permite las ventanas emergentes de este sitio y vuelve a intentarlo.",
+    "emptyPdf": "El PDF está vacío. Genera la ficha de nuevo.",
+    "invalidPdfBytes": "El generador debe devolver los datos binarios del PDF.",
+    "exportFailed": "No se pudo exportar el PDF. {message}",
+    "languageLoadFailed": "No se pudo cargar el idioma solicitado. Se muestra el inglés en su lugar."
+  },
+  "costs": {
+    "number": "{amount}",
+    "range": "{min}–{max}",
+    "maintenance": "{initial} + {upkeep}/{unit}",
+    "actionOne": "{amount} acción",
+    "actionOther": "{amount} acciones",
+    "round": "ronda"
+  },
+  "ninjaTypes": {
+    "physical": "Físico",
+    "defensive": "Defensivo",
+    "offensive": "Ofensivo",
+    "jutsuMaster": "Jutsu Master"
+  },
+  "techniqueGroups": {
+    "taijutsu": "Taijutsu",
+    "medical": "Técnicas Médicas",
+    "shadow": "Técnicas de Sombra",
+    "softTechniques": "Técnicas Blandas",
+    "softDefense": "Defensa Blanda",
+    "illusionTechniques": "Técnicas Ilusorias",
+    "fireTechniques": "Técnicas Ígneas",
+    "weatherTechniques": "Técnicas Atmosféricas",
+    "earthTechniques": "Técnicas de Tierra",
+    "hiddenTechniques": "Técnicas Ocultas",
+    "animalSpirit": "Espíritu Animal",
+    "weaponSummoning": "Invocación de Armas"
+  },
+  "techniques": {
+    "protectiveGate": {
+      "name": "Puerta Protectora",
+      "description": "Mokushin: Cancela {successes} éxito del atacante por punto de Chakra gastado. Máx. {maxChakra}."
+    },
+    "gateOfSpeed": {
+      "name": "Puerta de la Velocidad",
+      "description": "Movimiento: +{movementPerChakra}\" al Movimiento por punto de Chakra gastado. Máx. +{maximumMovement}\"."
+    },
+    "gateOfStrength": {
+      "name": "Puerta de la Fuerza",
+      "description": "Ataque: +{attackDicePerChakra}D{dieSides} por punto de Chakra gastado. Máx. +{maximumDice}D{dieSides}."
+    },
+    "surgery": {
+      "name": "Cirugía",
+      "description": "Ataque (DI): +{bonusDice}D{dieSides}. Cada impacto resta {chakraLoss} de Chakra al objetivo y reduce su máximo en {maximumLoss} durante la partida (acumulativo)."
+    },
+    "substitution": {
+      "name": "Cambiazo",
+      "description": "Mokushin: Cancela el ataque recibido. Desplázate hasta {distance}\"."
+    },
+    "healing": {
+      "name": "Curación",
+      "description": "Acción (LDV): Un aliado recupera {health} de Vida o {chakra} de Chakra, sin superar su máximo."
+    },
+    "branchingShadow": {
+      "name": "Sombra Ramificada",
+      "description": "Acción ({range}\"): Dos ataques a distancia de {attackDice}D{dieSides} cada uno. Mismo objetivo o dos distintos."
+    },
+    "transport": {
+      "name": "Transporte",
+      "description": "Acción/Mokushin (LDV, {range}\"): Teletranspórtate ignorando unidades y terreno. No consume Movimiento ni genera Carga."
+    },
+    "shadowBind": {
+      "name": "Vínculo Sombrío",
+      "description": "Acción (LDV, {range}\"): Inmoviliza al enemigo. Liberación: {actions} acción + {escapeDice}D{dieSides} contra la Habilidad del usuario. El usuario no puede moverse. Si cualquiera se desplaza, se rompe el vínculo."
+    },
+    "pressurePoints": {
+      "name": "Puntos de Presión",
+      "description": "Acción (DI): El objetivo no puede gastar Chakra hasta el final de su próxima activación."
+    },
+    "nullification": {
+      "name": "Anulación",
+      "description": "Mokushin: Cancela un ataque dirigido directamente contra ti."
+    },
+    "whiteEye": {
+      "name": "Ojo Blanco",
+      "description": "Acción: LDV de {visionDegrees}°. Ignora penalizadores por Carga y ataque por la espalda. Mantén por {upkeep} de Chakra al inicio de cada ronda."
+    },
+    "antiChakra": {
+      "name": "Anti-Chakra",
+      "description": "Mokushin: El Jutsu enemigo cuesta el doble de Chakra. Si no se paga, se cancela y se consume la acción."
+    },
+    "voidPalm": {
+      "name": "Palma de Vacío",
+      "description": "Acción/Mokushin (DI): Aleja al enemigo {distance}\". En Mokushin, cancela el ataque recibido. No cuenta como Movimiento ni genera Carga."
+    },
+    "villageWhirlwind": {
+      "name": "Torbellino de la Villa",
+      "description": "Mokushin: Redirige la mitad de los impactos recibidos (redondeando hacia abajo) al atacante."
+    },
+    "swap": {
+      "name": "Intercambio",
+      "description": "Acción/Mokushin (LDV, {range}\"): Intercambia posiciones con cualquier unidad. No cuenta como Movimiento ni genera Carga."
+    },
+    "redPupil": {
+      "name": "Pupila Roja",
+      "description": "Mokushin: Cancela el ataque recibido. Desplázate hasta {distance}\". No cuenta como Movimiento ni genera Carga."
+    },
+    "redEye": {
+      "name": "Ojo Rojo",
+      "description": "Reacción: Copia el Jutsu recibido. Úsalo una vez en tu próxima activación por la mitad de Chakra (redondeando hacia abajo). Consume {actions} acción disponible."
+    },
+    "phoenix": {
+      "name": "Fénix",
+      "description": "Acción (trayectoria de {distance}\"): Ataque independiente de {attackDice}D{dieSides} contra cada unidad atravesada, aliada o enemiga. Ignora unidades y terreno."
+    },
+    "flare": {
+      "name": "Llamarada",
+      "description": "Mokushin: Cancela el ataque recibido. Desplázate hasta {distance}\". No cuenta como Movimiento ni genera Carga."
+    },
+    "fireball": {
+      "name": "Bola de Fuego",
+      "description": "Acción ({range}\"): Ataque a distancia de {attackDice}D{dieSides}."
+    },
+    "storm": {
+      "name": "Tormenta",
+      "description": "Acción (radio de {radius}\"): Ataque de {attackDice}D{dieSides} contra cada enemigo. Cada impacto causa {damage} de daño."
+    },
+    "wind": {
+      "name": "Viento",
+      "description": "Mokushin: Cancela el ataque recibido. Desplázate hasta {distance}\". No cuenta como Movimiento ni genera Carga."
+    },
+    "lightning": {
+      "name": "Rayo",
+      "description": "Acción: Cada impacto de tu próximo ataque causa {damage} de daño en vez de {normalDamage}."
+    },
+    "desertTomb": {
+      "name": "Tumba del Desierto",
+      "description": "Acción (LDV, {range}\"): Ataque de {attackDice}D{dieSides}. Inmoviliza hasta la próxima activación. Liberación: {escapeDice}D{dieSides} contra la Habilidad del usuario. Mientras esté atrapado, no puede moverse, atacar ni ser objetivo de ataques o Jutsus."
+    },
+    "sandCloak": {
+      "name": "Manto de Arena",
+      "description": "Mokushin: Anula impactos recibidos, incluido su daño y desplazamiento. Termina tras absorber {hits} impactos."
+    },
+    "quicksand": {
+      "name": "Arenas Movedizas",
+      "description": "Acción (LDV): Inmoviliza hasta el final de la próxima activación. Al inicio, el objetivo puede gastar {actions} acción para liberarse: {escapeDice}D{dieSides} contra su propia Habilidad."
+    },
+    "bodyMultiplication": {
+      "name": "Multiplicación de Cuerpos",
+      "description": "Ataque (DI): Dos ataques consecutivos e independientes contra el mismo objetivo. El defensor no puede Intercambiar impactos."
+    },
+    "clone": {
+      "name": "Clon",
+      "description": "Mokushin: Cancela el ataque o Jutsu recibido. Desplázate hasta {distance}\". No cuenta como Movimiento ni genera Carga."
+    },
+    "energyBall": {
+      "name": "Bola de Energía",
+      "description": "Ataque (DI): Ataque de {attackDice}D{dieSides}. Con ≥{hits} impacto, desplaza al objetivo {distance}\" en la dirección elegida por el atacante. No cuenta como Movimiento ni genera Carga."
+    },
+    "fourClaws": {
+      "name": "Cuatro Garras",
+      "description": "Acción: Ataque de {firstDice}D{dieSides} → salta a otro enemigo a {firstLeap}\" o menos ({secondDice}D{dieSides}) → tercero a {secondLeap}\" o menos ({thirdDice}D{dieSides}). Continúa si el objetivo anterior cae o sale de DI. Si no alcanzas otro objetivo, desplázate {finalMove}\". No cuenta como Movimiento ni genera Carga."
+    },
+    "skinShedding": {
+      "name": "Cambiapieles",
+      "description": "Mokushin: Cancela el ataque o Jutsu recibido. Desplázate hasta {distance}\". No cuenta como Movimiento ni genera Carga."
+    },
+    "animalPower": {
+      "name": "Potencia Animal",
+      "description": "Acción: +{percent}% (redondeando hacia abajo) al Movimiento, Ataque o Defensa en su próximo uso."
+    },
+    "fireworks": {
+      "name": "Fuegos Artificiales",
+      "description": "Acción (LDV, {range}\"): Dos ataques independientes de {attackDice}D{dieSides}. Mismo objetivo u objetivos distintos."
+    },
+    "arsenal": {
+      "name": "Arsenal",
+      "description": "Acción: Invoca y utiliza inmediatamente un arma arrojadiza o {smokeBomb} gratis. Ignora el límite de equipamiento."
+    },
+    "steelRain": {
+      "name": "Lluvia de Acero",
+      "description": "Acción (LDV): Invoca y lanza {weapons} {kunai} contra un enemigo. Aplica las reglas de {kunai}."
+    }
+  },
+  "weapons": {
+    "kunai": {
+      "name": "Kunai",
+      "description": "Ataque a distancia de {attackDice}D{dieSides}."
+    },
+    "shuriken": {
+      "name": "Shuriken",
+      "description": "Ataque a distancia de {attackDice}D{dieSides}."
+    },
+    "explosiveSeal": {
+      "name": "Sello Explosivo",
+      "description": "Mejora de {kunai}: +{bonusDice}D{dieSides}. Desplaza al objetivo {pushDistance}\" por impacto. {kunai} y sello requieren {actions} acciones en la misma activación."
+    }
+  },
+  "items": {
+    "smokeBomb": {
+      "name": "Bomba de Humo",
+      "description": "Cancela el ataque o Jutsu recibido. Desplázate hasta tu Movimiento completo en cualquier dirección. No cuenta como Movimiento ni genera Carga."
+    },
+    "soldierPill": {
+      "name": "Píldora del Soldado",
+      "description": "+{movement}\" al Movimiento, +{attackDice}D{dieSides} al Ataque y Defensa hasta el final de la ronda."
+    },
+    "curryPill": {
+      "name": "Píldora de Curry",
+      "description": "Recupera {health} de Vida, sin superar el máximo."
+    },
+    "cakePill": {
+      "name": "Píldora de Pastel",
+      "description": "Recupera {chakra} de Chakra, sin superar el máximo."
+    }
+  }
+}

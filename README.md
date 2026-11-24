@@ -57,6 +57,7 @@ src/
     core/
       models/               # Existing squad model and rules, independent of Angular
       services/             # JSON catalog and platform asset URLs
+      i18n/                 # Signals service, generated typed keys, and game text
     features/
       character-sheet/      # Editor, Signals state, and components in subdirectories
       pdf-generator/        # PDF engine, templates, generation, and local export
@@ -68,7 +69,7 @@ src/
     app.config.ts
     app.routes.ts
   assets/
-    data/                   # Original game catalogs
+    data/                   # Language-neutral game catalogs and numeric rules
     fonts/                  # Eagle Lake, DejaVu Sans, and licenses
     icons/                  # _ico SVG files for stats, equipment, and Mokushin
     pdf/                    # PDF form and legacy coordinate configuration
@@ -76,6 +77,7 @@ src/
   main.ts
   styles.scss
 public/
+  i18n/                     # English reference and partial Spanish dictionary
   licenses/
   templates/test-template.pdf
 tests/                     # Original tests and historical equivalence fixtures
@@ -84,7 +86,7 @@ docs/migration/             # Inventory, decisions, and verification report
 
 Components are standalone and use `OnPush`, `inject()`, Signal inputs/outputs, and `@for` control flow. There are no application NgModules. Angular 21 runs **without Zone.js** by default; Zone.js is neither installed nor loaded.
 
-Each of the 15 components has its own directory, a class ending in `Component`, and separate files. For example:
+Each component has its own directory, a class ending in `Component`, and separate files. For example:
 
 ```text
 features/character-sheet/ninja-editor/
@@ -127,7 +129,7 @@ No new required fields or name restrictions have been added. The model still rej
 
 The engine in `features/pdf-generator/` does not depend on Angular or the DOM. It receives data, a template, and a resource loader that tests can replace. The current template contains one card with `Ninja1_…` fields; `JutsuFormFields` maps those names to data and styles. Each ninja fills an independent copy, which is flattened before all three are composed on an A4 page. Positions come from the PDF without loading the coordinate JSON. Each technique includes a name and description; chakra goes in its `_cost` field. Notes containing `Ninja1_technique_1_mokushin` and the corresponding identifiers for techniques 2 and 3 mark the boxes where the SVG is drawn when applicable. Matching ignores letter case. Marker notes are removed, and inventory combines weapons and items. Vector flattening preserves the design and sharpness. The downloaded PDF has no editable fields; the source template remains fillable and unchanged.
 
-`PdfGenerationService` connects the engine to the form and keeps valid bytes in memory. `getPdfBytes()` returns a copy, or `null` if the squad or template changed. [PDF engine and export documentation](src/app/features/pdf-generator/README.md).
+`PdfGenerationService` connects the engine to the form and keeps valid bytes in memory. `getPdfBytes()` returns a copy, or `null` if the squad, language, or template changed. [PDF engine and export documentation](src/app/features/pdf-generator/README.md).
 
 1. Enter a **Squad** name to customize the filename and complete the ninjas. On mobile, tap a mini sheet to choose the character to edit.
 2. Choose a **Sheet template**. For now, only the original Eagle Lake template is available.
@@ -135,7 +137,7 @@ The engine in `features/pdf-generator/` does not depend on Angular or the DOM. I
 4. **Download PDF** downloads the generated document again, including when the browser did not start the automatic download.
 5. **Open PDF for printing** opens the same document in another tab. Use the PDF viewer's print controls. If the browser blocks the tab, the status asks you to allow pop-ups for this site and retry. Icons have accessible labels and display their actions on hover.
 
-Any edit, including the squad name, or a template change disables export until the PDF is generated again. A generation that becomes stale is discarded. Already-open PDFs keep their resources until their tabs close; temporary download URLs are released after download starts, and all resources are cleaned up when the application is destroyed.
+Any edit, including the squad name, or a language/template change disables export until the PDF is generated again. A generation that becomes stale is discarded. Already-open PDFs keep their resources until their tabs close; temporary download URLs are released after download starts, and all resources are cleaned up when the application is destroyed.
 
 The template, coordinates, fonts, and catalogs are copied as application assets. `PlatformAssetsService` centralizes URL resolution against `<base href>`, supporting static navigation and future platform adaptations. There is no backend, authentication, remote API, runtime AI, or cloud storage. The earlier version did not persist squads: reloading still clears the data, and no storage is migrated or introduced.
 
@@ -147,4 +149,10 @@ See [the migration report](docs/migration/angular-migration.md) for that phase's
 
 `.gitignore` excludes dependencies, builds, caches, coverage, generated output, review copies, and local configuration. PDF templates, fonts, licenses, catalogs, and `package-lock.json` are versioned. The initial `output/migration/vite-phase5-source.tar.gz` backup and review PDFs remain local.
 
-Current verification: 91 automated tests, type checking, and the production build pass. Three-card sheets covering all twelve technique groups, including Unicode symbols, have been rendered and reviewed. Tests check costs, marker notes, cleanup, conditional icons, A4 composition, ninja isolation, and resource errors. All ten `_ico` SVG files are copied unchanged to production. The user confirmed phase 6 downloads in Firefox at `http://localhost:4200/` after resolving a `start` error that had kept an older build running. HTTP checks confirm that the server delivers the editor with mini sheets and export actions. Visual browser review of the desktop/mobile editor and manually opening the print flow remain pending because the browser access host was unavailable during implementation.
+Current verification includes automated tests, type checking, and the production build pass. Three-card sheets covering all twelve technique groups, including Unicode symbols, have been rendered and reviewed. Tests check costs, marker notes, cleanup, conditional icons, A4 composition, ninja isolation, and resource errors. All ten `_ico` SVG files are copied unchanged to production. The user confirmed phase 6 downloads in Firefox at `http://localhost:4200/` after resolving a `start` error that had kept an older build running. HTTP checks confirm that the server delivers the editor with mini sheets and export actions. Visual browser review of the desktop/mobile editor and manually opening the print flow remain pending because the browser access host was unavailable during implementation.
+
+## Internationalization
+
+Use the header flags or `?lang=en` / `?lang=es`. English is complete; Spanish contains only review samples and falls back to English per key. Switching language preserves form data and updates the URL without reloading. The PDF uses the same active dictionary; changing language invalidates the previous export. No translation dependencies or browser persistence were added.
+
+Edit `public/i18n/en.json` and run `npm run i18n:generate` for typed autocomplete constants. Game catalogs now contain stable IDs and numeric rule parameters. See [the i18n guide](docs/i18n.md) for the data model, adding locales, deployment under a subpath, and the PDF boundary.

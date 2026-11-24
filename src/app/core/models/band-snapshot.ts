@@ -4,7 +4,7 @@ export interface NinjaSnapshot {
   readonly name: string;
   readonly type: string;
   readonly stats: Readonly<Record<StatName, number | null>>;
-  readonly techniqueGroup: { readonly name: string; readonly techniques: readonly TechniqueDefinition[] };
+  readonly techniqueGroup: { readonly id: string; readonly techniques: readonly TechniqueDefinition[] };
   readonly equipment: { readonly weapons: readonly EquipmentDefinition[]; readonly items: readonly EquipmentDefinition[] };
 }
 export interface BandSnapshot { readonly name: string; readonly ninjas: readonly NinjaSnapshot[]; }

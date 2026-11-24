@@ -1,18 +1,19 @@
-import type { EquipmentDefinition } from './game-types';
+import type { ActionCost, EquipmentDefinition, RuleParameters } from './game-types';
+import { copyParameters } from './rule-values';
 export class EquipmentEntry {
-  readonly name: string;
-  readonly description: string;
-  readonly cost: string;
+  readonly id: string;
+  readonly parameters: RuleParameters;
+  readonly cost: ActionCost | null;
 
   constructor(definition: EquipmentDefinition | null = null) {
-    const cost = definition?.cost ?? '';
-    if (definition !== null && (typeof definition.name !== 'string'
-      || typeof definition.description !== 'string' || typeof cost !== 'string')) {
-      throw new TypeError('Equipment must define its name, description and action cost text.');
+    const cost = definition?.cost ?? null;
+    if (definition !== null && (typeof definition.id !== 'string' || !definition.id
+      || !cost || !Number.isFinite(cost.amount) || cost.amount < 0 || cost.unit !== 'action')) {
+      throw new TypeError('Equipment must define its ID and numeric action cost.');
     }
-    this.name = definition?.name ?? '';
-    this.description = definition?.description ?? '';
-    this.cost = cost;
+    this.id = definition?.id ?? '';
+    this.parameters = copyParameters(definition?.parameters ?? {});
+    this.cost = cost ? Object.freeze({ ...cost }) : null;
     Object.freeze(this);
   }
 }

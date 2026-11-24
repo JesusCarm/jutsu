@@ -58,7 +58,7 @@ describe('PDF browser files', () => {
 
   it('reports a blocked tab and releases its unused URL', () => {
     vi.spyOn(window, 'open').mockReturnValue(null);
-    expect(() => files.openForPrinting(new Uint8Array([1]))).toThrow('Allow pop-ups');
+    expect(() => files.openForPrinting(new Uint8Array([1]))).toThrow('messages.popupBlocked');
     expect(revokeUrl).toHaveBeenCalledExactlyOnceWith('blob:sheet-1');
     expect(vi.getTimerCount()).toBe(0);
   });
@@ -68,7 +68,7 @@ describe('PDF browser files', () => {
     expect(() => files.download(new Uint8Array([1]), 'sheet.pdf')).toThrow('Download failed');
     expect(revokeUrl).toHaveBeenCalledExactlyOnceWith('blob:sheet-1');
     expect(document.querySelector('a[download]')).toBeNull();
-    expect(() => files.openForPrinting(new Uint8Array())).toThrow('The PDF is empty');
+    expect(() => files.openForPrinting(new Uint8Array())).toThrow('messages.emptyPdf');
     expect(createUrl).toHaveBeenCalledTimes(1);
   });
 
