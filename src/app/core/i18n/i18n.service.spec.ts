@@ -33,7 +33,8 @@ describe('I18n service and URL language', () => {
   });
 
   it('initializes a direct Spanish URL and uses English for untranslated entries', async () => {
-    const { i18n } = setup('/?lang=es');
+    const { i18n } = setup('/?lang=es', async (url) => url.endsWith('/es.json')
+      ? { ...spanish, stats: { ...spanish.stats, movement: null } } : english);
     await i18n.initialize();
     expect(i18n.lang()).toBe('es');
     expect(i18n.t(App.subtitle)).toBe('Editor de escuadra');

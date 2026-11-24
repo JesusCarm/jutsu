@@ -1,6 +1,8 @@
 :host { display: block; min-width: 0; }
 .editor-heading { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-bottom: 1rem; }
 .editor-heading h2 { min-width: 0; overflow-wrap: anywhere; font-size: 1.25rem; font-weight: 600; }
+.editor-heading .badge { display: inline-flex; align-items: center; gap: .25rem; }
+.badge-label { min-width: 0; }
 .identity-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
 .text-field { min-width: 0; }
 

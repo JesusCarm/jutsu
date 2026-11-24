@@ -46,16 +46,21 @@ test('the localized DTO keeps free-form names and mechanics, with per-key fallba
   ninja.techniqueGroup.selectGroup(GAME_DATA.techniqueGroups[0]);
   ninja.equipment.selectSlot('items', 0, GAME_DATA.items[0]);
   const snapshot = JSON.parse(JSON.stringify(band));
-  const localized = new GameText(new TranslationDictionary(english, spanish)).band(snapshot);
+  const partialSpanish = {
+    ninjaTypes: spanish.ninjaTypes,
+    techniques: { protectiveGate: spanish.techniques.protectiveGate },
+    items: { smokeBomb: { name: spanish.items.smokeBomb.name } },
+  };
+  const localized = new GameText(new TranslationDictionary(english, partialSpanish)).band(snapshot);
   assert.equal(localized.name, band.name);
   assert.equal(localized.ninjas[0].name, ninja.name);
   assert.equal(localized.ninjas[0].type, 'Físico');
   assert.deepEqual(localized.ninjas[0].stats, snapshot.ninjas[0].stats);
-  assert.equal(localized.ninjas[0].techniqueGroup.techniques[0].name, 'Puerta protectora');
+  assert.equal(localized.ninjas[0].techniqueGroup.techniques[0].name, spanish.techniques.protectiveGate.name);
   assert.equal(localized.ninjas[0].techniqueGroup.techniques[0].chakra, '1–5');
   assert.equal(localized.ninjas[0].techniqueGroup.techniques[0].isMokushin, true);
   assert.equal(localized.ninjas[0].techniqueGroup.techniques[1].name, 'Gate of Speed');
-  assert.equal(localized.ninjas[0].equipment.items[0].name, 'Bomba de humo');
+  assert.equal(localized.ninjas[0].equipment.items[0].name, spanish.items.smokeBomb.name);
   assert.equal(localized.ninjas[0].equipment.items[0].description, original.items[0].description);
   assert.doesNotMatch(JSON.stringify(localized), /\{\w+\}/);
   assert.deepEqual(JSON.parse(JSON.stringify(band)), snapshot);
@@ -64,5 +69,5 @@ test('the localized DTO keeps free-form names and mechanics, with per-key fallba
 test('references to other equipment in rules use the same dictionary', () => {
   const text = new GameText(new TranslationDictionary(english, spanish));
   const arsenal = GAME_DATA.techniqueGroups.at(-1).techniques.find((technique) => technique.id === 'arsenal');
-  assert.match(text.technique(arsenal).description, /Bomba de humo/);
+  assert.ok(text.technique(arsenal).description.includes(spanish.items.smokeBomb.name));
 });

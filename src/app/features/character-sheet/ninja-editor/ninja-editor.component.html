@@ -1,6 +1,12 @@
 <fieldset class="ninja-editor">
   <legend class="sr-only">{{ i18n.t(Labels.editNinja, {number: index() + 1}) }}</legend>
-  <div class="editor-heading"><h2>{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</h2><span class="badge">{{ text.typeName(ninja().type) || i18n.t(Labels.noType) }}</span></div>
+  <div class="editor-heading">
+    <h2>{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</h2>
+    <span class="badge">
+      @if (typeIcon(); as icon) { <app-ui-icon [name]="icon" /> }
+      <span class="badge-label">{{ text.typeName(ninja().type) || i18n.t(Labels.noType) }}</span>
+    </span>
+  </div>
   <div class="identity-fields">
     <div class="text-field"><label [for]="'ninja-' + (index() + 1) + '-name'">{{ i18n.t(Labels.ninjaName) }}</label>
       <input [id]="'ninja-' + (index() + 1) + '-name'" [formControl]="name" [placeholder]="i18n.t(Labels.ninjaPlaceholder)"

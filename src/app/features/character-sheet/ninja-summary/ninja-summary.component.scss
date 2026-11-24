@@ -6,9 +6,10 @@
 .ninja-static-heading { display: none; font: inherit; }
 .ninja-summary:focus-within { outline: 2px solid #f4f4f4; outline-offset: 3px; }
 .ninja-select:focus-visible { outline: none; }
-.ninja-name, .ninja-type { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ninja-name, .ninja-type-label { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .ninja-name { font-size: .875rem; line-height: 1.5; }
-.ninja-type { color: var(--color-muted); font-size: .75rem; }
+.ninja-type { display: flex; align-items: center; gap: .25rem; color: var(--color-muted); font-size: .75rem; }
+.ninja-type-label { min-width: 0; }
 
 @media (min-width: 36rem) {
   .ninja-summary { padding: .75rem; }

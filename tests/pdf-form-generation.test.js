@@ -100,16 +100,17 @@ test('fills the single-card fields, separate chakra costs and named note positio
   assert.deepEqual(await readFile(new URL(exportTemplate.pdfUrl)), source);
 });
 
-test('fills translated technique and equipment text with English fallback, preserving costs and the original layout', async () => {
+test('fills the current translated technique and equipment text, preserving costs and the original layout', async () => {
   const band = localizeBand(createBand(), 'es');
   const bytes = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate(band, editableTemplate);
   const document = await PDFDocument.load(bytes);
   const form = document.getForm();
   assert.equal(form.getTextField('Ninja1_name').getText(), 'Renée');
-  assert.equal(form.getTextField('Ninja1_technique_1').getText(), 'Puerta protectora\nMokushin: Cancela 1 éxito del atacante por Chakra gastado. Máximo 5.');
-  assert.equal(form.getTextField('Ninja1_technique_2').getText(), 'Gate of Speed\nMove: +1" Movement per Chakra spent. Max +3".');
+  for (const [index, technique] of band.ninjas[0].techniqueGroup.techniques.entries()) {
+    assert.equal(form.getTextField(nameOf(index, '')).getText(), technique.name + '\n' + technique.description);
+  }
   assert.equal(form.getTextField('Ninja1_technique_1_cost').getText(), '1–5');
-  assert.match(form.getTextField('Ninja1_items_and_weapons').getText(), /Bomba de humo/);
+  assert.ok(form.getTextField('Ninja1_items_and_weapons').getText().includes(band.ninjas[0].equipment.items[0].name));
   assert.equal(iconEntries(document.getPage(0).node.Resources()).length, 1);
   const flattened = await new BandPdfGenerator({ fetchResource: fetchLocal }).generate(band, exportTemplate);
   const exported = await PDFDocument.load(flattened);

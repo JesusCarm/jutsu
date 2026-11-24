@@ -2,6 +2,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { provideTestI18n } from '../../../../tests/fixtures/i18n-testing';
 import { GameTextService } from '../../core/i18n/game-text.service';
 import { Labels } from '../../core/i18n/i18n-keys';
+import spanish from '../../../../public/i18n/es.json';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CharacterSheetComponent } from './character-sheet.component';
@@ -55,9 +56,9 @@ describe('Character sheet', () => {
     expect(es.getAttribute('aria-pressed')).toBe('true');
     expect(en.getAttribute('aria-pressed')).toBe('false');
     expect(element.querySelector('.editor-subtitle')!.textContent).toBe('Editor de escuadra');
-    expect(element.textContent).toContain('Puerta protectora');
-    expect(element.textContent).toContain('Gate of Speed');
-    expect(element.querySelector('#ninja-1-item-2-name')!.textContent).toContain('Bomba de humo');
+    expect(element.textContent).toContain(spanish.techniques.protectiveGate.name);
+    expect(element.textContent).toContain(spanish.techniques.gateOfSpeed.name);
+    expect(element.querySelector('#ninja-1-item-2-name')!.textContent).toContain(spanish.items.smokeBomb.name);
     expect(state.band()).toBe(band);
     expect(state.revision()).toBe(revision);
     expect(element.querySelector('#ninja-1-name')).toBe(name);
@@ -112,11 +113,9 @@ describe('Character sheet', () => {
     expect(element.querySelector('.equipment-details')!.textContent).toContain('1 action');
     const summary = element.querySelector('app-ninja-summary')!;
     expect(summary.querySelectorAll('.equipment-token:not(.is-empty)')).toHaveLength(4);
-    const weaponIcon = summary.querySelector('[data-equipment="kunai"] path')!.getAttribute('d');
-    const itemIcon = summary.querySelector('[data-equipment="smokeBomb"] path')!.getAttribute('d');
-    const emptyIcon = summary.querySelector('.is-empty path')!.getAttribute('d');
-    expect(weaponIcon).not.toBe(emptyIcon);
-    expect(itemIcon).not.toBe(weaponIcon);
+    expect(summary.querySelector<HTMLImageElement>('[data-equipment="kunai"] img')!.src).toContain('/assets/icons/kunai.svg');
+    expect(summary.querySelector<HTMLImageElement>('[data-equipment="smokeBomb"] img')!.src).toContain('/assets/icons/bomba_humo.svg');
+    expect(summary.querySelector('.is-empty svg path')).not.toBeNull();
     expect(summary.querySelector('[data-equipment="smokeBomb"]')).not.toBeNull();
     await select('ninja-1-weapon-2-name', '');
     expect(state.band().ninjas[0].equipment.weapons.map((entry) => entry.id)).toEqual(['kunai', '', 'shuriken']);
@@ -142,6 +141,15 @@ describe('Character sheet', () => {
     expect(element.querySelectorAll('input[type="number"]')).toHaveLength(0);
     expect(summaries[0].querySelectorAll('.mini-stat app-ui-icon')).toHaveLength(6);
     expect(summaries[0].querySelector<HTMLImageElement>('[data-stat="health"] img')!.src).toContain('/assets/icons/vida_ico.svg');
+    for (const [index, file] of ['fisico.svg', 'defensivo.svg', 'jutsu_master.svg'].entries()) {
+      expect(summaries[index].querySelector<HTMLImageElement>('.ninja-type img')!.src).toContain('/assets/icons/' + file);
+    }
+    await select('ninja-1-type', 'offensive');
+    expect(summaries[0].querySelector<HTMLImageElement>('.ninja-type img')!.src).toContain('/assets/icons/ofensivo.svg');
+    expect(element.querySelector<HTMLImageElement>('#ninja-1-panel .editor-heading .badge img')!.src).toContain('/assets/icons/ofensivo.svg');
+    await select('ninja-1-type', '');
+    expect(summaries[0].querySelector('.ninja-type img')).toBeNull();
+    expect(element.querySelector('#ninja-1-panel .editor-heading .badge img')).toBeNull();
   });
 
   it('switches the active editor without recreating forms, changing band data or invalidating the PDF', async () => {

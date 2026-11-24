@@ -34,7 +34,7 @@ describe('UI icons', () => {
   it('switches between supplied image files and inline icons when the input changes', async () => {
     const fixture = TestBed.createComponent(UiIconComponent);
     const element = fixture.nativeElement as HTMLElement;
-    fixture.componentRef.setInput('name', 'kunai');
+    fixture.componentRef.setInput('name', 'file');
     await fixture.whenStable();
     expect(element.querySelector('svg path')).not.toBeNull();
     expect(element.querySelector('img')).toBeNull();

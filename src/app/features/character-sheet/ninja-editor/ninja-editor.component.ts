@@ -8,10 +8,12 @@ import { BandStateService } from '../band-state.service';
 import { CatalogSelectComponent } from '../catalog-select/catalog-select.component';
 import { TechniqueGroupEditorComponent } from '../technique-group-editor/technique-group-editor.component';
 import { EquipmentListEditorComponent } from '../equipment-list-editor/equipment-list-editor.component';
+import { UiIconComponent } from '../../../shared/ui-icon/ui-icon.component';
+import { NinjaTypePresentation } from '../ninja-type-presentation';
 
 @Component({
   selector: 'app-ninja-editor',
-  imports: [ReactiveFormsModule, CatalogSelectComponent, TechniqueGroupEditorComponent, EquipmentListEditorComponent],
+  imports: [ReactiveFormsModule, CatalogSelectComponent, TechniqueGroupEditorComponent, EquipmentListEditorComponent, UiIconComponent],
   templateUrl: './ninja-editor.component.html',
   styleUrl: './ninja-editor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +28,8 @@ export class NinjaEditorComponent {
   protected readonly state = inject(BandStateService);
   protected readonly types = computed(() => this.state.catalog.ninjaTypes.map((type) => ({ id: type.id, label: this.text.typeName(type.id) })));
   protected readonly name = new FormControl('', { nonNullable: true });
+  private readonly typePresentation = new NinjaTypePresentation();
+  protected readonly typeIcon = computed(() => this.typePresentation.icon(this.ninja().type));
 
   constructor() {
     effect(() => {
