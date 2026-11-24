@@ -181,13 +181,13 @@ describe('Character sheet', () => {
     expect(state.band().name).toBe('Los Cuervos');
     element.querySelector<HTMLButtonElement>('#generate-pdf')!.click();
     await fixture.whenStable();
-    expect(element.querySelector('.pdf-file-name')!.textContent).toBe('Los-Cuervos.pdf');
-    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'Los-Cuervos.pdf');
+    expect(element.querySelector('.pdf-file-name')!.textContent).toBe('jutsu-squad-Los-Cuervos.pdf');
+    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Los-Cuervos.pdf');
     expect(download.disabled).toBe(false);
     expect(print.disabled).toBe(false);
     download.click();
     await fixture.whenStable();
-    expect(files.download).toHaveBeenCalledWith(new Uint8Array([37, 80, 68, 70]), 'Los-Cuervos.pdf');
+    expect(files.download).toHaveBeenCalledWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Los-Cuervos.pdf');
     expect(files.download).toHaveBeenCalledTimes(2);
     print.click();
     await fixture.whenStable();

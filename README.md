@@ -131,7 +131,7 @@ El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe d
 
 1. Introduce el nombre de **Escuadra** si quieres personalizar el nombre del archivo y completa los ninjas. En móvil, toca su minificha para elegir el personaje que quieres editar.
 2. Elige **Plantilla de ficha**. Por ahora contiene únicamente la plantilla original con Eagle Lake.
-3. Pulsa **Generar y descargar PDF**, en la barra de iconos o al pie del editor. Al terminar se inicia automáticamente la descarga y aparecen el nombre del archivo y los botones de exportación habilitados. Por ejemplo, `Los Cuervos` produce `Los-Cuervos.pdf`; si no hay nombre se usa `jutsu-squad.pdf`. Los caracteres incompatibles con nombres de archivo se sustituyen y los nombres largos se limitan.
+3. Pulsa **Generar y descargar PDF**, en la barra de iconos o al pie del editor. Al terminar se inicia automáticamente la descarga y aparecen el nombre del archivo y los botones de exportación habilitados. Por ejemplo, `Los Cuervos` produce `jutsu-squad-Los-Cuervos.pdf`; si no hay nombre se usa `jutsu-squad.pdf`. Los caracteres incompatibles con nombres de archivo se sustituyen y los nombres largos se limitan.
 4. El icono **Descargar PDF** permite descargar de nuevo el documento generado, también si el navegador no inició la descarga automática.
 5. El icono **Abrir PDF para imprimir** abre el mismo documento en otra pestaña. Utiliza los controles de impresión del visor PDF. Si el navegador bloquea la pestaña, el estado indica que debes permitir ventanas emergentes para este sitio y reintentar. Los iconos tienen etiquetas accesibles y muestran su acción al pasar el puntero.
 

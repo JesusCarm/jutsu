@@ -27,7 +27,7 @@ describe('PDF export actions', () => {
     expect(files.download).not.toHaveBeenCalled();
     release(new Uint8Array([37, 80, 68, 70]));
     await pending;
-    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'Los-Cuervos.pdf');
+    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Los-Cuervos.pdf');
     expect(exports.status().message).toBe('Download started.');
   });
 
@@ -60,7 +60,7 @@ describe('PDF export actions', () => {
     state.setBandName('Águilas del fuego');
     await pdf.generate();
     exports.download();
-    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'Águilas-del-fuego.pdf');
+    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Águilas-del-fuego.pdf');
     files.download.mock.calls[0][0][0] = 0;
     exports.openForPrinting();
     expect(files.openForPrinting).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]));
