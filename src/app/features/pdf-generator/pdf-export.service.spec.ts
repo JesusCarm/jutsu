@@ -20,14 +20,14 @@ describe('PDF export actions', () => {
     let release!: (bytes: Uint8Array) => void;
     const generate = vi.fn<GenerateBandPdf>(() => new Promise((resolve) => { release = resolve; }));
     const { files, exports, state } = setup(generate);
-    state.setBandName('Los Cuervos');
+    state.setBandName('The Ravens');
     const pending = exports.generateAndDownload();
     await exports.generateAndDownload();
     expect(generate).toHaveBeenCalledTimes(1);
     expect(files.download).not.toHaveBeenCalled();
     release(new Uint8Array([37, 80, 68, 70]));
     await pending;
-    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Los-Cuervos.pdf');
+    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-The-Ravens.pdf');
     expect(exports.status().message).toBe('Download started.');
   });
 
@@ -57,15 +57,15 @@ describe('PDF export actions', () => {
     expect(files.download).not.toHaveBeenCalled();
     expect(files.openForPrinting).not.toHaveBeenCalled();
     expect(exports.status().phase).toBe('error');
-    state.setBandName('Águilas del fuego');
+    state.setBandName('Café Ninjas');
     await pdf.generate();
     exports.download();
-    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Águilas-del-fuego.pdf');
+    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Café-Ninjas.pdf');
     files.download.mock.calls[0][0][0] = 0;
     exports.openForPrinting();
     expect(files.openForPrinting).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]));
     expect(exports.status().message).toContain('print controls');
-    state.setBandName('Cuervos');
+    state.setBandName('Ravens');
     expect(exports.status().message).toBe('Ready to generate your sheet.');
     exports.download();
     expect(files.download).toHaveBeenCalledTimes(1);

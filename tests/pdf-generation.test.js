@@ -27,7 +27,7 @@ async function fetchLocal(url) {
 function createBand(groupOffset = 0) {
   const band = new Band();
   band.ninjas.forEach((ninja, index) => {
-    ninja.name = ['Águila', 'Kaede', 'Maestro Ñ'][index];
+    ninja.name = ['Renée', 'Kaede', 'Master Ñ'][index];
     ninja.selectType(catalog.ninjaTypes[index]);
     ninja.techniqueGroup.selectGroup(catalog.techniqueGroups[groupOffset + index]);
     ninja.equipment.addEntry('weapons');
@@ -84,7 +84,7 @@ test('text layout fits all lines inside their box and reports overflow instead o
   const family = await new PdfFontProvider(pdf, template.fontUrls, fetchLocal)
     .getFamily({ font: 'Eagle Lake', fallbackFonts: ['DejaVu Sans'] });
   const box = { x: 10, y: 20, width: 120, height: 65 };
-  const result = new PdfTextLayout().fit('Movement → 4 inches. Águila can move again.', family, box, {
+  const result = new PdfTextLayout().fit('Movement → 4 inches. Renée can move again.', family, box, {
     fontSize: 9, minFontSize: 6, alignment: 'center', verticalAlignment: 'middle', lineHeight: null,
   });
   for (const line of result.lines) {

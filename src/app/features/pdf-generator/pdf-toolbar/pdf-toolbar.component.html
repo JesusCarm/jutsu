@@ -1,11 +1,11 @@
-<div class="pdf-toolbar" role="group" aria-label="Acciones de la ficha">
+<div class="pdf-toolbar" role="group" aria-label="Sheet actions">
   <button class="icon-button" id="generate-pdf" type="button" [disabled]="pdf.generating()"
-    title="Generar y descargar PDF" aria-label="Generar y descargar PDF" aria-describedby="pdf-status"
+    title="Generate and download PDF" aria-label="Generate and download PDF" aria-describedby="pdf-status"
     (click)="exports.generateAndDownload()"><app-ui-icon name="file" /></button>
   <button class="icon-button" id="download-pdf" type="button" [disabled]="!pdf.hasPdf()"
-    title="Descargar PDF" aria-label="Descargar PDF" aria-describedby="pdf-status"
+    title="Download PDF" aria-label="Download PDF" aria-describedby="pdf-status"
     (click)="exports.download()"><app-ui-icon name="download" /></button>
   <button class="icon-button" id="print-pdf" type="button" [disabled]="!pdf.hasPdf()"
-    title="Abrir PDF para imprimir" aria-label="Abrir PDF para imprimir" aria-describedby="pdf-status"
+    title="Open PDF for printing" aria-label="Open PDF for printing" aria-describedby="pdf-status"
     (click)="exports.openForPrinting()"><app-ui-icon name="printer" /></button>
 </div>

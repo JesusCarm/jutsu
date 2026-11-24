@@ -21,7 +21,7 @@ export class EquipmentListEditorComponent {
   protected readonly slots = computed(() => this.presentation.slots(this.kind(), this.entries()));
   protected readonly hasEquipment = computed(() => this.entries().some((entry) => entry.name));
   protected readonly options = computed(() => this.state.catalog.getEquipment(this.kind()));
-  protected readonly emptyLabel = computed(() => this.kind() === 'weapons' ? 'Sin arma' : 'Sin objeto');
+  protected readonly emptyLabel = computed(() => this.kind() === 'weapons' ? 'No weapon' : 'No item');
 
   protected controlId(index: number): string {
     return `ninja-${this.ninjaIndex() + 1}-${this.kind() === 'weapons' ? 'weapon' : 'item'}-${index + 1}-name`;

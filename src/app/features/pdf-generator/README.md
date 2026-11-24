@@ -1,14 +1,14 @@
-# Plantilla y generación de PDF
+# PDF templates and generation
 
-La plantilla activa es el formulario de **un ninja** `src/assets/pdf/fichas_rellenables.pdf`. El generador lo rellena tres veces, una por personaje, y compone las tres fichas en una página A4 estática sin bordes ni fondos de formulario. Las posiciones y dimensiones se leen de los campos y las notas del PDF; no se carga el JSON de coordenadas. El archivo de plantilla sigue siendo rellenable y no se modifica.
+The active template is the **single-ninja** form `src/assets/pdf/fichas_rellenables.pdf`. The generator fills it three times, once per character, and composes all three cards on one static A4 page without form borders or backgrounds. Positions and dimensions come from PDF fields and notes; no coordinate JSON is loaded. The source template remains fillable and unchanged.
 
-`JutsuPdfTemplate` recibe la URL base de los recursos locales y proporciona el mapeo de `JutsuFormFields`. Angular CLI copia `src/assets/` a `assets/` sin modificar los archivos. `PlatformAssetsService` resuelve esa base respecto al `<base href>` de la aplicación, también cuando se sirve desde una subcarpeta.
+`JutsuPdfTemplate` receives the local asset base URL and supplies the `JutsuFormFields` mapping. Angular CLI copies `src/assets/` to `assets/` without modifying files. `PlatformAssetsService` resolves that base against the application's `<base href>`, including deployment under a subdirectory.
 
-## Referencia y campos
+## Reference and fields
 
-El formulario contiene **15 campos de texto** en una página de **595,44 × 288 pt**. Todos usan el prefijo `Ninja1_`: cada copia recibe un ninja diferente antes de aplanarla. El mapeo conserva los nombres originales del PDF:
+The form has **15 text fields** on one **595.44 × 288 pt** page. All use the `Ninja1_` prefix: each copy receives a different ninja before flattening. The mapping preserves the original PDF field names:
 
-| Sufijo del campo | Propiedad del ninja |
+| Field suffix | Ninja property |
 | --- | --- |
 | `name` | `name` |
 | `technique_group` | `techniqueGroup.name` |
@@ -18,29 +18,29 @@ El formulario contiene **15 campos de texto** en una página de **595,44 × 288 
 | `stats_hability` | `stats.skill` |
 | `stats_chakra` | `stats.chakra` |
 | `stats_life` | `stats.health` |
-| `technique_1`, `technique_2`, `technique_3` | Las tres entradas de `techniqueGroup.techniques` |
-| `technique_1_cost`, `technique_2_cost`, `technique_3_cost` | El valor `chakra` de cada técnica |
-| `items_and_weapons` | `equipment.weapons` y `equipment.items` |
+| `technique_1`, `technique_2`, `technique_3` | The three entries in `techniqueGroup.techniques` |
+| `technique_1_cost`, `technique_2_cost`, `technique_3_cost` | Each technique's `chakra` value |
+| `items_and_weapons` | `equipment.weapons` and `equipment.items` |
 
-Por ejemplo, `Ninja1_items_and_weapons` combina el equipo del personaje que se está rellenando. El orden confirmado de los iconos es **ataque, defensa, movimiento, habilidad, chakra y vida**. El tipo de ninja no tiene un campo propio en esta plantilla.
+For example, `Ninja1_items_and_weapons` combines the equipment of the character currently being filled. The confirmed icon order is **attack, defense, movement, skill, chakra, health**. Ninja type has no separate field in this template.
 
-La representación de valores sigue estas reglas:
+Values are displayed according to these rules:
 
-- Los números conservan el cero; los datos sin seleccionar vacían el campo, incluido cualquier valor previo de la plantilla.
-- Cada técnica ocupa un campo multilínea con nombre y descripción. Las menciones de Mokushin que forman parte de las reglas se conservan.
-- El coste se escribe por separado en su campo `_cost`, junto al icono de chakra que ya forma parte del diseño. Admite números y texto: `0`, `5`, `1–3`, `1–5` y `3 + 1/round`. No se duplica en el cuerpo de la técnica.
-- El inventario contiene los nombres de las armas y objetos, separados por comas, omitiendo los huecos vacíos.
-- Los demás campos son de una sola línea.
+- Numbers preserve zero. Unselected data clears the field, including any previous template value.
+- Each technique occupies a multiline field containing its name and description. Mokushin references that form part of the rules are preserved.
+- The cost is written separately in its `_cost` field, next to the chakra icon already included in the artwork. It accepts numbers and text: `0`, `5`, `1–3`, `1–5`, and `3 + 1/round`. It is not repeated in the technique body.
+- Inventory contains weapon and item names separated by commas, omitting empty slots.
+- Other fields use a single line.
 
-El generador valida que los campos esperados existan, sean de texto y tengan widgets asociados a páginas y vinculados a su campo canónico. Rechaza nombres duplicados y widgets huérfanos. Actualiza tanto el valor `/V` como la apariencia `/AP` de cada widget.
+The generator validates that expected fields exist, are text fields, and have widgets attached to pages and linked to their canonical fields. It rejects duplicate names and orphan widgets. Both the canonical `/V` value and each widget's `/AP` appearance are updated.
 
-`JutsuPdfTemplate.formOutput` es `flattened`: se omiten los bordes y fondos de las cajas, se incorporan las apariencias a la página y se eliminan los widgets y el árbol AcroForm. El visor ya no puede mostrar cajas de edición ni resaltarlas. Los marcos decorativos del diseño original se conservan. El texto sigue siendo vectorial, sin convertir la página en una imagen, y los cambios de personajes se hacen en la aplicación antes de volver a generar.
+`JutsuPdfTemplate.formOutput` is `flattened`: form borders and backgrounds are omitted, appearances become page content, and widgets and the AcroForm tree are removed. The viewer can no longer display or highlight editable boxes. Decorative frames from the original design remain. Text stays vector-based without converting the page into an image; character changes are made in the application before regenerating.
 
-El motor también admite una ficha individual editable con `repeatedSheet: undefined` y `formOutput: 'editable'`. Las plantillas sin `formOutput` mantienen ese comportamiento editable. La composición de varias fichas exige `flattened`, para que sus campos no compartan valores. Las pruebas reabren ambos resultados: comparan los quince valores canónicos y heredados de cada ficha editable y comprueban que la exportación A4 contenga tres fichas independientes con quince apariencias cada una, sin bordes, widgets ni árbol de formulario. También verifican que la plantilla original no cambie.
+The engine also supports an individual editable card with `repeatedSheet: undefined` and `formOutput: 'editable'`. Templates without `formOutput` retain editable behavior. Multiple-card composition requires `flattened` so fields cannot share values. Tests reopen both outputs: they compare the fifteen canonical and inherited values on each editable card and verify three independent cards with fifteen appearances each on static A4 output, without borders, widgets, or a form tree. They also check that the source template is unchanged.
 
-## Marcadores de Mokushin
+## Mokushin markers
 
-La posición de cada icono se define mediante una anotación PDF de tipo nota (`/Text`), cuyo **contenido** es uno de estos identificadores:
+Each icon position is defined by a PDF note annotation (`/Text`) whose **contents** are one of these identifiers:
 
 ```text
 Ninja1_technique_1_mokushin
@@ -48,49 +48,49 @@ Ninja1_technique_2_mokushin
 Ninja1_technique_3_mokushin
 ```
 
-Se ignoran espacios exteriores y diferencias entre mayúsculas y minúsculas; la plantilla actual mezcla `mokushin` y `Mokushin`. `PdfNoteMarkers` obtiene el rectángulo `/Rect`, valida que el marcador exista una sola vez y tenga dimensiones positivas, y elimina la nota y sus posibles ventanas emergentes. Las capas y bookmarks no intervienen.
+Leading/trailing whitespace and letter case are ignored; the current template mixes `mokushin` and `Mokushin`. `PdfNoteMarkers` reads `/Rect`, validates that each marker occurs exactly once with positive dimensions, and removes the note and any associated pop-ups. Layers and bookmarks are not used.
 
-Cuando `isMokushin` es verdadero, `PdfNoteIconRenderer` coloca `mokushin_ico.svg` centrado en ese rectángulo, conservando su proporción. En caso contrario, el espacio queda vacío. La plantilla no necesita una imagen fija de Mokushin y el PDF generado no muestra los iconos de nota. Los errores de marcadores o recursos indican el identificador y el ninja afectado.
+When `isMokushin` is true, `PdfNoteIconRenderer` centers `mokushin_ico.svg` in that rectangle, preserving its aspect ratio. Otherwise, the space remains empty. The template does not need a fixed Mokushin image, and generated PDFs do not display note icons. Marker or resource errors identify the affected marker and ninja.
 
-El icono se carga desde `JutsuPdfTemplate.iconUrls` y se incrusta una sola vez por ficha, solo si alguna técnica lo utiliza. `PdfSvgIcon` conserva como vectores los trazados monocromos, grupos con transformaciones matriciales y regla de relleno del SVG de Affinity; omite su rectángulo transparente de referencia. Rechaza otros tipos de elementos y transformaciones para evitar una conversión parcial. No requiere DOM, canvas ni dependencias externas.
+The icon is loaded from `JutsuPdfTemplate.iconUrls` and embedded once per card, only when a technique uses it. `PdfSvgIcon` preserves the Affinity SVG's monochrome paths, matrix-transformed groups, and fill rule as vectors, omitting its transparent reference rectangle. It rejects other element and transform types to avoid partial conversion. It requires no DOM, canvas, or external dependencies.
 
-## Composición de la página
+## Page composition
 
-`JutsuPdfTemplate.repeatedSheet` declara tres copias en A4 (**595,28 × 841,89 pt**). `BandSheetPdfGenerator` toma los tres ninjas de la instantánea y rellena una copia independiente del formulario para cada uno, usando siempre los nombres `Ninja1_`. La plantilla, las fuentes y el SVG se solicitan una sola vez por generación, aunque cada ficha tiene su propio documento y sus valores.
+`JutsuPdfTemplate.repeatedSheet` declares three copies on A4 (**595.28 × 841.89 pt**). `BandSheetPdfGenerator` takes the snapshot's three ninjas and fills an independent form copy for each, always using the `Ninja1_` field names. The template, fonts, and SVG are fetched once per generation, although each card has its own document and values.
 
-Cada copia se aplana antes de incorporarla a la página final. `PdfSheetComposer` divide la página en tres espacios verticales iguales, ajusta cada ficha proporcionalmente y la centra dentro de su espacio. El orden de arriba abajo coincide con el del editor. Los textos y dibujos se incrustan como recursos vectoriales; no se rasterizan las fichas.
+Each copy is flattened before being added to the final page. `PdfSheetComposer` divides the page into three equal vertical slots, scales each card proportionally, and centers it within its slot. Top-to-bottom order matches the editor. Text and artwork are embedded as vector resources; the cards are not rasterized.
 
-Una plantilla con más de una página, un número de ninjas distinto del esperado o un modo de salida editable produce un error en lugar de una composición parcial.
+A template containing more than one page, an unexpected number of ninjas, or editable output mode produces an error instead of partial composition.
 
-## Tipografía
+## Typography
 
-La fuente principal es **Eagle Lake**, con su archivo local en `src/assets/fonts/Eagle_Lake/`. Sus símbolos ausentes se toman de **DejaVu Sans**. La fuente de respaldo solo se usa en los caracteres que no existen en la principal, por ejemplo → y ≥.
+The main font is **Eagle Lake**, loaded locally from `src/assets/fonts/Eagle_Lake/`. Missing symbols use **DejaVu Sans**. The fallback applies only to characters absent from the main font, such as → and ≥.
 
-`JutsuFormFields` define la tipografía de cada campo. Los nombres parten de 14 pt, las estadísticas de 11 pt y los demás textos de 9 pt. Las técnicas se alinean arriba; las estadísticas y costes se centran. Los costes pueden reducirse hasta 4 pt para conservar íntegro `3 + 1/round` en la caja estrecha de la plantilla. Para aumentar su legibilidad, se puede ampliar esa caja en el PDF. La composición A4 aplica después una escala uniforme a cada ficha. Un estilo `typography` admite estas propiedades:
+`JutsuFormFields` defines typography per field. Names start at 14 pt, stats at 11 pt, and other text at 9 pt. Techniques align at the top; stats and costs are centered. Costs can shrink to 4 pt to preserve the full `3 + 1/round` value in the template's narrow box. Widening that PDF field improves readability. A4 composition then scales each card uniformly. A `typography` style supports these properties:
 
-| Propiedad | Uso |
+| Property | Purpose |
 | --- | --- |
-| `font` | Nombre de la fuente principal registrado en `JutsuPdfTemplate.fontUrls`. |
-| `fallbackFonts` | Fuentes de respaldo para glifos ausentes. |
-| `fontSize` | Tamaño inicial del texto. |
-| `minFontSize` | Tamaño mínimo permitido al ajustar el contenido. |
-| `fontSizeUnit` | `pt` para puntos PDF, o `px` si la referencia de la página también usa píxeles. |
-| `lineHeight` | Distancia entre líneas; `null` usa las métricas de las líneas. Al reducir el tamaño se escala proporcionalmente. |
-| `alignment` | `left`, `center` o `right`. |
-| `verticalAlignment` | `top`, `middle` o `bottom`. |
-| `color` | Color `#RRGGBB`. |
+| `font` | Main font name registered in `JutsuPdfTemplate.fontUrls`. |
+| `fallbackFonts` | Fallback fonts for missing glyphs. |
+| `fontSize` | Initial text size. |
+| `minFontSize` | Minimum permitted size when fitting content. |
+| `fontSizeUnit` | `pt` for PDF points, or `px` when the page reference also uses pixels. |
+| `lineHeight` | Line spacing; `null` uses line metrics. Scales proportionally when text shrinks. |
+| `alignment` | `left`, `center`, or `right`. |
+| `verticalAlignment` | `top`, `middle`, or `bottom`. |
+| `color` | `#RRGGBB` color. |
 
-El compositor mide los glifos, divide líneas y reduce el tamaño dentro de los límites del campo, dejando un margen interior respecto al borde. Tiene en cuenta acentos, descendentes y salientes laterales. No recorta contenido: si no puede encajarlo al tamaño mínimo, la generación informa del campo afectado. El modo editable conserva los bordes y fondos de los campos; el estático los omite sin desplazar el texto. La plantilla actual no contiene widgets rotados; estos se rechazan con un error explícito.
+The layout engine measures glyphs, wraps lines, and shrinks text within field bounds while retaining inner padding. It accounts for accents, descenders, and side bearings. Content is not truncated: generation identifies the affected field if the text cannot fit at the minimum size. Editable output preserves field borders and backgrounds; static output omits them without moving the text. The current template has no rotated widgets; those are rejected with an explicit error.
 
-Los tipos de letra se incrustan con `@pdf-lib/fontkit`: el modo estático incluye los glifos utilizados; el modo editable incluye las fuentes completas para admitir cambios posteriores. Las apariencias permiten combinar las dos fuentes en una misma línea. No se rasteriza la plantilla ni el texto. Las fuentes y sus licencias se incluyen en la aplicación; no se necesitan las etiquetas de Google Fonts para generar el PDF.
+Fonts are embedded with `@pdf-lib/fontkit`: static output includes used glyphs; editable output includes complete fonts for later changes. Appearances can combine both fonts on one line. Neither the template nor its text is rasterized. Font files and licenses are included locally; Google Fonts link tags are not required for PDF generation.
 
-## Compatibilidad con coordenadas
+## Coordinate compatibility
 
-Las plantillas que no declaran `formFields` ni `repeatedSheet` siguen usando el motor de coordenadas original. Se conserva `fichas_rellenables_coordenadas.json`, con sus 69 campos declarados y 54 activos, como referencia de la plantilla anterior de tres ninjas. Los quince pendientes siguen desactivados y sus metadatos de revisión se conservan. Ese JSON no corresponde a las dimensiones del formulario individual activo. La prueba de equivalencia del motor anterior usa un lienzo con las dimensiones originales, independiente del diseño actual.
+Templates without `formFields` or `repeatedSheet` still use the original coordinate engine. `fichas_rellenables_coordenadas.json` remains as a reference for the previous three-ninja template, with 69 declared fields and 54 active fields. The fifteen pending fields remain disabled, and review metadata is preserved. That JSON does not match the active individual form's dimensions. The legacy equivalence test uses the original catalog fixture and canvas dimensions, independent of current game rules and artwork.
 
-En ese modo, `configUrl` apunta al JSON y la propiedad `pdf` del JSON se resuelve respecto a su URL. Las rutas como `ninjas.0.name` identifican los datos. `sources` permite combinar armas y objetos. Los formatos `text`, `number`, `boolean` y `list` conservan su comportamiento anterior.
+In that mode, `configUrl` points to the JSON, and its `pdf` property resolves relative to that URL. Paths such as `ninjas.0.name` identify data. `sources` combines weapons and items. The `text`, `number`, `boolean`, and `list` formats retain their previous behavior.
 
-Las cajas se introducen como `x`, `y`, `width` y `height`, desde la esquina superior izquierda de la página de referencia. `page: 0` es la primera página; las tres fichas actuales pertenecen a ella.
+Boxes use `x`, `y`, `width`, and `height` measured from the reference page's top-left corner. `page: 0` is the first page; the original three-card coordinate configuration places all cards there.
 
 ```text
 scaleX = PDF.width / reference.width
@@ -102,72 +102,72 @@ pdfWidth  = box.width * scaleX
 pdfHeight = box.height * scaleY
 ```
 
-Se utilizan las dimensiones reales del `MediaBox`, incluidas sus coordenadas de origen. También se admiten otras plantillas con referencias en píxeles: deben declarar su ancho y alto reales en píxeles. No se presupone una resolución DPI ni una equivalencia entre píxeles y puntos.
+The real `MediaBox` dimensions and origin coordinates are used. Other templates can use pixel references if their actual reference width and height are provided in pixels. No DPI or pixel-to-point equivalence is assumed.
 
-El resultado de `AffinityCoordinateConverter.toPdfBox()` tiene origen inferior izquierdo. El compositor determina después la línea base con las métricas reales de la fuente; el borde inferior de la caja no se utiliza directamente como línea base.
+`AffinityCoordinateConverter.toPdfBox()` returns a box with a bottom-left origin. The layout engine then calculates the baseline from actual font metrics; the box's bottom edge is not used directly as the baseline.
 
-## Responsabilidades de las clases
+## Class responsibilities
 
-| Clase | Responsabilidad |
+| Class | Responsibility |
 | --- | --- |
-| `JutsuFormFields` | Nombres AcroForm, rutas del modelo y estilos de la ficha actual. |
-| `BandFormPdfGenerator` | Validación del formulario y coordinación del rellenado. |
-| `BandSheetPdfGenerator` | Generación independiente por ninja y reutilización de las cargas de recursos. |
-| `PdfSheetComposer` | Composición proporcional de las fichas en una página. |
-| `PdfFormValueFormatter` | Composición de técnicas y delegación de valores simples. |
-| `PdfFormFieldRenderer` | Valores editables y apariencias vectoriales de los widgets. |
-| `PdfIconProvider` | Carga y reutilización de iconos incrustados en el documento. |
-| `PdfSvgIcon` | Conversión de los trazados SVG de Affinity a un recurso PDF vectorial. |
-| `PdfNoteMarkers` | Lectura, validación y retirada de las notas que marcan iconos. |
-| `PdfNoteIconRenderer` | Colocación del SVG dentro del rectángulo de una nota. |
-| `PdfTemplateConfig` | Validación de campos, estilos, páginas y estado pendiente. |
-| `PdfTemplateConfigLoader` | Lectura del JSON. |
-| `PdfTemplateLoader` | Lectura de la plantilla PDF. |
-| `PdfDocument` | Documento, páginas, fuentes incrustadas, aplanado y serialización. |
-| `BandFieldResolver` | Lectura de una ruta sobre los datos de la banda. |
-| `PdfFieldFormatter` | Conversión de valores a texto. |
-| `PdfFontProvider` | Carga e incrustación de recursos de fuentes. |
-| `PdfFontFamily` | Elección de glifos y cálculo de sus métricas. |
-| `PdfTextLayout` | Líneas, ajuste de tamaño y posiciones del texto. |
-| `PdfFieldRenderer` | Escritura del texto sobre la página. |
-| `BandPdfGenerator` | Instantánea de datos y selección del motor de composición, formulario o coordenadas. |
-| `JutsuPdfTemplate` | URLs y mapeo de campos de esta plantilla. |
-| `PdfTemplatesService` | Catálogo de plantillas disponibles y selección independiente de la banda. |
-| `PdfGenerationService` | Generación asíncrona, estado y bytes del último PDF válido. |
-| `PdfFileName` | Nombre de archivo a partir del nombre de la banda. |
-| `PdfBrowserFilesService` | Descargas, pestañas PDF y ciclo de vida de sus URLs temporales. |
-| `PdfExportService` | Acciones de exportación del PDF vigente y mensajes de resultado. |
+| `JutsuFormFields` | AcroForm names, model paths, and styles for the current card. |
+| `BandFormPdfGenerator` | Form validation and filling coordination. |
+| `BandSheetPdfGenerator` | Independent ninja generation and resource-fetch reuse. |
+| `PdfSheetComposer` | Proportional placement of cards on one page. |
+| `PdfFormValueFormatter` | Technique composition and scalar-format delegation. |
+| `PdfFormFieldRenderer` | Editable values and vector widget appearances. |
+| `PdfIconProvider` | Loading and reusing embedded icons within a document. |
+| `PdfSvgIcon` | Converting Affinity SVG paths into a vector PDF resource. |
+| `PdfNoteMarkers` | Reading, validating, and removing icon marker notes. |
+| `PdfNoteIconRenderer` | Placing an SVG within a note's rectangle. |
+| `PdfTemplateConfig` | Validation of fields, styles, pages, and pending state. |
+| `PdfTemplateConfigLoader` | Reading coordinate JSON. |
+| `PdfTemplateLoader` | Loading the PDF template. |
+| `PdfDocument` | Document, pages, embedded fonts, flattening, and serialization. |
+| `BandFieldResolver` | Reading a data path from the squad. |
+| `PdfFieldFormatter` | Converting values to text. |
+| `PdfFontProvider` | Loading and embedding font resources. |
+| `PdfFontFamily` | Glyph selection and font metrics. |
+| `PdfTextLayout` | Line wrapping, size fitting, and text positions. |
+| `PdfFieldRenderer` | Writing text onto a page. |
+| `BandPdfGenerator` | Data snapshot and composition/form/coordinate engine selection. |
+| `JutsuPdfTemplate` | Asset URLs and field mappings for this template. |
+| `PdfTemplatesService` | Available template catalog and selection independent of squad state. |
+| `PdfGenerationService` | Asynchronous generation, status, and latest valid PDF bytes. |
+| `PdfFileName` | Download filename derived from the squad name. |
+| `PdfBrowserFilesService` | Downloads, PDF tabs, and temporary URL lifecycle. |
+| `PdfExportService` | Export actions for the current PDF and their result messages. |
 
-## Uso
+## Usage
 
-En un módulo de la aplicación:
+Inside an application module:
 
 ```ts
 const template = new JutsuPdfTemplate(assetBaseUrl);
 const bytes = await new BandPdfGenerator().generate(band, template);
 ```
 
-El generador toma una copia JSON de la banda antes de cargar los recursos. Las clases del modelo conservan sus métodos y datos; la copia se utiliza únicamente para rellenar el documento. El PDF original no se modifica.
+The generator takes a JSON snapshot before loading resources. Model instances retain their methods and data; only the snapshot is used to fill the document. The original PDF is not modified.
 
-La acción **Generar y descargar PDF**, en la barra de iconos y al pie del editor, llama a `PdfExportService.generateAndDownload()`: espera a que `PdfGenerationService` guarde los bytes válidos e inicia su descarga. Si la generación falla o queda obsoleta, no intenta descargar. Los clics repetidos durante una generación se ignoran. `getPdfBytes()` devuelve una copia del último resultado válido o `null`. Las ediciones del formulario y los cambios de plantilla lo invalidan; un resultado que se termina de generar después de alguno de esos cambios se descarta, incluso si se vuelve a elegir la plantilla anterior. Seleccionar otra minificha para editar no modifica los datos ni invalida el resultado.
+**Generate and download PDF**, available in the toolbar and below the editor, calls `PdfExportService.generateAndDownload()`: it waits for `PdfGenerationService` to store valid bytes and starts download. Failed or stale generation does not download. Repeated clicks while generating are ignored. `getPdfBytes()` returns a copy of the latest valid result or `null`. Form edits and template changes invalidate it; a result completed after either change is discarded, even if the previous template is selected again. Selecting another mini sheet does not change data or invalidate the PDF.
 
-El icono **Descargar PDF** permite repetir la descarga de esos mismos bytes como un Blob `application/pdf`, con un enlace temporal. `PdfFileName` utiliza `jutsu-squad-[nombre].pdf` cuando la banda tiene nombre y `jutsu-squad.pdf` si está vacío. Conserva Unicode y sustituye caracteres incompatibles. El icono **Abrir PDF para imprimir** abre un Blob independiente de forma síncrona desde el clic y deja la impresión a los controles del visor. Un bloqueo de la pestaña se muestra como error y permite reintentar sin regenerar.
+**Download PDF** downloads those same bytes again as an `application/pdf` Blob through a temporary link. `PdfFileName` uses `jutsu-squad-[name].pdf` for a named squad and `jutsu-squad.pdf` for an empty name. It preserves Unicode and replaces unsupported characters. **Open PDF for printing** opens an independent Blob synchronously from the click and leaves printing to the viewer. A blocked tab becomes a visible error that can be retried without regenerating.
 
-Las URLs de descarga se revocan a los 60 segundos. Las de impresión se conservan hasta detectar el cierre de su pestaña, aunque después se edite la banda. `PdfBrowserFilesService` libera URLs y temporizadores al destruir la aplicación. Los datos y los bytes siguen en memoria local; no se suben archivos ni se introduce persistencia.
+Download URLs are revoked after 60 seconds. Printing URLs remain until their tabs close, even if the squad is edited in the meantime. `PdfBrowserFilesService` releases URLs and timers when the application is destroyed. Data and bytes stay in local memory; files are not uploaded, and no persistence is introduced.
 
-## Plantillas disponibles
+## Available templates
 
-`PDF_TEMPLATE_OPTIONS`, en `pdf-templates.ts`, registra identificador, etiqueta y una función que crea los recursos de cada plantilla a partir de la base local. Solo está registrada la plantilla original **Jutsu — three ninjas per page**, según lo acordado para esta fase. El PDF de prueba de `public/templates/` no se ofrece como ficha.
+`PDF_TEMPLATE_OPTIONS`, in `pdf-templates.service.ts`, registers each template's identifier, label, and asset factory. Only **Jutsu — three ninjas per page** is registered, as agreed for this phase. The test PDF in `public/templates/` is not offered as a character sheet.
 
-Para incorporar otra plantilla real, añade su PDF a `src/assets/pdf/` y registra una opción con identificador único, fuentes y mapeo `formFields`. `formIcons` define las notas y sus indicadores; `repeatedSheet` permite componer las copias de los ninjas en una página. Si utiliza el motor de coordenadas, proporciona su JSON y omite `formFields` y `repeatedSheet`. `PdfTemplatesService` mantiene la selección fuera de `BandStateService`: cambiar el diseño no modifica los ninjas ni el nombre de la banda. El generador recibe la plantilla elegida como argumento y mantiene su independencia de Angular y del DOM.
+To add another real template, place its PDF in `src/assets/pdf/` and register an option with a unique identifier, fonts, and `formFields` mapping. `formIcons` defines note markers and their indicators; `repeatedSheet` composes ninja copies on one page. For coordinate templates, provide their JSON and omit `formFields` and `repeatedSheet`. `PdfTemplatesService` keeps selection outside `BandStateService`: changing the design does not modify ninjas or the squad name. The generator receives the selected template as an argument and remains independent of Angular and the DOM.
 
-## Edición de la configuración
+## Editing configuration
 
-1. Cambia las cajas en el propio PDF conservando los nombres de formulario. El generador utilizará las nuevas posiciones automáticamente.
-   Para mover o redimensionar Mokushin, modifica el rectángulo de su nota y conserva su identificador en el contenido de la nota.
-2. Para renombrar campos, cambiar su contenido o ajustar tamaños de letra, edita `JutsuFormFields`.
-3. Para añadir una fuente, incluye su archivo local y registra su URL en `JutsuPdfTemplate.fontUrls`.
-   Los iconos PDF se registran en `JutsuPdfTemplate.iconUrls`; Mokushin utiliza el mismo SVG que el editor.
-4. Solo para plantillas de coordenadas: edita sus cajas o estilos en el JSON; para activar un campo pendiente, completa su caja y cambia `enabled` a `true`.
+1. Change boxes in the PDF while preserving field names. The generator uses their new positions automatically.
+   To move or resize Mokushin, edit its note rectangle and preserve the identifier in the note contents.
+2. Edit `JutsuFormFields` to rename fields, change their data, or adjust font sizes.
+3. To add a font, include its local file and register the URL in `JutsuPdfTemplate.fontUrls`.
+   PDF icons are registered in `JutsuPdfTemplate.iconUrls`; Mokushin uses the same SVG as the editor.
+4. For coordinate templates only, edit boxes or styles in their JSON; complete a pending field's box and set `enabled` to `true` to activate it.
 
-En la configuración de coordenadas, `null` sigue significando un dato pendiente; no equivale a cero. `getPendingPages()`, `getPendingFields()` e `isReady()` permiten revisar el estado. `assertReady()` rechaza cualquier configuración activa incompleta antes de cargar el PDF.
+In coordinate configuration, `null` still means pending data, not zero. `getPendingPages()`, `getPendingFields()`, and `isReady()` report configuration state. `assertReady()` rejects incomplete active configuration before loading the PDF.

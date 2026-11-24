@@ -1,4 +1,4 @@
-<div class="mini-inventory" aria-label="Equipo">
+<div class="mini-inventory" aria-label="Equipment">
   @for (group of groups(); track group.kind) {
     <div class="mini-inventory-group" [attr.aria-label]="group.label">
       <app-ui-icon class="inventory-category" [name]="group.kind === 'weapons' ? 'weapons' : 'equipment'" />

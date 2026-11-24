@@ -33,12 +33,12 @@ describe('Character sheet', () => {
     const { fixture, element, state, select } = await setup();
     expect(element.querySelectorAll('.ninja-editor')).toHaveLength(3);
     const name = element.querySelector<HTMLInputElement>('#ninja-1-name')!;
-    name.value = 'Águila';
+    name.value = 'Renée';
     name.dispatchEvent(new Event('input', { bubbles: true }));
     await fixture.whenStable();
     await select('ninja-1-type', 'Physical');
     await select('ninja-1-technique-group', 'Taijutsu');
-    expect(state.band().ninjas[0].name).toBe('Águila');
+    expect(state.band().ninjas[0].name).toBe('Renée');
     expect(state.band().ninjas[0].stats.attack).toBe(6);
     expect(element.querySelector('.stat-fields')!.textContent).toContain('6');
     expect(element.querySelectorAll('.technique-card')).toHaveLength(3);
@@ -49,7 +49,7 @@ describe('Character sheet', () => {
     await select('ninja-1-technique-group', '');
     expect(state.band().ninjas[0].stats.attack).toBeNull();
     expect(element.querySelectorAll('.technique-card')).toHaveLength(0);
-    expect(name.value).toBe('Águila');
+    expect(name.value).toBe('Renée');
   });
 
   it('offers three weapon and two item slots and keeps focus and other slots when clearing one', async () => {
@@ -175,24 +175,24 @@ describe('Character sheet', () => {
     expect(templates.options).toHaveLength(1);
     expect(templates.value).toBe('jutsu-fichas-rellenables');
     const name = element.querySelector<HTMLInputElement>('#band-name')!;
-    name.value = 'Los Cuervos';
+    name.value = 'The Ravens';
     name.dispatchEvent(new Event('input', { bubbles: true }));
     await fixture.whenStable();
-    expect(state.band().name).toBe('Los Cuervos');
+    expect(state.band().name).toBe('The Ravens');
     element.querySelector<HTMLButtonElement>('#generate-pdf')!.click();
     await fixture.whenStable();
-    expect(element.querySelector('.pdf-file-name')!.textContent).toBe('jutsu-squad-Los-Cuervos.pdf');
-    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Los-Cuervos.pdf');
+    expect(element.querySelector('.pdf-file-name')!.textContent).toBe('jutsu-squad-The-Ravens.pdf');
+    expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-The-Ravens.pdf');
     expect(download.disabled).toBe(false);
     expect(print.disabled).toBe(false);
     download.click();
     await fixture.whenStable();
-    expect(files.download).toHaveBeenCalledWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-Los-Cuervos.pdf');
+    expect(files.download).toHaveBeenCalledWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-The-Ravens.pdf');
     expect(files.download).toHaveBeenCalledTimes(2);
     print.click();
     await fixture.whenStable();
     expect(files.openForPrinting).toHaveBeenCalledWith(new Uint8Array([37, 80, 68, 70]));
-    name.value = 'Águilas';
+    name.value = 'Renamed squad';
     name.dispatchEvent(new Event('input', { bubbles: true }));
     await fixture.whenStable();
     expect(download.disabled).toBe(true);

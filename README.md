@@ -1,90 +1,90 @@
 # Jutsu Band Builder
 
-Aplicación local de Gipsy Games para crear una banda de **tres ninjas** y generar sus fichas. Migrada de JavaScript/Vite a Angular e implementada hasta la **fase 6**: generación, descarga con el nombre de la banda y apertura del PDF para imprimir. Todo funciona en el navegador.
+A local Gipsy Games application for building a squad of **three ninjas** and generating their character sheets. Migrated from JavaScript/Vite to Angular and implemented through **phase 6**: PDF generation, downloads named after the squad, and opening PDFs for printing. Everything runs in the browser.
 
-## Entorno y dependencias
+## Environment and dependencies
 
-- Node.js `^20.19.0`, `^22.12.0` o `>=24.0.0`; migración verificada con **22.22.1** y npm **9.2.0**.
-- Angular **21.2.26**, CLI y compilador de aplicación `@angular/build` **21.2.30**.
-- Angular Material y CDK **21.2.14**, tema Material 3 con colores personalizables en `src/styles.scss`.
-- TypeScript **5.9.3**, modo estricto y plantillas estrictas.
-- Vitest **4.0.18** y jsdom **28.0.0** mediante el ejecutor oficial de Angular CLI.
-- `pdf-lib` **1.17.1** y `@pdf-lib/fontkit` **1.1.1**, conservadas.
+- Node.js `^20.19.0`, `^22.12.0`, or `>=24.0.0`; migration verified with **22.22.1** and npm **9.2.0**.
+- Angular **21.2.26**, CLI and application builder `@angular/build` **21.2.30**.
+- Angular Material and CDK **21.2.14**, with a Material 3 theme and customizable colors in `src/styles.scss`.
+- TypeScript **5.9.3**, strict mode and strict templates.
+- Vitest **4.0.18** and jsdom **28.0.0** through the official Angular CLI test runner.
+- Existing `pdf-lib` **1.17.1** and `@pdf-lib/fontkit` **1.1.1** dependencies.
 
-Angular 21.2 es la última serie estable compatible con el Node instalado. Angular 22.3 exige Node `^22.22.3 || ^24.15.0 || >=26.0.0`; no se ha actualizado el entorno del sistema para forzar ese salto. Los parches de Angular, CLI y Material se publican por separado, por eso sus números no coinciden. El lockfile fija las versiones instaladas.
+Angular 21.2 was the latest stable series verified as compatible with the installed Node version during migration. Angular 22.3 requires Node `^22.22.3 || ^24.15.0 || >=26.0.0`; the system environment was not upgraded to force that transition. Angular, CLI, and Material publish patches independently, so their version numbers differ. The lockfile pins the installed versions.
 
-Referencias: [compatibilidad de Angular](https://angular.dev/reference/versions), [guía de estilo](https://angular.dev/style-guide), [Signals](https://angular.dev/guide/signals), [zoneless](https://angular.dev/guide/zoneless), [Angular Material](https://material.angular.dev/).
+References: [Angular compatibility](https://angular.dev/reference/versions), [style guide](https://angular.dev/style-guide), [Signals](https://angular.dev/guide/signals), [zoneless](https://angular.dev/guide/zoneless), [Angular Material](https://material.angular.dev/).
 
-## Instalación y desarrollo
+## Installation and development
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Abre `http://localhost:4200`. `npm start` es equivalente. El servidor de desarrollo usa Vite integrado en Angular CLI; la compilación utiliza el builder oficial `@angular/build:application`, basado en esbuild. No hay configuración propia de Vite.
+Open `http://localhost:4200`. `npm start` is equivalent. The development server uses Vite managed by Angular CLI; production builds use the official `@angular/build:application` builder, based on esbuild. There is no custom Vite configuration.
 
-## Compilación de producción
+## Production build
 
 ```bash
 npm run build
 ```
 
-Salida estática: **`dist/jutsu/browser/`**. Publica su contenido en un alojamiento estático con redirección de rutas a `index.html`. Para una subcarpeta, por ejemplo `/jutsu/`:
+Static output: **`dist/jutsu/browser/`**. Publish its contents on a static host that redirects application routes to `index.html`. For a subdirectory, such as `/jutsu/`:
 
 ```bash
 npm run build -- --base-href /jutsu/
 ```
 
-`npm run preview` sirve una compilación de producción mediante Angular CLI. No se ha publicado la aplicación ni configurado un servidor de aplicaciones.
+`npm run preview` serves a production build through Angular CLI. The application has not been published, and no application server has been configured.
 
-## Pruebas
+## Tests
 
 ```bash
 npm test
 npm run typecheck
 ```
 
-`npm run test:watch` mantiene las pruebas en observación. `ng test` usa Vitest a través del ejecutor oficial, sin configuración personalizada. Las pruebas originales JavaScript se conservan, adaptadas a Vitest y a las nuevas rutas; sus casos inválidos siguen comprobando las validaciones en tiempo de ejecución. Todo el código de la aplicación está en TypeScript estricto.
+`npm run test:watch` keeps tests running in watch mode. `ng test` uses Vitest through the official runner, without custom configuration. The original JavaScript tests remain, adapted to Vitest and the new paths; their invalid-input cases still check runtime validation. All application code uses strict TypeScript.
 
-Las pruebas cubren catálogo, modelos, límites de equipo, aislamiento entre ninjas, selecciones y limpieza de valores, foco de teclado, navegación, generación asíncrona, errores, descarte de resultados obsoletos, fuentes, Unicode, coordenadas y composición PDF. También verifican nombres de archivo, selección de plantilla, botones de exportación, descarga mediante Blob, ventanas bloqueadas y limpieza de URLs. El editor comprueba la sincronización de minifichas, estadísticas e iconos, los huecos de equipo seleccionados fuera de orden y el cambio de personaje sin recrear formularios ni invalidar el PDF. Las pruebas AcroForm reabren cada ficha, verifican sus quince valores y apariencias, limpian datos anteriores y comprueban los doce grupos de técnicas. La exportación estática verifica tres fichas vectoriales independientes en A4, sin bordes de formulario ni notas, con costes separados e iconos Mokushin condicionales. Una captura de referencia conserva la equivalencia del motor de coordenadas original sobre un lienzo de sus dimensiones originales.
+Tests cover the catalog, models, equipment limits, ninja isolation, selections and clearing values, keyboard focus, navigation, asynchronous generation, errors, stale-result rejection, fonts, Unicode, coordinates, and PDF composition. They also check filenames, template selection, export buttons, Blob downloads, blocked windows, and URL cleanup. Editor tests check synchronized mini sheets, stats and icons, equipment slots selected out of order, and switching characters without recreating forms or invalidating the PDF. AcroForm tests reopen each card, verify its fifteen values and appearances, clear previous data, and cover all twelve technique groups. Static exports verify three independent vector cards on A4 without form borders or notes, with separate costs and conditional Mokushin icons. A historical rendering reference preserves coordinate-engine equivalence using the original catalog fixture and canvas dimensions.
 
-## Arquitectura
+## Architecture
 
 ```text
 src/
   app/
     core/
-      models/               # Modelo de banda y reglas existentes, sin Angular
-      services/             # Catálogo JSON y acceso a URLs de plataforma
+      models/               # Existing squad model and rules, independent of Angular
+      services/             # JSON catalog and platform asset URLs
     features/
-      character-sheet/      # Editor, estado Signals y componentes en subcarpetas
-      pdf-generator/        # Motor PDF, plantillas, generación y exportación local
-    layout/                 # Estructura base y pie de la aplicación
-    shared/                 # Iconos SVG y recursos locales tipados
+      character-sheet/      # Editor, Signals state, and components in subdirectories
+      pdf-generator/        # PDF engine, templates, generation, and local export
+    layout/                 # Application structure and footer
+    shared/                 # SVG icons and typed local assets
     app.component.ts
     app.component.html
     app.component.scss
     app.config.ts
     app.routes.ts
   assets/
-    data/                   # Catálogos JSON originales
-    fonts/                  # Eagle Lake, DejaVu Sans y licencias
-    icons/                  # SVG _ico de estadísticas, equipo y Mokushin
-    pdf/                    # Formulario PDF y coordenadas del motor anterior
+    data/                   # Original game catalogs
+    fonts/                  # Eagle Lake, DejaVu Sans, and licenses
+    icons/                  # _ico SVG files for stats, equipment, and Mokushin
+    pdf/                    # PDF form and legacy coordinate configuration
   index.html
   main.ts
   styles.scss
 public/
   licenses/
   templates/test-template.pdf
-tests/                     # Pruebas originales y referencia de equivalencia
-docs/migration/             # Inventario, decisiones e informe de verificación
+tests/                     # Original tests and historical equivalence fixtures
+docs/migration/             # Inventory, decisions, and verification report
 ```
 
-Los componentes son standalone, usan `OnPush`, `inject()`, entradas/salidas con Signals y control de flujo `@for`. No hay NgModules propios. Angular 21 funciona **sin Zone.js** por defecto; no se instala ni se carga.
+Components are standalone and use `OnPush`, `inject()`, Signal inputs/outputs, and `@for` control flow. There are no application NgModules. Angular 21 runs **without Zone.js** by default; Zone.js is neither installed nor loaded.
 
-Los 15 componentes tienen una carpeta propia, clases terminadas en `Component` y sus archivos separados. Por ejemplo:
+Each of the 15 components has its own directory, a class ending in `Component`, and separate files. For example:
 
 ```text
 features/character-sheet/ninja-editor/
@@ -93,58 +93,58 @@ features/character-sheet/ninja-editor/
   ninja-editor.component.scss
 ```
 
-Los servicios inyectables usan archivos `.service.ts` y clases terminadas en `Service`; las pruebas conservan el sufijo correspondiente, como `.component.spec.ts` o `.service.spec.ts`. Las plantillas se cargan con `templateUrl` y los estilos con `styleUrl`. Los estilos de cada componente viven en su SCSS; `src/styles.scss` contiene el tema, los controles compartidos y las utilidades globales. Las clases independientes del dominio y del motor PDF conservan sus nombres TypeScript.
+Injectable services use `.service.ts` files and classes ending in `Service`; tests retain the corresponding suffix, such as `.component.spec.ts` or `.service.spec.ts`. Templates use `templateUrl` and styles use `styleUrl`. Component-specific styles live in the component's SCSS; `src/styles.scss` contains the theme, shared controls, and global utilities. Independent domain and PDF engine classes keep ordinary TypeScript names.
 
-Las convenciones quedan registradas en [AGENTS.md](AGENTS.md) y en los schematics de `angular.json`: componentes en carpetas, HTML/SCSS externos y sufijos `.component`, `.service`, `.directive`, `.pipe`, `.guard`, `.resolver`, `.interceptor` y `.module`. Las aplicaciones nuevas usan la nomenclatura `fileNameStyleGuide: "2016"`. Se han comprobado esos ocho generadores y el generador de aplicaciones con `--dry-run`.
+These conventions are recorded in [AGENTS.md](AGENTS.md) and the `angular.json` schematics: components in directories, external HTML/SCSS, and `.component`, `.service`, `.directive`, `.pipe`, `.guard`, `.resolver`, `.interceptor`, and `.module` suffixes. New applications use `fileNameStyleGuide: "2016"`. These eight generators and the application generator were checked with `--dry-run`.
 
-`BandStateService` conserva las reglas de los modelos y publica instantáneas tipadas mediante Signals de solo lectura y `computed()`. Los controles editables usan **Reactive Forms tipados**: Signal Forms de Angular 21 todavía declara su API como experimental, por lo que no cumple el requisito de estabilidad de esta migración. No se usan formularios template-driven ni RxJS para el estado síncrono. Los controles mantienen su instancia de `FormControl` y sincronizan los cambios externos mediante `effect()`, conservando el foco y el cursor al editar.
+`BandStateService` preserves model rules and exposes typed snapshots through readonly Signals and `computed()`. Editable controls use **typed Reactive Forms**: Angular 21 Signal Forms still marks its API experimental, so it does not meet the migration's stability requirement. There are no template-driven forms or RxJS-based synchronous state. Controls keep their `FormControl` instances and synchronize external changes through `effect()`, preserving focus and cursor position while editing.
 
-Solo existe una pantalla real. Angular Router la carga de forma diferida y redirige rutas desconocidas al editor. No se añaden pantallas ficticias ni carpetas para funciones futuras. El motor PDF y sus dependencias se cargan al generar por primera vez; no se añade `@defer` a un formulario que debe estar disponible inmediatamente.
+There is one application screen. Angular Router loads it lazily and redirects unknown routes to the editor. No placeholder screens or directories for future features are added. The PDF engine and its dependencies load when generation is first requested; no `@defer` block delays a form that must be available immediately.
 
-La presentación sigue las referencias del editor oscuro: cabecera compacta, barra de escuadra y tres minifichas. Los controles tienen etiquetas en español; los nombres y reglas de los catálogos conservan sus valores originales en inglés para los datos y el PDF. Los campos y selectores son controles HTML nativos con Reactive Forms y estilos propios sobre el tema base de Material.
+The presentation follows the dark editor references: a compact header, squad bar, and three mini sheets. Controls, display labels, catalog rules, and PDF text are in English. Fields and selectors are native HTML controls with Reactive Forms and application styles over the Material theme.
 
-En pantallas inferiores a **56 rem**, las tres minifichas aparecen arriba y solo se muestra debajo el formulario del personaje seleccionado. A partir de ese ancho se muestran tres columnas, cada una con su minificha y formulario; las minifichas pasan a ser informativas, sin selección por clic ni botones de selección en el recorrido de teclado. Se conserva una sola instancia de cada editor: cambiar de personaje o de tamaño de pantalla no borra las selecciones. La selección móvil es estado de interfaz y no invalida el PDF generado.
+Below **56 rem**, the three mini sheets appear above the selected character's form. At and above that width, three columns each display a mini sheet and its form; desktop mini sheets are informational, with no click selection or selection buttons in the keyboard tab order. Each editor retains a single instance: switching characters or viewport size does not clear selections. Mobile selection is interface state and does not invalidate the generated PDF.
 
-`NinjaSummaryComponent`, `StatsViewComponent` y `EquipmentSummaryComponent` presentan el resumen sin modificar el modelo. `EquipmentPresentation` comparte el mapa de iconos y los huecos entre minifichas y selectores. `UiIconComponent`, en `shared/ui-icon/ui-icon.component.ts`, centraliza los SVG con sufijo `_ico` aportados en `src/assets/icons/` y los dibujos provisionales de los iconos que aún no tienen un recurso equivalente. Se utilizan SVG para las seis estadísticas, incluida vida, las categorías de armas y objetos y Mokushin. `mokushin_ico.svg` se comparte con el generador PDF. `objetivo_ico.svg` está registrado como `target`, disponible para su asignación cuando se defina su uso. Las URLs respetan el `<base href>` y los iconos se muestran a **20 × 20 px**, sin recorte circular. Los SVG negros se presentan en claro mediante CSS para contrastar con el fondo oscuro. Para sustituir otro icono basta con registrar su archivo en ese componente; no es necesario modificar catálogos ni reglas. Las seis estadísticas incluyen movimiento y siguen siendo de solo lectura. Los detalles de armas y objetos se consultan mediante el desplegable «Ver efectos del equipo».
+`NinjaSummaryComponent`, `StatsViewComponent`, and `EquipmentSummaryComponent` present summaries without modifying the model. `EquipmentPresentation` shares the icon and slot mapping between mini sheets and selectors. `UiIconComponent`, in `shared/ui-icon/ui-icon.component.ts`, centralizes the supplied `_ico` SVG assets in `src/assets/icons/` and provisional drawings for icons without an equivalent asset. SVGs cover all six stats, including health, equipment categories, and Mokushin. `mokushin_ico.svg` is shared with PDF generation. `objetivo_ico.svg` is registered as `target`, available for assignment once its use is defined. URLs respect `<base href>`, and icons appear at **20 × 20 px**, without circular cropping. Black SVGs are displayed in a light color through CSS for contrast with the dark background. To replace another icon, register its asset in that component; catalog data and rules need no changes. All six stats include movement and remain read-only. Weapon and item details are available under “View equipment effects.”
 
-## Funciones actuales
+## Current features
 
-- Nombre opcional de la banda para identificar el archivo descargado.
-- Tres ninjas independientes con nombre y uno de cuatro tipos.
-- Estadísticas derivadas de tipo, no editables, incluyendo valores cero.
-- Doce grupos de tres técnicas, descripción, coste de chakra fijo o variable e icono Mokushin en el editor y junto al coste en el PDF.
-- Tres huecos de armas y dos de objetos por ninja, con datos derivados del catálogo. «Sin arma» y «Sin objeto» vacían un hueco sin desplazar los demás.
-- Minifichas con iconos de las seis estadísticas y del equipo, sincronizadas con su personaje.
-- Generación de PDF desde una instantánea de la banda, estados de carga, éxito y error, e invalidación al editar.
-- Plantilla de un ninja con quince campos por nombre y tres notas que marcan Mokushin; generación de tres fichas independientes en una página A4, sin cajas de formulario ni resaltados de edición.
-- Eagle Lake y respaldo DejaVu Sans, fuentes locales incrustadas y ajuste del texto a cada campo. El motor de coordenadas anterior sigue disponible para otras plantillas.
-- Selector con la plantilla actual de tres ninjas por página; solo se ofrecen plantillas disponibles.
-- Descarga del PDF y apertura en otra pestaña para imprimir desde el visor del navegador.
+- An optional squad name used to identify the downloaded file.
+- Three independent ninjas, each with a name and one of four types.
+- Read-only stats derived from the selected type, including zero values.
+- Twelve groups of three techniques, descriptions, fixed or variable chakra costs, and Mokushin icons in the editor and PDF.
+- Three weapon slots and two item slots per ninja, with data derived from the catalog. “No weapon” and “No item” clear a slot without shifting the others.
+- Mini sheets with icons for all six stats and selected equipment, synchronized with their character.
+- PDF generation from a squad snapshot, loading/success/error states, and invalidation after editing.
+- A single-ninja template with fifteen named fields and three Mokushin marker notes; generation of three independent cards on one A4 page without form boxes or editing highlights.
+- Eagle Lake with DejaVu Sans fallback, locally embedded fonts, and text fitted to each field. The legacy coordinate engine remains available for other templates.
+- A selector offering the current three-ninja-per-page template; only available templates are listed.
+- PDF download and opening in another tab for printing through the browser's PDF viewer.
 
-No se han añadido campos obligatorios ni restricciones al nombre que no existían. El modelo sigue rechazando tipos y grupos desconocidos, índices inválidos, datos mal formados y exceso de equipo.
+No new required fields or name restrictions have been added. The model still rejects unknown types and groups, invalid indexes, malformed data, and excess equipment.
 
-## PDF y funcionamiento local
+## PDF generation and local operation
 
-El motor de `features/pdf-generator/` no depende de Angular ni del DOM. Recibe datos, plantilla y una función de carga de recursos sustituible en pruebas. La plantilla actual contiene una ficha con campos `Ninja1_…`; `JutsuFormFields` relaciona sus nombres con los datos y estilos. Cada ninja rellena una copia independiente, que se aplana antes de componer las tres en una página A4. Las posiciones se toman del PDF, sin cargar el JSON de coordenadas. Cada técnica incluye nombre y descripción; el chakra va en su campo `_cost`. Las notas cuyo contenido es `Ninja1_technique_1_mokushin`, y sus equivalentes para las técnicas 2 y 3, marcan las cajas donde se dibuja el SVG si corresponde. Se admiten diferencias de mayúsculas. Las notas se retiran del resultado y el inventario combina armas y objetos. La exportación conserva el diseño y la nitidez mediante aplanado vectorial. El PDF descargado ya no tiene campos editables; la plantilla original permanece rellenable y no se modifica.
+The engine in `features/pdf-generator/` does not depend on Angular or the DOM. It receives data, a template, and a resource loader that tests can replace. The current template contains one card with `Ninja1_…` fields; `JutsuFormFields` maps those names to data and styles. Each ninja fills an independent copy, which is flattened before all three are composed on an A4 page. Positions come from the PDF without loading the coordinate JSON. Each technique includes a name and description; chakra goes in its `_cost` field. Notes containing `Ninja1_technique_1_mokushin` and the corresponding identifiers for techniques 2 and 3 mark the boxes where the SVG is drawn when applicable. Matching ignores letter case. Marker notes are removed, and inventory combines weapons and items. Vector flattening preserves the design and sharpness. The downloaded PDF has no editable fields; the source template remains fillable and unchanged.
 
-`PdfGenerationService` lo conecta con el formulario y conserva los bytes válidos en memoria. `getPdfBytes()` devuelve una copia o `null` si cambió la banda o la plantilla. [Documentación del motor y exportación](src/app/features/pdf-generator/README.md).
+`PdfGenerationService` connects the engine to the form and keeps valid bytes in memory. `getPdfBytes()` returns a copy, or `null` if the squad or template changed. [PDF engine and export documentation](src/app/features/pdf-generator/README.md).
 
-1. Introduce el nombre de **Escuadra** si quieres personalizar el nombre del archivo y completa los ninjas. En móvil, toca su minificha para elegir el personaje que quieres editar.
-2. Elige **Plantilla de ficha**. Por ahora contiene únicamente la plantilla original con Eagle Lake.
-3. Pulsa **Generar y descargar PDF**, en la barra de iconos o al pie del editor. Al terminar se inicia automáticamente la descarga y aparecen el nombre del archivo y los botones de exportación habilitados. Por ejemplo, `Los Cuervos` produce `jutsu-squad-Los-Cuervos.pdf`; si no hay nombre se usa `jutsu-squad.pdf`. Los caracteres incompatibles con nombres de archivo se sustituyen y los nombres largos se limitan.
-4. El icono **Descargar PDF** permite descargar de nuevo el documento generado, también si el navegador no inició la descarga automática.
-5. El icono **Abrir PDF para imprimir** abre el mismo documento en otra pestaña. Utiliza los controles de impresión del visor PDF. Si el navegador bloquea la pestaña, el estado indica que debes permitir ventanas emergentes para este sitio y reintentar. Los iconos tienen etiquetas accesibles y muestran su acción al pasar el puntero.
+1. Enter a **Squad** name to customize the filename and complete the ninjas. On mobile, tap a mini sheet to choose the character to edit.
+2. Choose a **Sheet template**. For now, only the original Eagle Lake template is available.
+3. Click **Generate and download PDF** in the toolbar or below the editor. Once generation finishes, download starts automatically, the filename appears, and export buttons become available. For example, `The Ravens` produces `jutsu-squad-The-Ravens.pdf`; an empty name uses `jutsu-squad.pdf`. Unsupported filename characters are replaced, and long names are limited.
+4. **Download PDF** downloads the generated document again, including when the browser did not start the automatic download.
+5. **Open PDF for printing** opens the same document in another tab. Use the PDF viewer's print controls. If the browser blocks the tab, the status asks you to allow pop-ups for this site and retry. Icons have accessible labels and display their actions on hover.
 
-Cualquier edición, incluido el nombre de la banda, o cambio de plantilla deshabilita las exportaciones hasta volver a generar. Una generación en curso que quede obsoleta se descarta. Los PDF ya abiertos conservan su recurso hasta cerrar su pestaña; las URLs temporales de descarga se liberan después de iniciarla y todos los recursos se limpian al destruir la aplicación.
+Any edit, including the squad name, or a template change disables export until the PDF is generated again. A generation that becomes stale is discarded. Already-open PDFs keep their resources until their tabs close; temporary download URLs are released after download starts, and all resources are cleaned up when the application is destroyed.
 
-Plantilla, coordenadas, fuentes y catálogos se copian como recursos de la aplicación. `PlatformAssetsService` concentra la resolución respecto al `<base href>`, compatible con navegación estática y futuras adaptaciones de plataforma. No hay backend, autenticación, APIs remotas, IA en ejecución ni almacenamiento cloud. La versión anterior no persistía la banda: se sigue perdiendo al recargar; no se migra ni se introduce almacenamiento.
+The template, coordinates, fonts, and catalogs are copied as application assets. `PlatformAssetsService` centralizes URL resolution against `<base href>`, supporting static navigation and future platform adaptations. There is no backend, authentication, remote API, runtime AI, or cloud storage. The earlier version did not persist squads: reloading still clears the data, and no storage is migrated or introduced.
 
-La incorporación posterior de PWA o Capacitor podrá reutilizar el motor y adaptar el acceso a plataforma. **No se instalan Capacitor, Service Worker ni caché offline en esta fase.**
+Future PWA or Capacitor support can reuse the engine and adapt platform access. **Capacitor, Service Worker, and offline caching are not installed in this phase.**
 
-## Revisión de la migración
+## Migration review
 
-Consulta [el informe de migración](docs/migration/angular-migration.md) para el inventario y las verificaciones de aquella fase. [El README anterior](docs/migration/phase-5-history.md) se conserva como documento histórico. La migración ya está integrada en `main` del repositorio [JesusCarm/jutsu](https://github.com/JesusCarm/jutsu).
+See [the migration report](docs/migration/angular-migration.md) for that phase's inventory and checks. [The previous README](docs/migration/phase-5-history.md) remains as a historical document. The migration is already integrated into `main` in [JesusCarm/jutsu](https://github.com/JesusCarm/jutsu).
 
-El `.gitignore` excluye dependencias, compilaciones, cachés, cobertura, salidas generadas, copias de revisión y configuración local. Las plantillas PDF, fuentes, licencias, catálogos y `package-lock.json` forman parte del código versionado. La copia inicial `output/migration/vite-phase5-source.tar.gz` y el PDF de revisión permanecen únicamente en el entorno local.
+`.gitignore` excludes dependencies, builds, caches, coverage, generated output, review copies, and local configuration. PDF templates, fonts, licenses, catalogs, and `package-lock.json` are versioned. The initial `output/migration/vite-phase5-source.tar.gz` backup and review PDFs remain local.
 
-Verificación actual: 91 pruebas automatizadas, comprobación de tipos y compilación de producción correctas. Se han renderizado y revisado las hojas de tres fichas de los doce grupos de técnicas, incluidos los símbolos Unicode. Las pruebas verifican los costes, los marcadores de nota, su limpieza, los iconos condicionales, la composición A4, el aislamiento de los ninjas y los errores de recursos. Los diez SVG `_ico` se copian a producción idénticos a los originales. El usuario confirmó la descarga de la fase 6 en Firefox desde `http://localhost:4200/`, tras resolver un error de `start` que mantenía una compilación anterior. Se ha comprobado por HTTP que el servidor entrega el nuevo editor con minifichas y las acciones de exportación. La revisión visual del editor en escritorio y móvil, y la apertura manual para imprimir, siguen pendientes: el host de acceso al navegador no estaba disponible en la sesión de implementación.
+Current verification: 91 automated tests, type checking, and the production build pass. Three-card sheets covering all twelve technique groups, including Unicode symbols, have been rendered and reviewed. Tests check costs, marker notes, cleanup, conditional icons, A4 composition, ninja isolation, and resource errors. All ten `_ico` SVG files are copied unchanged to production. The user confirmed phase 6 downloads in Firefox at `http://localhost:4200/` after resolving a `start` error that had kept an older build running. HTTP checks confirm that the server delivers the editor with mini sheets and export actions. Visual browser review of the desktop/mobile editor and manually opening the print flow remain pending because the browser access host was unavailable during implementation.

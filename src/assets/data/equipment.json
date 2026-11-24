@@ -12,29 +12,29 @@
     },
     {
       "name": "Explosive Seal",
-      "description": "Kunai upgrade: +3D6. Push target 1\" per hit. Use Kunai and trigger Seal in the same turn.",
+      "description": "Kunai upgrade: +3D6. Push target 1\" per hit. Kunai and Seal require 2 actions in the same activation.",
       "cost": "2 actions"
     }
   ],
   "items": [
     {
       "name": "Smoke Bomb",
-      "description": "Cancel incoming attack or Jutsu. Move up to full Movement in any direction. No Charge.",
+      "description": "Cancel incoming attack or Jutsu. Move up to full Movement in any direction. No Move action or Charge.",
       "cost": "1 action"
     },
     {
       "name": "Soldier Pill",
-      "description": "+2\" Movement, +2D6 Attack, +2D6 Defense until end of round.",
+      "description": "+2\" Movement, +2D6 Attack and Defense until end of round.",
       "cost": "1 action"
     },
     {
       "name": "Curry Pill",
-      "description": "Recover up to 4 Health (max. normal value).",
+      "description": "Recover 4 Health, up to maximum.",
       "cost": "1 action"
     },
     {
       "name": "Cake Pill",
-      "description": "Recover up to 3 Chakra (max. normal value).",
+      "description": "Recover 3 Chakra, up to maximum.",
       "cost": "1 action"
     }
   ]

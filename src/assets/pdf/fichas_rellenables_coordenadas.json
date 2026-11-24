@@ -54,7 +54,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "No hay un texto distinto que identifique el tipo de ninja en el PDF; no confundir con techniqueGroup.name.",
+      "positionNote": "The PDF has no separate text identifying the ninja type; do not confuse it with techniqueGroup.name.",
       "enabled": false
     },
     {
@@ -68,7 +68,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -87,7 +87,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -106,7 +106,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -125,7 +125,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -144,7 +144,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -163,7 +163,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -215,7 +215,7 @@
         "height": 63
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -232,7 +232,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -251,7 +251,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -281,7 +281,7 @@
         "height": 63
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -298,7 +298,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -317,7 +317,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -347,7 +347,7 @@
         "height": 63
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -364,7 +364,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -383,7 +383,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -397,7 +397,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "No hay región independiente para weapons; comparte la línea del inventario con items. Evitar imprimir ambos en la misma posición.",
+      "positionNote": "There is no separate region for weapons; they share the inventory line with items. Avoid printing both at the same position.",
       "enabled": false
     },
     {
@@ -411,7 +411,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "Armas y objetos aparecen en la misma línea del PDF; región compartida. Se propone usar este único campo para el texto combinado.",
+      "positionNote": "Weapons and items appear on the same PDF line and share a region. Use this single field for their combined text.",
       "sources": [
         "ninjas.0.equipment.weapons",
         "ninjas.0.equipment.items"
@@ -450,7 +450,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "No hay un texto distinto que identifique el tipo de ninja en el PDF; no confundir con techniqueGroup.name.",
+      "positionNote": "The PDF has no separate text identifying the ninja type; do not confuse it with techniqueGroup.name.",
       "enabled": false
     },
     {
@@ -464,7 +464,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -483,7 +483,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -502,7 +502,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -521,7 +521,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -540,7 +540,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -559,7 +559,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -611,7 +611,7 @@
         "height": 66
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -628,7 +628,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -647,7 +647,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -677,7 +677,7 @@
         "height": 66
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -694,7 +694,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -713,7 +713,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -743,7 +743,7 @@
         "height": 66
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -760,7 +760,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -779,7 +779,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -793,7 +793,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "No hay región independiente para weapons; comparte la línea del inventario con items. Evitar imprimir ambos en la misma posición.",
+      "positionNote": "There is no separate region for weapons; they share the inventory line with items. Avoid printing both at the same position.",
       "enabled": false
     },
     {
@@ -807,7 +807,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "Armas y objetos aparecen en la misma línea del PDF; región compartida. Se propone usar este único campo para el texto combinado.",
+      "positionNote": "Weapons and items appear on the same PDF line and share a region. Use this single field for their combined text.",
       "sources": [
         "ninjas.1.equipment.weapons",
         "ninjas.1.equipment.items"
@@ -846,7 +846,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "No hay un texto distinto que identifique el tipo de ninja en el PDF; no confundir con techniqueGroup.name.",
+      "positionNote": "The PDF has no separate text identifying the ninja type; do not confuse it with techniqueGroup.name.",
       "enabled": false
     },
     {
@@ -860,7 +860,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -879,7 +879,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -898,7 +898,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -917,7 +917,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -936,7 +936,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -955,7 +955,7 @@
         "height": 24
       },
       "positionStatus": "render-checked",
-      "positionNote": "Orden de iconos confirmado: attack, defense, movement, skill, chakra, health.",
+      "positionNote": "Confirmed icon order: attack, defense, movement, skill, chakra, health.",
       "typography": {
         "fontSize": 16,
         "minFontSize": 10,
@@ -1007,7 +1007,7 @@
         "height": 74
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -1024,7 +1024,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -1043,7 +1043,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -1073,7 +1073,7 @@
         "height": 74
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -1090,7 +1090,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -1109,7 +1109,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -1139,7 +1139,7 @@
         "height": 74
       },
       "positionStatus": "render-checked",
-      "positionNote": "Región de composición estimada desde el marco; el texto existente permite comprobar el comienzo, pero no define toda la caja original.",
+      "positionNote": "Layout region estimated from the frame; the existing text identifies its starting point but does not define the entire original box.",
       "typography": {
         "fontSize": 7.5,
         "minFontSize": 6
@@ -1156,7 +1156,7 @@
         "height": 14
       },
       "positionStatus": "layout-estimated",
-      "positionNote": "El texto actual es una anotación del coste cercana a un icono (x3/x5 o 1-3/1-5). Verificar si se desea escribir aquí o conservar la iconografía.",
+      "positionNote": "The current text is a cost annotation near an icon (x3/x5 or 1-3/1-5). Check whether to write here or keep the existing iconography.",
       "typography": {
         "fontSize": 8,
         "minFontSize": 4.5,
@@ -1175,7 +1175,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "Indicador gráfico de Mokushin, no una caja de texto extraíble; necesita posición/icono y lógica específica.",
+      "positionNote": "Graphical Mokushin indicator rather than an extractable text box; requires an icon position and dedicated logic.",
       "enabled": false
     },
     {
@@ -1189,7 +1189,7 @@
         "height": null
       },
       "positionStatus": "requires-review",
-      "positionNote": "No hay región independiente para weapons; comparte la línea del inventario con items. Evitar imprimir ambos en la misma posición.",
+      "positionNote": "There is no separate region for weapons; they share the inventory line with items. Avoid printing both at the same position.",
       "enabled": false
     },
     {
@@ -1203,7 +1203,7 @@
         "height": 14
       },
       "positionStatus": "render-checked",
-      "positionNote": "Armas y objetos aparecen en la misma línea del PDF; región compartida. Se propone usar este único campo para el texto combinado.",
+      "positionNote": "Weapons and items appear on the same PDF line and share a region. Use this single field for their combined text.",
       "sources": [
         "ninjas.2.equipment.weapons",
         "ninjas.2.equipment.items"
@@ -1215,6 +1215,6 @@
       }
     }
   ],
-  "coordinateNotes": "Coordenadas en puntos PDF con origen superior izquierdo. En pdf-lib convertir y = pageHeight - box.y - box.height para colocar cajas usando borde inferior. Para drawText hay que compensar la baseline y el tamaño de fuente; las cajas no son cajas AcroForm.",
-  "extractionNotes": "Reconstrucción a partir de los textos del PDF rellenado y las zonas visibles. Algunos rectángulos son regiones de colocación estimadas, no cajas originales de Affinity; comprobar antes de usar en producción."
+  "coordinateNotes": "Coordinates use PDF points with a top-left origin. In pdf-lib, convert y = pageHeight - box.y - box.height to place boxes using their bottom edge. For drawText, account for the baseline and font size; these boxes are not AcroForm fields.",
+  "extractionNotes": "Reconstructed from text in the filled PDF and visible regions. Some rectangles are estimated placement regions rather than original Affinity boxes; verify them before production use."
 }

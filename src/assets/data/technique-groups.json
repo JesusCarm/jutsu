@@ -27,7 +27,7 @@
     "techniques": [
       {
         "name": "Surgery",
-        "description": "Attack (ER): +1D6. Each hit removes 1 Chakra and permanently reduces maximum Chakra by 1.",
+        "description": "Attack (ER): +1D6. Each hit removes 1 target Chakra and reduces its maximum by 1 for the game (cumulative).",
         "chakra": "5",
         "isMokushin": false
       },
@@ -56,13 +56,13 @@
       },
       {
         "name": "Transport",
-        "description": "Action/Mokushin (LoS, 6\"): Teleport up to 6\", ignoring units and terrain. No Charge.",
+        "description": "Action/Mokushin (LoS, 6\"): Teleport, ignoring units and terrain. No Movement spent or Charge.",
         "chakra": "3",
         "isMokushin": true
       },
       {
         "name": "Shadow Bind",
-        "description": "Action (LoS, 8\"): Immobilize enemy. Escape: 1 action + 1D6 vs caster's Skill. Caster cannot move; any displacement breaks the bind.",
+        "description": "Action (LoS, 8\"): Immobilize enemy. Escape: 1 action + 1D6 vs caster's Skill. Caster cannot move. Bind breaks if either unit moves.",
         "chakra": "3",
         "isMokushin": false
       }
@@ -79,13 +79,13 @@
       },
       {
         "name": "Nullification",
-        "description": "Mokushin: Cancel an incoming attack and all its effects.",
+        "description": "Mokushin: Cancel attack directly targeting you.",
         "chakra": "3",
         "isMokushin": true
       },
       {
         "name": "White Eye",
-        "description": "Action: 360° LoS. Ignore Charge and Rear Attack penalties. Pay 1 Chakra each round to maintain.",
+        "description": "Action: 360° LoS. Ignore Charge and Rear Attack penalties. Maintain for 1 Chakra at start of each round.",
         "chakra": "3 + 1/round",
         "isMokushin": false
       }
@@ -102,7 +102,7 @@
       },
       {
         "name": "Void Palm",
-        "description": "Action/Mokushin (ER): Push enemy 4\" away. During Mokushin, cancel incoming attack.",
+        "description": "Action/Mokushin (ER): Displace enemy 4\" away. In Mokushin, cancel incoming attack. No Move or Charge.",
         "chakra": "3",
         "isMokushin": true
       },
@@ -119,13 +119,13 @@
     "techniques": [
       {
         "name": "Swap",
-        "description": "Action/Mokushin (LoS, 8\"): Exchange positions with any unit. No Charge.",
+        "description": "Action/Mokushin (LoS, 8\"): Swap positions with any unit. No Move or Charge.",
         "chakra": "5",
         "isMokushin": true
       },
       {
         "name": "Red Pupil",
-        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Charge.",
+        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Move action or Charge.",
         "chakra": "3",
         "isMokushin": true
       },
@@ -142,13 +142,13 @@
     "techniques": [
       {
         "name": "Phoenix",
-        "description": "Action (8\" path): 4D6 attack against every unit crossed, friend or foe. Ignores terrain.",
+        "description": "Action (8\" path): Separate 4D6 attack per unit crossed, friend or foe. Units and terrain do not block path.",
         "chakra": "5",
         "isMokushin": false
       },
       {
         "name": "Flare",
-        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Charge.",
+        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Move action or Charge.",
         "chakra": "3",
         "isMokushin": true
       },
@@ -171,7 +171,7 @@
       },
       {
         "name": "Wind",
-        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Charge.",
+        "description": "Mokushin: Cancel incoming attack. Move up to 4\". No Move action or Charge.",
         "chakra": "3",
         "isMokushin": true
       },
@@ -188,19 +188,19 @@
     "techniques": [
       {
         "name": "Desert Tomb",
-        "description": "Action (LoS, 8\"): 5D6 attack + immobilize. Escape: 1D6 vs caster's Skill at next activation. Trapped unit cannot move, attack, or be attacked/targeted by Jutsus.",
+        "description": "Action (LoS, 8\"): 5D6 attack. Immobilize until next activation. Escape then: 1D6 vs caster's Skill. While trapped, cannot move, attack or be targeted by attacks/Jutsus.",
         "chakra": "5",
         "isMokushin": false
       },
       {
         "name": "Sand Cloak",
-        "description": "Mokushin: Absorb up to 4 incoming hits. No damage or displacement from absorbed hits.",
+        "description": "Mokushin: Cancel incoming hits, including damage and displacement. Ends after absorbing 4 hits.",
         "chakra": "3",
         "isMokushin": true
       },
       {
         "name": "Quicksand",
-        "description": "Action (LoS): Immobilize until end of target's next activation. Escape: 1 action + 1D6 vs own Skill.",
+        "description": "Action (LoS): Immobilize until end of next activation. At its start, target may spend 1 action to escape: 1D6 vs own Skill.",
         "chakra": "3",
         "isMokushin": false
       }
@@ -211,19 +211,19 @@
     "techniques": [
       {
         "name": "Body Multiplication",
-        "description": "Attack (ER): Two consecutive attacks against the same target. Defender cannot Counter.",
+        "description": "Attack (ER): Two separate consecutive attacks against same target. Defender cannot Trade Blows.",
         "chakra": "5",
         "isMokushin": false
       },
       {
         "name": "Clone",
-        "description": "Mokushin: Cancel incoming attack or Jutsu. Move up to 4\". No Charge.",
+        "description": "Mokushin: Cancel incoming attack or Jutsu. Move up to 4\". No Move action or Charge.",
         "chakra": "3",
         "isMokushin": true
       },
       {
         "name": "Energy Ball",
-        "description": "Attack (ER): 3D6 attack. If ≥1 hit, push target 3\" in any direction.",
+        "description": "Attack (ER): 3D6 attack. If ≥1 hit, displace target 3\" in direction chosen by attacker. No Move or Charge.",
         "chakra": "3",
         "isMokushin": false
       }
@@ -234,13 +234,13 @@
     "techniques": [
       {
         "name": "Four Claws",
-        "description": "Action: 6D6 attack → 4D6 against another enemy within 8\" → 2D6 against a third within 6\". Continue if previous target is defeated or leaves ER. If no new target is reachable, move 6\". No Charge.",
+        "description": "Action: 6D6 attack → leap to another enemy within 8\" (4D6) → third within 6\" (2D6). Continue if previous target is defeated or leaves ER. If no new target is reachable, move 6\". No Move or Charge.",
         "chakra": "5",
         "isMokushin": false
       },
       {
         "name": "Skin Shedding",
-        "description": "Mokushin: Cancel incoming attack or Jutsu. Move up to 4\". No Charge.",
+        "description": "Mokushin: Cancel incoming attack or Jutsu. Move up to 4\". No Move action or Charge.",
         "chakra": "3",
         "isMokushin": true
       },

@@ -1,69 +1,69 @@
-> Documento histórico anterior a la migración. Las rutas y órdenes siguientes describen la versión Vite; consulta el README raíz para la aplicación Angular actual.
+> Historical document from before the migration. The paths and commands below describe the Vite version; see the root README for the current Angular application.
 
 # Jutsu Band Builder
 
-Aplicación web de Gipsy Games para crear bandas de tres ninjas de Jutsu y generar sus fichas. Desarrollo incremental con JavaScript vanilla, HTML y CSS, usando Vite.
+A Gipsy Games web application for building three-ninja Jutsu squads and generating their character sheets. Incremental development with vanilla JavaScript, HTML, and CSS, using Vite.
 
-## Estado: fase 5
+## Status: phase 5
 
-El botón **Generate PDF** toma una copia de los datos de la banda, carga la plantilla y el JSON, y genera la ficha completa en memoria. El resultado es un `Uint8Array`; la descarga, impresión y selección de plantillas siguen reservadas para la fase 6.
+**Generate PDF** takes a copy of the squad data, loads the template and JSON, and generates the complete sheet in memory. The result is a `Uint8Array`; downloading, printing, and template selection remain reserved for phase 6.
 
-La configuración activa es **`src/pdf/fichas_rellenables_coordenadas.json`**, junto al PDF original. La guía de edición, las fórmulas y las responsabilidades de las clases están en [src/pdf/README.md](src/pdf/README.md).
+The active configuration is **`src/pdf/fichas_rellenables_coordenadas.json`**, alongside the original PDF. Editing guidance, formulas, and class responsibilities are documented in [src/pdf/README.md](src/pdf/README.md).
 
-Se utiliza la versión con coordenadas aportada en `src/pdf/`: su referencia mide **595,44 × 841,92 pt**. Contiene 69 campos, de los que 54 se imprimen. Los 15 sin posición se conservan con `enabled: false`: tipo de ninja, indicadores independientes de Mokushin y listas de armas independientes. Las armas y objetos se combinan en una sola línea de inventario por ninja. Las técnicas conservan la mención de Mokushin en sus descripciones. Los títulos, las descripciones y el inventario inferior estimados se han ajustado tras revisar el PDF renderizado.
+The supplied coordinate configuration in `src/pdf/` uses a **595.44 × 841.92 pt** reference. It contains 69 fields, of which 54 are printed. The 15 fields without positions remain `enabled: false`: ninja type, separate Mokushin indicators, and separate weapon lists. Weapons and items combine into one inventory line per ninja. Techniques retain Mokushin references in their descriptions. Estimated title, description, and lower inventory boxes were adjusted after reviewing the rendered PDF.
 
-Integración de `pdf-lib` mediante dos clases independientes: carga de plantillas y gestión de documentos. Se utiliza la plantilla proporcionada en `src/pdf/fichas_rellenables.pdf`. El documento se puede inspeccionar, preparar para insertar texto y guardar en memoria como `Uint8Array`. Se conserva una plantilla auxiliar de dos páginas para probar documentos con tamaños distintos.
+`pdf-lib` is integrated through two independent classes for template loading and document management. The supplied `src/pdf/fichas_rellenables.pdf` template is used. Documents can be inspected, prepared for text insertion, and saved in memory as `Uint8Array`. A two-page auxiliary template remains available for testing pages of different sizes.
 
-El formulario de la fase 2 conserva el siguiente comportamiento:
+The phase 2 form retains the following behavior:
 
-Formulario responsive para una banda de exactamente tres ninjas. Cada ninja incluye:
+A responsive form builds a squad of exactly three ninjas. Each ninja includes:
 
-- Nombre y tipo: Physical, Defensive, Offensive o Jutsu Master.
-- Estadísticas de solo lectura: attack, defense, movement, skill, chakra y health. El tipo de ninja seleccionado define sus valores, que se muestran al lado de su nombre, sin cajas de entrada.
-- Un grupo entre los doce disponibles, con un total de 36 técnicas. El grupo define exactamente tres técnicas de solo lectura, con nombre, descripción breve, coste de chakra y Mokushin.
-- Selección de tres armas disponibles y cuatro objetos disponibles mediante desplegables. Sus descripciones y costes en acciones son de solo lectura. El máximo por ninja es de **tres armas y dos objetos**.
+- A name and type: Physical, Defensive, Offensive, or Jutsu Master.
+- Read-only stats: attack, defense, movement, skill, chakra, and health. The selected type determines these values, displayed beside their labels without input boxes.
+- One of twelve groups, containing 36 techniques in total. The group determines exactly three read-only techniques, each with a name, short description, chakra cost, and Mokushin indicator.
+- Dropdown selection from three available weapons and four available items. Descriptions and action costs are read-only. Each ninja is limited to **three weapons and two items**.
 
-Los cambios actualizan inmediatamente una instancia de `Band`. `src/main.js` crea la banda y el catálogo de juego, y se los entrega a `BandForm`. Los modelos no dependen del DOM ni de las plantillas.
+Changes immediately update a `Band` instance. `src/main.js` creates the squad and game catalog, then passes them to `BandForm`. Models do not depend on the DOM or templates.
 
-Los selectores empiezan vacíos. Antes de escoger un tipo, las estadísticas son `null` y se muestran como «—». Antes de escoger un grupo, no hay técnicas asignadas. Las estadísticas, técnicas y entradas de equipamiento seleccionadas son inmutables. Cero se conserva como valor numérico y Mokushin como booleano. Los costes de chakra también admiten expresiones de texto: se conservan literalmente «1–5», «1–3» y «3 + 1/round».
+Selectors start empty. Before selecting a type, stats are `null` and displayed as “—”. Before selecting a group, no techniques are assigned. Selected stats, techniques, and equipment entries are immutable. Zero remains numeric, and Mokushin remains boolean. Chakra costs also accept text expressions: “1–5”, “1–3”, and “3 + 1/round” are preserved literally.
 
-Cambiar de tipo sustituye sus estadísticas y cambiar de grupo sustituye las tres técnicas. El nombre y las demás selecciones del ninja se conservan. Los límites de equipamiento se aplican en el modelo y en la interfaz. Las filas de selección vacías también ocupan una de las tres o dos plazas; pueden eliminarse. Los datos permanecen en memoria mientras la página está abierta y se reinician al recargarla.
+Changing type replaces its stats; changing group replaces its three techniques. The ninja's name and other selections are retained. Equipment limits apply in both the model and interface. Empty selection rows also occupy one of the three or two slots and can be removed. Data remains in memory while the page is open and resets on reload.
 
-### Catálogo de juego
+### Game catalog
 
-Los cuatro perfiles están en `src/data/ninja-types.json`, las técnicas en `src/data/technique-groups.json` y las armas y objetos en `src/data/equipment.json`. Los datos proceden de los valores facilitados. `src/data/game-data.js` reúne esos catálogos para entregarlos a `GameCatalog`.
+The four profiles are in `src/data/ninja-types.json`, techniques in `src/data/technique-groups.json`, and weapons/items in `src/data/equipment.json`. Data comes from the supplied values. `src/data/game-data.js` combines these catalogs for `GameCatalog`.
 
-Las listas numéricas de los perfiles se asignan en el orden confirmado de los iconos: **attack, defense, movement, skill, chakra, health**. El JSON guarda cada valor con su nombre para evitar depender de la posición de una lista al mantener los datos.
+Profile numeric lists follow the confirmed icon order: **attack, defense, movement, skill, chakra, health**. JSON stores each value under its stat name so maintaining data does not depend on list position.
 
-| Tipo | Attack | Defense | Movement | Skill | Chakra | Health |
+| Type | Attack | Defense | Movement | Skill | Chakra | Health |
 | --- | --- | --- | --- | --- | --- | --- |
 | Physical | 6 | 5 | 7 | 4 | 12 | 10 |
 | Defensive | 4 | 6 | 5 | 5 | 12 | 10 |
 | Offensive | 8 | 3 | 7 | 4 | 15 | 10 |
 | Jutsu Master | 5 | 4 | 5 | 5 | 20 | 10 |
 
-Al escoger un tipo se muestran inmediatamente sus seis valores como texto de solo lectura. Si se elimina la selección, vuelven a mostrarse como «—». `GameCatalog` mantiene la posibilidad de devolver un perfil sin valores si en el futuro falta una definición, sin bloquear la selección ni conservar números del tipo anterior.
+Selecting a type immediately displays its six values as read-only text. Clearing the selection restores “—”. `GameCatalog` can still return a profile without values if a future definition is missing, without blocking selection or keeping numbers from the previous type.
 
-| Lista | Contenido de cada definición |
+| List | Definition contents |
 | --- | --- |
-| `ninjaTypes` | `name` y `stats`, con las seis estadísticas numéricas cuando estén disponibles. |
-| `techniqueGroups` | `name` y `techniques`, con exactamente tres definiciones: `name`, `description`, `chakra` numérico o textual e `isMokushin` booleano. |
-| `weapons` | `name`, `description` y `cost` como texto, por ejemplo «1 action». |
-| `items` | `name`, `description` y `cost` como texto. |
+| `ninjaTypes` | `name` and `stats`, containing all six numeric stats when available. |
+| `techniqueGroups` | `name` and `techniques`, containing exactly three definitions with `name`, `description`, numeric/text `chakra`, and boolean `isMokushin`. |
+| `weapons` | Text `name`, `description`, and `cost`, such as “1 action”. |
+| `items` | Text `name`, `description`, and `cost`. |
 
-Los nombres de tipos y grupos deben coincidir con `src/data/ninja-options.js`. Las selecciones de equipamiento usan el nombre como identificador dentro de su lista. No se ha añadido una restricción para impedir selecciones repetidas, ya que esa regla no se ha indicado.
+Type and group names must match `src/data/ninja-options.js`. Equipment selections use the name as an identifier within their list. Duplicate selections are not prohibited because that rule was not specified.
 
-En el archivo de técnicas, el campo `cost` del texto recibido se ha guardado como `chakra` conservando su contenido. `isMokushin` se ha marcado en las técnicas cuya descripción menciona explícitamente Mokushin, incluidas las de uso «Action/Mokushin». Una descripción que solo indica «Reaction» no se ha marcado como Mokushin. Estos indicadores están guardados explícitamente en el JSON y se pueden corregir allí si las reglas requieren alguna excepción.
+In the technique file, the supplied `cost` field was stored as `chakra` without changing its contents. `isMokushin` was set for techniques whose descriptions explicitly mention Mokushin, including “Action/Mokushin” uses. Descriptions containing only “Reaction” were not marked as Mokushin. These indicators are stored explicitly in JSON and can be corrected there if rules require an exception.
 
-El botón **Generate PDF** muestra los estados de generación, éxito y error. Una edición posterior invalida el PDF anterior. Si la banda cambia mientras se está generando, ese resultado se descarta. Al recargar la página se pierden tanto los datos de la banda como el PDF en memoria.
+**Generate PDF** displays generation, success, and error states. Later edits invalidate the previous PDF. If the squad changes during generation, that result is discarded. Reloading loses both squad data and the PDF held in memory.
 
-Vite es la única dependencia de desarrollo. `pdf-lib` gestiona los documentos y `@pdf-lib/fontkit` permite incrustar las fuentes TrueType con sus caracteres Unicode. El generador y sus librerías se cargan al pulsar el botón, mediante importación dinámica.
+Vite is the only development dependency. `pdf-lib` manages documents, and `@pdf-lib/fontkit` embeds TrueType fonts with Unicode characters. The generator and its libraries load dynamically when the button is clicked.
 
-La fuente principal es **Eagle Lake**, usando el archivo facilitado en `src/fonts/Eagle_Lake/EagleLake-Regular.ttf`. Para símbolos que no contiene, como → y ≥, se usa DejaVu Sans únicamente en esos caracteres. Ambas fuentes se sirven desde la aplicación; no se solicitan a Google Fonts. Las licencias se incluyen en `public/licenses/`.
+The main font is **Eagle Lake**, using the supplied `src/fonts/Eagle_Lake/EagleLake-Regular.ttf` file. Symbols missing from that font, such as → and ≥, use DejaVu Sans only for those characters. Both fonts are served locally, without Google Fonts requests. Licenses are included in `public/licenses/`.
 
-## Integración PDF
+## PDF integration
 
-`BandPdfGenerator.generate(band, template)` devuelve una promesa con los bytes del PDF. Las clases de resolución de datos, formato, fuentes, composición del texto y escritura se mantienen separadas. El generador no accede al DOM.
+`BandPdfGenerator.generate(band, template)` returns a promise containing PDF bytes. Data resolution, formatting, fonts, text layout, and writing remain separate classes. The generator does not access the DOM.
 
 ```js
 import { BandPdfGenerator } from './src/pdf/BandPdfGenerator.js';
@@ -72,30 +72,30 @@ import { JutsuPdfTemplate } from './src/pdf/JutsuPdfTemplate.js';
 const bytes = await new BandPdfGenerator().generate(band, new JutsuPdfTemplate());
 ```
 
-Este ejemplo pertenece a un módulo ejecutado por Vite. `band` es la instancia de los datos de la banda; no se necesita leer de nuevo los controles del formulario.
+This example belongs to a module executed by Vite. `band` is the squad data instance; form controls do not need to be read again.
 
-- `PdfTemplateLoader` carga una URL mediante `fetch`, comprueba la respuesta HTTP y devuelve un `PdfDocument`. La función de petición se puede sustituir en las pruebas.
-- `PdfDocument` gestiona un documento de `pdf-lib`: carga sus bytes, identifica sus páginas, consulta sus dimensiones, prepara una fuente estándar y guarda el resultado en memoria. No conoce bandas, formularios ni configuraciones de campos.
-- `src/pdf/fichas_rellenables.pdf` es la plantilla proporcionada, exportada desde Affinity. Tiene una página de 595,44 × 841,92 puntos. Se carga como documento existente, conservando el archivo original.
-- `public/templates/test-template.pdf` es una plantilla auxiliar vectorial con una página A4 de 595,28 × 841,89 puntos y otra A5 de 419,53 × 595,28 puntos. Se mantiene para comprobar documentos con páginas de diferentes dimensiones y la inserción de texto de prueba.
+- `PdfTemplateLoader` fetches a URL, checks the HTTP response, and returns a `PdfDocument`. Tests can replace its request function.
+- `PdfDocument` manages a `pdf-lib` document: loading bytes, identifying pages, reading dimensions, preparing a standard font, and saving in memory. It knows nothing about squads, forms, or field configurations.
+- `src/pdf/fichas_rellenables.pdf` is the supplied Affinity-exported template. It contains one 595.44 × 841.92 pt page. It is loaded as an existing document while preserving the original file.
+- `public/templates/test-template.pdf` is a vector auxiliary template with an A4 page measuring 595.28 × 841.89 pt and an A5 page measuring 419.53 × 595.28 pt. It supports checks for different page sizes and test-text insertion.
 
-Las dimensiones corresponden al `MediaBox` de cada página, expresado en puntos PDF. Los índices de página empiezan en cero. La carga mantiene los metadatos existentes y cada carga crea un documento independiente.
+Dimensions come from each page's `MediaBox` and use PDF points. Page indexes start at zero. Loading preserves existing metadata, and each load creates an independent document.
 
-| Método | Responsabilidad |
+| Method | Responsibility |
 | --- | --- |
-| `PdfTemplateLoader.load(url)` | Obtener y cargar una plantilla existente. |
-| `PdfDocument.fromBytes(bytes)` | Abrir un PDF desde `Uint8Array` o `ArrayBuffer`. |
-| `getPageCount()` | Consultar el número de páginas. |
-| `getPageInfo(index)` / `getPagesInfo()` | Obtener índices, anchos y altos. |
-| `getPage(index)` | Acceder a una página de `pdf-lib` para preparar contenido. |
-| `prepareForText()` | Incorporar Helvetica estándar una sola vez y devolver su fuente. |
-| `save()` | Serializar el documento modificado como `Uint8Array`, sin descargarlo. |
+| `PdfTemplateLoader.load(url)` | Fetch and load an existing template. |
+| `PdfDocument.fromBytes(bytes)` | Open a PDF from `Uint8Array` or `ArrayBuffer`. |
+| `getPageCount()` | Return the number of pages. |
+| `getPageInfo(index)` / `getPagesInfo()` | Return indexes, widths, and heights. |
+| `getPage(index)` | Access a `pdf-lib` page to prepare content. |
+| `prepareForText()` | Embed standard Helvetica once and return its font. |
+| `save()` | Serialize the modified document as `Uint8Array` without downloading it. |
 
-`prepareForText()` conserva Helvetica para las pruebas independientes del módulo de documentos. La generación de fichas utiliza `PdfFontProvider` y Eagle Lake. La carga, páginas, guardado e incrustación de fuentes siguen la [API oficial de PDFDocument](https://pdf-lib.js.org/docs/api/classes/pdfdocument); las dimensiones se obtienen con [PDFPage.getSize](https://pdf-lib.js.org/docs/api/classes/pdfpage#getsize).
+`prepareForText()` retains Helvetica for isolated document-module tests. Sheet generation uses `PdfFontProvider` and Eagle Lake. Loading, page access, saving, and font embedding follow the [official PDFDocument API](https://pdf-lib.js.org/docs/api/classes/pdfdocument); dimensions come from [PDFPage.getSize](https://pdf-lib.js.org/docs/api/classes/pdfpage#getsize).
 
-### Comprobación en el navegador durante el desarrollo
+### Browser checks during development
 
-Inicia Vite con `npm run dev`, abre la aplicación y ejecuta este ejemplo en la consola del navegador. Es una prueba independiente del formulario y utiliza directamente la ruta del archivo proporcionado, servida por Vite durante el desarrollo.
+Start Vite with `npm run dev`, open the application, and run this example in the browser console. It independently checks the document module and directly uses the supplied file path served by Vite during development.
 
 ```js
 const { PdfTemplateLoader } = await import('/src/pdf/PdfTemplateLoader.js');
@@ -107,132 +107,132 @@ const pdfBytes = await testPdf.save();
 console.log(pdfBytes instanceof Uint8Array, pdfBytes.length);
 ```
 
-El resultado queda en `pdfBytes` en memoria y la plantilla original se conserva. Este ejemplo comprueba solo el módulo de documentos. El botón de la interfaz ejecuta el generador completo. `JutsuPdfTemplate` utiliza URLs de recursos que Vite transforma para desarrollo y producción, sin depender de rutas `/src/` en la versión compilada.
+The result remains in `pdfBytes` in memory, preserving the source template. This example checks only the document module; the interface button runs the complete generator. `JutsuPdfTemplate` uses asset URLs transformed by Vite for development and production, without relying on `/src/` paths in compiled output.
 
-## Desarrollo local
+## Local development
 
-Requiere Node.js compatible con la versión de Vite instalada y npm. La versión de Node.js utilizada para verificar el proyecto es **22.22.1**.
+Requires a Node.js version compatible with the installed Vite version and npm. The project was verified using Node.js **22.22.1**.
 
 ```sh
 npm install
 npm run dev
 ```
 
-Abre la URL local que indique Vite en la terminal (normalmente `http://localhost:5173`).
+Open the local URL reported by Vite in the terminal, usually `http://localhost:5173`.
 
-## Compilación de producción
+## Production build
 
 ```sh
 npm run build
 ```
 
-Los archivos estáticos se generan en `dist/`. Para comprobar esa compilación localmente:
+Static files are generated in `dist/`. To check the build locally:
 
 ```sh
 npm run preview
 ```
 
-El alojamiento y la ruta o subdominio definitivos se configurarán más adelante. Esta fase no publica la aplicación ni modifica Ghost.
+Hosting and the final path or subdomain will be configured later. This phase does not publish the application or modify Ghost.
 
-## Estructura
+## Structure
 
 ```text
-index.html          Página principal y estructura accesible
+index.html          Main page and accessible structure
 public/
   templates/
-    test-template.pdf Plantilla de prueba de dos páginas (A4 y A5)
+    test-template.pdf Two-page test template (A4 and A5)
 src/
-  main.js           Crea Band y GameCatalog, y monta BandForm (ES Modules)
+  main.js           Creates Band and GameCatalog and mounts BandForm (ES Modules)
   data/
-    ninja-options.js Opciones de tipos, grupos y estadísticas
-    game-data.js    Reúne los catálogos de juego
-    ninja-types.json Los cuatro tipos y sus estadísticas
-    technique-groups.json Los doce grupos y sus 36 técnicas
-    equipment.json Armas, objetos y sus costes en acciones
+    ninja-options.js Known types, groups, and stats
+    game-data.js    Combines the game catalogs
+    ninja-types.json Four types and their stats
+    technique-groups.json Twelve groups and their 36 techniques
+    equipment.json Weapons, items, and their action costs
   models/
-    Band.js         Banda de tres ninjas
-    Ninja.js        Datos y composición de un ninja
-    NinjaStats.js   Estadísticas de un ninja
-    TechniqueGroup.js Selección de un grupo y sus tres técnicas
-    Technique.js    Datos inmutables de una técnica
-    Equipment.js    Listas de equipamiento y operaciones de añadir/eliminar
-    EquipmentEntry.js Nombre, descripción y coste inmutables de un arma u objeto
-    GameCatalog.js  Consulta de las definiciones disponibles
+    Band.js         Three-ninja squad
+    Ninja.js        One ninja's data and composition
+    NinjaStats.js   Ninja stats
+    TechniqueGroup.js Group selection and its three techniques
+    Technique.js    Immutable technique data
+    Equipment.js    Equipment lists and add/remove operations
+    EquipmentEntry.js Immutable name, description, and cost of a weapon/item
+    GameCatalog.js  Access to available definitions
   pdf/
-    PdfTemplateLoader.js Carga de plantillas PDF por URL
-    PdfDocument.js  Páginas, recursos de texto y guardado en memoria
-    BandPdfGenerator.js Coordinación de la generación desde los datos
-    BandFieldResolver.js Lectura de las rutas de la banda
-    PdfFieldFormatter.js Conversión de valores a texto
-    PdfFontProvider.js Carga e incrustación de fuentes
-    PdfFontFamily.js Selección de glifos y métricas de texto
-    PdfTextLayout.js Ajuste de líneas y tamaños dentro de las cajas
-    PdfFieldRenderer.js Escritura vectorial del texto sobre la página
-    JutsuPdfTemplate.js URLs de la configuración, PDF y fuentes
-    PdfTemplateConfig.js Validación y consulta de la configuración
-    PdfTemplateConfigLoader.js Lectura del JSON y referencia a su URL
-    AffinityCoordinateConverter.js Conversión de unidades y origen
-    fichas_rellenables.pdf Plantilla proporcionada, de una página
-    fichas_rellenables_coordenadas.json Configuración activa de los campos
-    README.md       Guía de configuración y generación
+    PdfTemplateLoader.js Loading PDF templates by URL
+    PdfDocument.js  Pages, text resources, and saving in memory
+    BandPdfGenerator.js Coordinates generation from data
+    BandFieldResolver.js Reads squad data paths
+    PdfFieldFormatter.js Converts values to text
+    PdfFontProvider.js Loads and embeds fonts
+    PdfFontFamily.js Selects glyphs and measures text
+    PdfTextLayout.js Fits lines and font sizes within boxes
+    PdfFieldRenderer.js Writes vector text onto the page
+    JutsuPdfTemplate.js Configuration, PDF, and font URLs
+    PdfTemplateConfig.js Validates and queries configuration
+    PdfTemplateConfigLoader.js Reads JSON and retains its source URL
+    AffinityCoordinateConverter.js Converts units and coordinate origins
+    fichas_rellenables.pdf Supplied single-page template
+    fichas_rellenables_coordenadas.json Active field configuration
+    README.md       Configuration and generation guide
   fonts/
-    Eagle_Lake/     Fuente principal facilitada y licencia
-    DejaVu_Sans/    Fuente de respaldo para símbolos
+    Eagle_Lake/     Supplied main font and license
+    DejaVu_Sans/    Fallback font for missing symbols
   ui/
-    BandForm.js     Montaje del formulario y coordinación de los ninjas
-    NinjaEditor.js  Composición del editor de un ninja
-    StatsView.js    Visualización de estadísticas de solo lectura
-    TechniqueGroupEditor.js Selector de grupo y composición de sus técnicas
-    TechniqueView.js Visualización de una técnica de solo lectura
-    EquipmentListEditor.js Edición de una lista de armas u objetos
-    EquipmentEntryEditor.js Edición de una entrada de equipamiento
-    FormField.js    Control etiquetado y conversión de su valor
-    ReadOnlyField.js Presentación de un valor de solo lectura
-    PdfGenerationController.js Estado del botón y PDF en memoria
-    dom.js          Funciones pequeñas para crear nodos y fieldsets
-  styles.css        Estilos y adaptación a móvil
+    BandForm.js     Mounts the form and coordinates ninja editors
+    NinjaEditor.js  Composes one ninja's editor
+    StatsView.js    Displays read-only stats
+    TechniqueGroupEditor.js Group selector and technique composition
+    TechniqueView.js Displays one read-only technique
+    EquipmentListEditor.js Edits a weapon/item list
+    EquipmentEntryEditor.js Edits an equipment entry
+    FormField.js    Labeled control and value conversion
+    ReadOnlyField.js Displays a read-only value
+    PdfGenerationController.js Button state and PDF in memory
+    dom.js          Small node and fieldset creation helpers
+  styles.css        Styles and responsive layout
 tests/
-  models.test.js    Pruebas de los modelos sin navegador
-  catalog.test.js   Selección de datos reales, estadísticas y costes
-  pdf.test.js       Carga, páginas, preparación, guardado y errores de PDF
-  template-config.test.js Configuración, enlaces de campos y coordenadas
-  pdf-generation.test.js Generación con los doce grupos, fuentes y datos
+  models.test.js    Model tests without a browser
+  catalog.test.js   Real data selection, stats, and costs
+  pdf.test.js       PDF loading, pages, preparation, saving, and errors
+  template-config.test.js Configuration, field binding, and coordinates
+  pdf-generation.test.js Generation with twelve groups, fonts, and data
   fixtures/
-    game-data.js    Datos sintéticos exclusivos para las pruebas
-package.json        Configuración y comandos de Vite
-package-lock.json   Versiones resueltas de las dependencias
-.gitignore          Excluye dependencias y archivos de compilación
+    game-data.js    Synthetic data used only by tests
+package.json        Vite configuration and commands
+package-lock.json   Resolved dependency versions
+.gitignore          Excludes dependencies and build output
 ```
 
-Las funciones de descarga e impresión se incorporarán cuando se autorice la fase 6.
+Downloading and printing will be added when phase 6 is authorized.
 
-## Criterio de arquitectura
+## Architecture principles
 
-El desarrollo sigue orientación a objetos, con una clase por archivo y una responsabilidad por clase. Los objetos se componen entre sí: una banda contiene ninjas; cada ninja contiene sus estadísticas, grupo de técnicas y equipamiento. La interfaz recibe esos objetos y delega cada sección a su editor. Se usa composición sin introducir una jerarquía de clases base.
+Development follows object-oriented design, with one class per file and one responsibility per class. Objects are composed: a squad contains ninjas; each ninja contains stats, a technique group, and equipment. The interface receives these objects and delegates each section to its editor. Composition is used without introducing a base-class hierarchy.
 
-- `models/` contiene el estado y las operaciones de los datos. `Ninja.selectType(definition)` asigna el tipo y sus estadísticas disponibles; `TechniqueGroup.selectGroup(definition)` asigna tres técnicas. `Equipment` gestiona las plazas, sus límites y la selección con `addEntry(kind)`, `selectEntry(kind, index, definition)` y `removeEntry(kind, index)`. Las clases funcionan sin navegador.
-- `ui/` contiene la edición y presentación. `EquipmentListEditor` invoca las operaciones de `Equipment`; `EquipmentEntryEditor` muestra el desplegable y la descripción de una entrada. `StatsView` y `TechniqueView` muestran datos derivados sin controles editables.
-- `FormField` gestiona controles editables y `ReadOnlyField` presenta pares de etiqueta y valor sin permitir su edición.
-- `data/ninja-options.js` reúne los nombres conocidos. Los archivos JSON contienen los catálogos. `data/game-data.js` los reúne para consultarlos mediante `GameCatalog`.
-- `main.js` únicamente crea y conecta los objetos de la aplicación.
-- `pdf/` trabaja con documentos y plantillas, de forma independiente de los modelos del juego y de la interfaz. La obtención de la plantilla y la gestión del documento pertenecen a clases diferentes.
-- `BandFieldResolver` lee las rutas del modelo y `PdfFieldFormatter` da formato a sus valores. `PdfFontProvider` obtiene las fuentes; `PdfFontFamily` resuelve los glifos y sus métricas. `PdfTextLayout` calcula líneas y posiciones; `PdfFieldRenderer` escribe el texto. `BandPdfGenerator` coordina esas tareas.
-- `PdfGenerationController` conecta el botón con el generador y conserva el último PDF válido. El estado de la interfaz no pertenece a los modelos ni al generador.
+- `models/` contains state and data operations. `Ninja.selectType(definition)` assigns a type and its available stats; `TechniqueGroup.selectGroup(definition)` assigns three techniques. `Equipment` manages slots, limits, and selections through `addEntry(kind)`, `selectEntry(kind, index, definition)`, and `removeEntry(kind, index)`. Classes work without a browser.
+- `ui/` handles editing and presentation. `EquipmentListEditor` invokes `Equipment` operations; `EquipmentEntryEditor` displays an entry's dropdown and description. `StatsView` and `TechniqueView` display derived data without editable controls.
+- `FormField` manages editable controls; `ReadOnlyField` displays label/value pairs without editing.
+- `data/ninja-options.js` contains known names. JSON files contain catalogs. `data/game-data.js` combines them for `GameCatalog`.
+- `main.js` only creates and connects application objects.
+- `pdf/` handles documents and templates independently of game models and the interface. Template fetching and document management belong to separate classes.
+- `BandFieldResolver` reads model paths; `PdfFieldFormatter` formats values. `PdfFontProvider` obtains fonts; `PdfFontFamily` resolves glyphs and metrics. `PdfTextLayout` computes lines and positions; `PdfFieldRenderer` writes text. `BandPdfGenerator` coordinates these tasks.
+- `PdfGenerationController` connects the button to the generator and retains the latest valid PDF. Interface state belongs to neither models nor the generator.
 
-Los perfiles se mantienen en `ninja-types.json`, las técnicas en `technique-groups.json`, y las armas y objetos en `equipment.json`. Para modificar cómo se muestran, se cambia su vista o editor. Los límites se cambian en `Equipment.getLimit(kind)`. Los cambios posteriores deben conservar esta separación.
+Profiles are maintained in `ninja-types.json`, techniques in `technique-groups.json`, and weapons/items in `equipment.json`. Presentation changes belong in the appropriate view or editor. Limits are changed in `Equipment.getLimit(kind)`. Later changes should preserve this separation.
 
-Las instancias conservan la estructura de datos anterior y pueden convertirse a datos JSON con `JSON.stringify(band)`.
+Instances retain the earlier data structure and can be converted to JSON with `JSON.stringify(band)`.
 
-## Pruebas
+## Tests
 
 ```sh
 npm test
 ```
 
-Las pruebas usan el ejecutor integrado de Node.js, sin añadir librerías de pruebas. Verifican perfiles derivados, técnicas inmutables, cambios de selección, límites de equipamiento, independencia de datos y estructura JSON. Las pruebas PDF cargan tanto la plantilla proporcionada como la auxiliar, comprueban las dimensiones por página, preparan texto, guardan y reabren los bytes, y cubren errores HTTP y archivos inválidos. Las funciones de archivos de Node se usan únicamente en las pruebas; el módulo de la aplicación utiliza `fetch` y `pdf-lib`.
+Tests use Node.js's built-in runner without additional testing libraries. They check derived profiles, immutable techniques, selection changes, equipment limits, independent data, and JSON structure. PDF tests load the supplied and auxiliary templates, verify page dimensions, prepare text, save/reopen bytes, and cover HTTP errors and invalid files. Node file APIs are used only in tests; application modules use `fetch` and `pdf-lib`.
 
-Los valores sintéticos de `tests/fixtures/` no son reglas de Jutsu ni se importan desde la aplicación. La compilación se comprueba con `npm run build`.
+Synthetic values in `tests/fixtures/` are not Jutsu rules and are not imported by the application. The build is checked with `npm run build`.
 
-Las pruebas de configuración comprueban las rutas de los 69 campos contra el modelo, la detección de datos pendientes, los estilos por campo y la resolución relativa del PDF. Las conversiones cubren referencias en píxeles y puntos, escalas por eje, orígenes PDF distintos de cero, inversión del eje Y y el rechazo de cajas inválidas.
+Configuration tests verify all 69 field paths against the model, pending-data detection, per-field styles, and relative PDF URL resolution. Conversion tests cover pixel and point references, per-axis scaling, nonzero PDF origins, Y-axis inversion, and invalid-box rejection.
 
-Las pruebas de generación utilizan los doce grupos reales de técnicas, costes variables, símbolos Unicode, inventarios combinados y una copia de los datos tomada antes de las peticiones. Comprueban que la banda y la plantilla original se conservan. Si un texto no cabe al tamaño mínimo configurado, se informa del campo afectado en lugar de recortarlo silenciosamente.
+Generation tests use all twelve real technique groups, variable costs, Unicode symbols, combined inventories, and a data snapshot taken before requests. They verify that the squad and original template are unchanged. Text that cannot fit at the configured minimum size reports the affected field instead of being silently truncated.

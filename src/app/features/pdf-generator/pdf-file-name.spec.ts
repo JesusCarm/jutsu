@@ -5,10 +5,10 @@ describe('PDF file names', () => {
   const names = new PdfFileName();
 
   it.each([
-    ['  Los Cuervos  ', 'jutsu-squad-Los-Cuervos.pdf'],
-    ['A\u0301guilas del fuego', 'jutsu-squad-Águilas-del-fuego.pdf'],
+    ['  The Ravens  ', 'jutsu-squad-The-Ravens.pdf'],
+    ['Cafe\u0301 Ninjas', 'jutsu-squad-Café-Ninjas.pdf'],
     ['Ninjas.PDF', 'jutsu-squad-Ninjas.pdf'],
-    ['../Ninjas: sombra\\luz?*', 'jutsu-squad-Ninjas-sombra-luz.pdf'],
+    ['../Ninjas: shadow\\light?*', 'jutsu-squad-Ninjas-shadow-light.pdf'],
     ['CON', 'jutsu-squad-CON.pdf'],
     ['', 'jutsu-squad.pdf'],
     [' .pdf ', 'jutsu-squad.pdf'],

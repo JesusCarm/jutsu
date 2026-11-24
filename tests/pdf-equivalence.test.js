@@ -6,15 +6,16 @@ import { test } from 'vitest';
 import expected from './fixtures/phase5-render-operations.json';
 import { Band } from '../src/app/core/models/band';
 import { GameCatalog } from '../src/app/core/models/game-catalog';
-import { GAME_DATA } from '../src/app/core/services/game-data';
+import phase5GameData from './fixtures/phase5-game-data.json';
 import { BandPdfGenerator } from '../src/app/features/pdf-generator/band-pdf-generator';
 import { JutsuPdfTemplate } from '../src/app/features/pdf-generator/jutsu-pdf-template';
 import { fetchCoordinateTemplate } from './fixtures/coordinate-template';
 
 // Captured from the original phase 5 engine before migration. Covers all 12 groups.
 // Compare text, coordinates, styles, line breaks, font sizes and final baselines.
+// Preserve the original rules and Unicode sample names with this historical reference.
 test('the coordinate backend matches the original phase 5 rendering for all twelve technique groups', async () => {
-  const catalog = new GameCatalog(GAME_DATA);
+  const catalog = new GameCatalog(phase5GameData);
   const template = { ...new JutsuPdfTemplate(pathToFileURL(resolve(process.cwd(), 'src/assets') + '/')),
     formFields: undefined, repeatedSheet: undefined };
   for (let offset = 0; offset < 12; offset += 3) {

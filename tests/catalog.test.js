@@ -13,7 +13,7 @@ test('all four ninja types load the supplied stats in the established field orde
   assert.deepEqual(NINJA_STATS, ['attack', 'defense', 'movement', 'skill', 'chakra', 'health']);
   const supplied = [
     ['Physical', [6, 5, 7, 4, 12, 10]],
-    ['Defensive', [4, 6, 5, 5, 12, 10]],
+    ['Defensive', [4, 6, 5, 5, 15, 10]],
     ['Offensive', [8, 3, 7, 4, 15, 10]],
     ['Jutsu Master', [5, 4, 5, 5, 20, 10]],
   ];

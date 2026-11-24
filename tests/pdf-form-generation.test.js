@@ -22,9 +22,9 @@ const iconEntries = (resources) => resourceEntries(resources, 'XObject').filter(
 
 function createBand(offset = 0) {
   const band = new Band();
-  band.name = 'Cuervos';
+  band.name = 'Ravens';
   band.ninjas.forEach((ninja, index) => {
-    ninja.name = ['Águila', 'Kaede', 'Maestro Ñ'][index];
+    ninja.name = ['Renée', 'Kaede', 'Master Ñ'][index];
     ninja.selectType(catalog.ninjaTypes[index]);
     ninja.techniqueGroup.selectGroup(catalog.techniqueGroups[offset + index]);
     catalog.weapons.forEach((weapon, slot) => ninja.equipment.selectSlot('weapons', slot, weapon));
@@ -65,7 +65,7 @@ function assertVectorIcon(document, ref) {
 test('fills the single-card fields, separate chakra costs and named note positions without changing the source or band', async () => {
   const source = await readFile(new URL(exportTemplate.pdfUrl));
   const band = createBand();
-  band.ninjas[0].name = 'Águila → ≥';
+  band.ninjas[0].name = 'Renée → ≥';
   band.ninjas[0].selectType({ name: 'Physical', stats: { ...catalog.ninjaTypes[0].stats, chakra: 0 } });
   const before = JSON.stringify(band);
   const requests = [];
@@ -75,7 +75,7 @@ test('fills the single-card fields, separate chakra costs and named note positio
   const form = document.getForm();
   assert.equal(form.getFields().length, 15);
   for (const [name, value] of Object.entries({
-    Ninja1_name: 'Águila → ≥', Ninja1_stats_attack: '6', Ninja1_stats_hability: '4',
+    Ninja1_name: 'Renée → ≥', Ninja1_stats_attack: '6', Ninja1_stats_hability: '4',
     Ninja1_stats_chakra: '0', Ninja1_stats_life: '10', Ninja1_technique_group: 'Taijutsu',
     Ninja1_items_and_weapons: 'Kunai, Shuriken, Explosive Seal, Smoke Bomb, Soldier Pill',
     Ninja1_technique_1: 'Protective Gate\nMokushin: Cancel 1 attacker success per Chakra spent. Max 5.',

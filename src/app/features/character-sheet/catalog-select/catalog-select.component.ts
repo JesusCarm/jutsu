@@ -13,7 +13,7 @@ export interface CatalogOption { readonly name: string; readonly label?: string;
 export class CatalogSelectComponent {
   readonly label = input.required<string>();
   readonly controlId = input.required<string>();
-  readonly placeholder = input('Elige una opción');
+  readonly placeholder = input('Choose an option');
   readonly options = input.required<readonly CatalogOption[]>();
   readonly value = input.required<string>();
   readonly hideLabel = input(false);

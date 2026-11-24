@@ -14,7 +14,7 @@ export class EquipmentSummaryComponent {
   readonly equipment = input.required<NinjaSnapshot['equipment']>();
   private readonly presentation = new EquipmentPresentation();
   protected readonly groups = computed(() => [
-    { kind: 'weapons', label: 'Armas', empty: 'Sin arma', slots: this.presentation.slots('weapons', this.equipment().weapons) },
-    { kind: 'items', label: 'Objetos', empty: 'Sin objeto', slots: this.presentation.slots('items', this.equipment().items) },
+    { kind: 'weapons', label: 'Weapons', empty: 'No weapon', slots: this.presentation.slots('weapons', this.equipment().weapons) },
+    { kind: 'items', label: 'Items', empty: 'No item', slots: this.presentation.slots('items', this.equipment().items) },
   ]);
 }

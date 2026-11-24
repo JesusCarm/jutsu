@@ -15,10 +15,10 @@ export class StatsViewComponent {
   readonly stats = input.required<NinjaSnapshot['stats']>();
   protected readonly fields: readonly { key: StatName; label: string; short: string; icon: IconName }[] = [
     { key: 'chakra', label: 'Chakra', short: 'CHK', icon: 'chakra' },
-    { key: 'attack', label: 'Ataque', short: 'ATQ', icon: 'attack' },
-    { key: 'defense', label: 'Defensa', short: 'DEF', icon: 'defense' },
-    { key: 'movement', label: 'Movimiento', short: 'MOV', icon: 'movement' },
-    { key: 'skill', label: 'Habilidad', short: 'HAB', icon: 'skill' },
-    { key: 'health', label: 'Vida', short: 'VID', icon: 'health' },
+    { key: 'attack', label: 'Attack', short: 'ATK', icon: 'attack' },
+    { key: 'defense', label: 'Defense', short: 'DEF', icon: 'defense' },
+    { key: 'movement', label: 'Movement', short: 'MOV', icon: 'movement' },
+    { key: 'skill', label: 'Skill', short: 'SKL', icon: 'skill' },
+    { key: 'health', label: 'Health', short: 'HP', icon: 'health' },
   ];
 }
