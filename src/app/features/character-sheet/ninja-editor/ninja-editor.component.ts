@@ -1,39 +1,21 @@
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { Labels } from '../../../core/i18n/i18n-keys';
 import { GameTextService } from '../../../core/i18n/game-text.service';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import type { NinjaSnapshot } from '../../../core/models/band-snapshot';
-import { BandStateService } from '../band-state.service';
-import { CatalogSelectComponent } from '../catalog-select/catalog-select.component';
-import { TechniqueGroupEditorComponent } from '../technique-group-editor/technique-group-editor.component';
-import { EquipmentListEditorComponent } from '../equipment-list-editor/equipment-list-editor.component';
+import { EquipmentEffectsComponent } from '../equipment-effects/equipment-effects.component';
+import { TechniqueListComponent } from '../technique-list/technique-list.component';
 import { UiIconComponent } from '../../../shared/ui-icon/ui-icon.component';
-import { NinjaTypePresentation } from '../ninja-type-presentation';
 
 @Component({
-  selector: 'app-ninja-editor',
-  imports: [ReactiveFormsModule, CatalogSelectComponent, TechniqueGroupEditorComponent, EquipmentListEditorComponent, UiIconComponent],
-  templateUrl: './ninja-editor.component.html',
-  styleUrl: './ninja-editor.component.scss',
+  selector: 'app-ninja-editor', imports: [EquipmentEffectsComponent, TechniqueListComponent, UiIconComponent],
+  templateUrl: './ninja-editor.component.html', styleUrl: './ninja-editor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NinjaEditorComponent {
+  readonly ninja = input.required<NinjaSnapshot>();
+  readonly index = input.required<number>();
   protected readonly i18n = inject(I18nService);
   protected readonly Labels = Labels;
   protected readonly text = inject(GameTextService);
-
-  readonly ninja = input.required<NinjaSnapshot>();
-  readonly index = input.required<number>();
-  protected readonly state = inject(BandStateService);
-  protected readonly types = computed(() => this.state.catalog.ninjaTypes.map((type) => ({ id: type.id, label: this.text.typeName(type.id) })));
-  protected readonly name = new FormControl('', { nonNullable: true });
-  private readonly typePresentation = new NinjaTypePresentation();
-  protected readonly typeIcon = computed(() => this.typePresentation.icon(this.ninja().type));
-
-  constructor() {
-    effect(() => {
-      if (this.name.value !== this.ninja().name) this.name.setValue(this.ninja().name, { emitEvent: false });
-    });
-  }
 }

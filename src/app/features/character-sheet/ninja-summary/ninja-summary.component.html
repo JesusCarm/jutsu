@@ -1,22 +1,24 @@
 <div class="ninja-summary" [class.is-active]="active()" (click)="select()">
-  <div [id]="'ninja-' + (index() + 1) + '-title'">
-    <button type="button" class="ninja-select" [id]="'ninja-' + (index() + 1) + '-select'"
-      [attr.aria-pressed]="active()" [attr.aria-controls]="'ninja-' + (index() + 1) + '-panel'"
-      [attr.aria-label]="i18n.t(Labels.editNamedNinja, {name: ninja().name || i18n.t(Labels.ninja, {number: index() + 1})})">
-      <span class="ninja-name">{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</span>
-      <span class="ninja-type">
-        @if (typeIcon(); as icon) { <app-ui-icon [name]="icon" /> }
-        <span class="ninja-type-label">{{ text.typeName(ninja().type) || i18n.t(Labels.noType) }}</span>
-      </span>
+  <div class="ninja-identity" [id]="'ninja-' + (index() + 1) + '-title'">
+    <app-ninja-name-editor [value]="ninja().name" [ninjaIndex]="index()" />
+    <button type="button" class="school-select" [class.has-school]="!!ninja().techniqueGroup.id" [id]="'ninja-' + (index() + 1) + '-technique-group'"
+      aria-haspopup="dialog" [title]="ninja().techniqueGroup.id ? text.groupName(ninja().techniqueGroup.id) : i18n.t(Labels.selectSchool)"
+      [attr.aria-label]="ninja().techniqueGroup.id ? i18n.t(Actions.changeSchool, {name: text.groupName(ninja().techniqueGroup.id)}) : i18n.t(Labels.selectSchool)" (click)="selections.school(index())">
+      @if (ninja().techniqueGroup.id) {
+        <app-ui-icon name="book" />
+        <span class="school-label">{{ text.groupName(ninja().techniqueGroup.id) }}</span>
+      } @else { {{ i18n.t(Labels.selectSchool) }} }
     </button>
-    <h2 class="ninja-static-heading">
-      <span class="ninja-name">{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</span>
-      <span class="ninja-type">
-        @if (typeIcon(); as icon) { <app-ui-icon [name]="icon" /> }
-        <span class="ninja-type-label">{{ text.typeName(ninja().type) || i18n.t(Labels.noType) }}</span>
-      </span>
-    </h2>
   </div>
+  <button type="button" class="ninja-type" [id]="'ninja-' + (index() + 1) + '-type'" aria-haspopup="dialog"
+    [title]="ninja().type ? i18n.t(Actions.changeType, {name: text.typeName(ninja().type)}) : i18n.t(Actions.chooseType)"
+    (click)="selections.type(index())">
+    @if (typeIcon(); as icon) { <app-ui-icon [name]="icon" /> }
+    <span class="ninja-type-label">{{ text.typeName(ninja().type) || i18n.t(Actions.chooseType) }}</span>
+  </button>
   <app-stats-view [stats]="ninja().stats" />
-  <app-equipment-summary [equipment]="ninja().equipment" />
+  <app-equipment-summary [equipment]="ninja().equipment" [ninjaIndex]="index()" />
+  <button type="button" class="ninja-select" [id]="'ninja-' + (index() + 1) + '-select'"
+    [attr.aria-pressed]="active()" [attr.aria-controls]="'ninja-' + (index() + 1) + '-panel'"
+    [attr.aria-label]="i18n.t(Labels.editNamedNinja, {name: ninja().name || i18n.t(Labels.ninja, {number: index() + 1})})">{{ i18n.t(Actions.viewDetails) }}</button>
 </div>

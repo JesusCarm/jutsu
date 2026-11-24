@@ -2,10 +2,7 @@
   <button class="icon-button" id="generate-pdf" type="button" [disabled]="pdf.generating() || i18n.loading()"
     [title]="i18n.t(Actions.generate)" [attr.aria-label]="i18n.t(Actions.generate)" aria-describedby="pdf-status"
     (click)="exports.generateAndDownload()"><app-ui-icon name="file" /></button>
-  <button class="icon-button" id="download-pdf" type="button" [disabled]="!pdf.hasPdf()"
-    [title]="i18n.t(Actions.download)" [attr.aria-label]="i18n.t(Actions.download)" aria-describedby="pdf-status"
-    (click)="exports.download()"><app-ui-icon name="download" /></button>
-  <button class="icon-button" id="print-pdf" type="button" [disabled]="!pdf.hasPdf()"
+  <button class="icon-button" id="print-pdf" type="button" [disabled]="pdf.generating() || i18n.loading()"
     [title]="i18n.t(Actions.print)" [attr.aria-label]="i18n.t(Actions.print)" aria-describedby="pdf-status"
-    (click)="exports.openForPrinting()"><app-ui-icon name="printer" /></button>
+    (click)="exports.generateAndOpenForPrinting()"><app-ui-icon name="printer" /></button>
 </div>

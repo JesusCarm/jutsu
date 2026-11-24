@@ -1,0 +1,11 @@
+<app-selection-panel [title]="i18n.t(Labels.schoolSelection)" [subtitle]="ninja().name || i18n.t(Labels.ninja, {number: data.ninjaIndex + 1})">
+  <div class="choice-list">
+    <button type="button" class="selection-card" [class.is-current]="!ninja().techniqueGroup.id" [attr.aria-pressed]="!ninja().techniqueGroup.id" data-option-id="" (click)="dialog.close('')"><span class="choice-heading"><app-ui-icon name="minus" />{{ i18n.t(Labels.noSchool) }}</span></button>
+    @for (group of state.catalog.techniqueGroups; track group.id) {
+      <article class="selection-card school-option" [class.is-current]="ninja().techniqueGroup.id === group.id">
+        <button type="button" class="school-choice" [attr.aria-pressed]="ninja().techniqueGroup.id === group.id" [attr.data-option-id]="group.id" [attr.aria-describedby]="'school-techniques-' + group.id" (click)="dialog.close(group.id)"><span class="choice-heading"><app-ui-icon name="book" />{{ text.groupName(group.id) }}</span></button>
+        <app-technique-list [id]="'school-techniques-' + group.id" [definitions]="group.techniques" />
+      </article>
+    }
+  </div>
+</app-selection-panel>

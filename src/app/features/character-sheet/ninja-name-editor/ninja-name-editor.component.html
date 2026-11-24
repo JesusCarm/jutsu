@@ -1,0 +1,4 @@
+<label class="sr-only" [for]="'ninja-' + (ninjaIndex() + 1) + '-name'">{{ i18n.t(Labels.ninjaPlaceholder) }}</label>
+<input [id]="'ninja-' + (ninjaIndex() + 1) + '-name'" [formControl]="name"
+  [placeholder]="i18n.t(Labels.ninja, {number: ninjaIndex() + 1})" [title]="i18n.t(Labels.ninjaPlaceholder)"
+  (input)="state.setName(ninjaIndex(), name.value)" />

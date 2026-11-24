@@ -1,0 +1,12 @@
+<div class="choice-list">
+  <button type="button" class="selection-card" [class.is-current]="!selectedId()" [attr.aria-pressed]="!selectedId()" data-option-id="" (click)="picked.emit('')">
+    <span class="choice-heading"><app-ui-icon name="minus" />{{ i18n.t(kind() === 'weapons' ? Labels.noWeapon : Labels.noItem) }}</span>
+  </button>
+  @for (option of options(); track option.id) {
+    <button type="button" class="selection-card" [class.is-current]="selectedId() === option.id" [attr.aria-pressed]="selectedId() === option.id" [attr.data-option-id]="option.id" (click)="picked.emit(option.id)">
+      <span class="choice-heading"><app-ui-icon [name]="option.icon" />{{ option.name }}</span>
+      <span class="choice-cost">{{ option.cost }}</span>
+      <span class="choice-description">{{ option.description }}</span>
+    </button>
+  }
+</div>

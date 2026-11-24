@@ -1,0 +1,9 @@
+:host { display: block; min-width: 0; }
+.equipment-details { margin-bottom: 1rem; color: var(--color-muted); font-size: .875rem; }
+summary { padding-block: .5rem; cursor: pointer; }
+summary:hover { color: #ededed; }
+h3 { margin-top: .75rem; color: #ddd; font-size: .875rem; font-weight: 600; }
+.equipment-effect { margin-top: .75rem; overflow-wrap: anywhere; }
+strong { display: flex; align-items: center; gap: .375rem; color: #e4e4e4; font-weight: 500; }
+.action-cost { display: block; margin-top: .125rem; font-size: .75rem; }
+p { margin-top: .375rem; }

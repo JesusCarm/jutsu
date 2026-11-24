@@ -1,5 +1,5 @@
 import { I18nService } from '../../core/i18n/i18n.service';
-import { App, Messages } from '../../core/i18n/i18n-keys';
+import { App, Labels } from '../../core/i18n/i18n-keys';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NinjaEditorComponent } from './ninja-editor/ninja-editor.component';
 import { NinjaSummaryComponent } from './ninja-summary/ninja-summary.component';
@@ -19,7 +19,7 @@ import { LanguageSwitcherComponent } from '../../shared/language-switcher/langua
 export class CharacterSheetComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly App = App;
-  protected readonly Messages = Messages;
+  protected readonly Labels = Labels;
 
   protected readonly state = inject(BandStateService);
   protected readonly selectedIndex = signal(0);

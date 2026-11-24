@@ -9,19 +9,69 @@ import { PdfBrowserFilesService } from './pdf-browser-files.service';
 import { PdfExportService } from './pdf-export.service';
 import { GENERATE_BAND_PDF, PdfGenerationService } from './pdf-generation.service';
 import type { GenerateBandPdf } from './pdf-generation.service';
+import { TranslationError } from '../../core/i18n/translation-error';
+import { Messages } from '../../core/i18n/i18n-keys';
 
 async function setup(generate: GenerateBandPdf = async () => new Uint8Array([37, 80, 68, 70])) {
-  const files = { download: vi.fn(), openForPrinting: vi.fn() };
+  const viewer = { show: vi.fn(), close: vi.fn() };
+  const files = { download: vi.fn(), openForPrinting: vi.fn(), prepareForPrinting: vi.fn(() => viewer) };
   TestBed.configureTestingModule({ providers: [
     ...provideTestI18n(),
     { provide: GENERATE_BAND_PDF, useValue: generate },
     { provide: PdfBrowserFilesService, useValue: files },
   ] });
   await TestBed.inject(I18nService).initialize();
-  return { files, exports: TestBed.inject(PdfExportService), pdf: TestBed.inject(PdfGenerationService), state: TestBed.inject(BandStateService) };
+  return { files, viewer, exports: TestBed.inject(PdfExportService), pdf: TestBed.inject(PdfGenerationService), state: TestBed.inject(BandStateService) };
 }
 
 describe('PDF export actions', () => {
+  it('reserves the print tab synchronously, generates once and opens the result without downloading', async () => {
+    let release!: (bytes: Uint8Array) => void;
+    const generate = vi.fn<GenerateBandPdf>(() => new Promise((resolve) => { release = resolve; }));
+    const { exports, files, viewer } = await setup(generate);
+    const pending = exports.generateAndOpenForPrinting();
+    expect(files.prepareForPrinting).toHaveBeenCalledExactlyOnceWith('Generating your sheet…');
+    expect(files.prepareForPrinting.mock.invocationCallOrder[0]).toBeLessThan(generate.mock.invocationCallOrder[0]);
+    expect(viewer.show).not.toHaveBeenCalled();
+    await exports.generateAndOpenForPrinting();
+    expect(generate).toHaveBeenCalledTimes(1);
+    release(new Uint8Array([1, 2])); await pending;
+    expect(viewer.show).toHaveBeenCalledExactlyOnceWith(new Uint8Array([1, 2]));
+    expect(viewer.close).not.toHaveBeenCalled();
+    expect(files.download).not.toHaveBeenCalled();
+    expect(exports.status().message).toContain('print controls');
+  });
+
+  it.each(['error', 'edit', 'language'])('closes the reserved tab after a generation becomes unusable: %s', async (cause) => {
+    let release!: (bytes: Uint8Array) => void;
+    let fail!: (reason: Error) => void;
+    const { exports, viewer, state } = await setup(() => new Promise((resolve, reject) => { release = resolve; fail = reject; }));
+    const pending = exports.generateAndOpenForPrinting();
+    if (cause === 'edit') state.setName(0, 'Changed');
+    if (cause === 'language') await TestBed.inject(I18nService).setLanguage('es');
+    if (cause === 'error') fail(new Error('Missing template')); else release(new Uint8Array([1]));
+    await pending;
+    expect(viewer.show).not.toHaveBeenCalled();
+    expect(viewer.close).toHaveBeenCalledTimes(1);
+    if (cause === 'error') expect(exports.status().message).toContain('Missing template');
+  });
+
+  it('reports blocked print tabs and closed viewers and allows retrying', async () => {
+    const generate = vi.fn<GenerateBandPdf>().mockResolvedValue(new Uint8Array([1]));
+    const { exports, files, viewer } = await setup(generate);
+    files.prepareForPrinting.mockImplementationOnce(() => { throw new TranslationError(Messages.popupBlocked); });
+    await exports.generateAndOpenForPrinting();
+    expect(generate).not.toHaveBeenCalled();
+    expect(exports.status().message).toContain('Allow pop-ups');
+    viewer.show.mockImplementationOnce(() => { throw new TranslationError(Messages.printWindowClosed); });
+    await exports.generateAndOpenForPrinting();
+    expect(viewer.close).toHaveBeenCalledTimes(1);
+    expect(exports.status().message).toContain('was closed');
+    await exports.generateAndOpenForPrinting();
+    expect(viewer.show).toHaveBeenCalledTimes(2);
+    expect(exports.status().phase).toBe('success');
+  });
+
   it('waits for generation and downloads exactly once when a repeated click occurs while loading', async () => {
     let release!: (bytes: Uint8Array) => void;
     const generate = vi.fn<GenerateBandPdf>(() => new Promise((resolve) => { release = resolve; }));

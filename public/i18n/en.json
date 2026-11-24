@@ -36,7 +36,14 @@
     "download": "Download PDF",
     "print": "Open PDF for printing",
     "viewEquipment": "View equipment effects",
-    "selectLanguage": "Switch to {language}"
+    "selectLanguage": "Switch to {language}",
+    "chooseType": "Choose type",
+    "changeType": "Change type: {name}",
+    "chooseWeapon": "Choose weapon {number}",
+    "chooseItem": "Choose item {number}",
+    "changeSchool": "Change school: {name}",
+    "close": "Close",
+    "viewDetails": "View details"
   },
   "labels": {
     "squad": "Squad:",
@@ -65,7 +72,14 @@
     "sheetTemplate": "Sheet template",
     "sheetActions": "Sheet actions",
     "mokushin": "Mokushin",
-    "jutsuTemplate": "Jutsu — three ninjas per page"
+    "jutsuTemplate": "Jutsu — three ninjas per page",
+    "selectSchool": "Select school",
+    "noSchool": "No school",
+    "typeSelection": "Choose ninja type",
+    "weaponSelection": "Choose weapon",
+    "itemSelection": "Choose item",
+    "schoolSelection": "Choose school",
+    "equipmentSlot": "{slot}: {name}"
   },
   "messages": {
     "ready": "Ready to generate your sheet.",
@@ -80,7 +94,8 @@
     "emptyPdf": "The PDF is empty. Generate the sheet again.",
     "invalidPdfBytes": "The generator must return PDF bytes.",
     "exportFailed": "Could not export the PDF. {message}",
-    "languageLoadFailed": "The requested language could not be loaded. English is shown instead."
+    "languageLoadFailed": "The requested language could not be loaded. English is shown instead.",
+    "printWindowClosed": "The PDF tab was closed. Open it again to print."
   },
   "costs": {
     "number": "{amount}",

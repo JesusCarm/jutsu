@@ -27,6 +27,8 @@ const ICONS = {
   offensive: 'ofensivo.svg',
   jutsuMaster: 'jutsu_master.svg',
   minus: ['M6 12h12'],
+  plus: ['M6 12h12M12 6v12'],
+  close: ['m6 6 12 12M18 6 6 18'],
   file: ['M14 2H5v20h14V7l-5-5ZM14 2v6h5M12 11v7M9 15l3 3 3-3'],
   download: ['M12 3v12M7 10l5 5 5-5M4 16v5h16v-5'],
   printer: ['M6 9V3h12v6M6 17H3v-8h18v8h-3M6 14h12v8H6v-8ZM17 11h1'],

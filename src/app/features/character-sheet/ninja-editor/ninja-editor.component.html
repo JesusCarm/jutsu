@@ -1,21 +1,6 @@
-<fieldset class="ninja-editor">
-  <legend class="sr-only">{{ i18n.t(Labels.editNinja, {number: index() + 1}) }}</legend>
-  <div class="editor-heading">
-    <h2>{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</h2>
-    <span class="badge">
-      @if (typeIcon(); as icon) { <app-ui-icon [name]="icon" /> }
-      <span class="badge-label">{{ text.typeName(ninja().type) || i18n.t(Labels.noType) }}</span>
-    </span>
-  </div>
-  <div class="identity-fields">
-    <div class="text-field"><label [for]="'ninja-' + (index() + 1) + '-name'">{{ i18n.t(Labels.ninjaName) }}</label>
-      <input [id]="'ninja-' + (index() + 1) + '-name'" [formControl]="name" [placeholder]="i18n.t(Labels.ninjaPlaceholder)"
-        (input)="state.setName(index(), name.value)" />
-    </div>
-    <app-catalog-select [label]="i18n.t(Labels.type)" [placeholder]="i18n.t(Labels.chooseType)" [controlId]="'ninja-' + (index() + 1) + '-type'"
-      [options]="types()" [value]="ninja().type" (selected)="state.selectType(index(), $event)" />
-  </div>
-  <app-equipment-list-editor kind="weapons" [entries]="ninja().equipment.weapons" [ninjaIndex]="index()" />
-  <app-equipment-list-editor kind="items" [entries]="ninja().equipment.items" [ninjaIndex]="index()" />
-  <app-technique-group-editor [group]="ninja().techniqueGroup" [ninjaIndex]="index()" />
-</fieldset>
+<section class="ninja-editor" [attr.aria-label]="i18n.t(Labels.editNinja, {number: index() + 1})">
+  <h2 class="editor-heading">{{ ninja().name || i18n.t(Labels.ninja, {number: index() + 1}) }}</h2>
+  <app-equipment-effects [equipment]="ninja().equipment" />
+  <h3 class="school-heading"><app-ui-icon name="book" />{{ text.groupName(ninja().techniqueGroup.id) || i18n.t(Labels.jutsuSchool) }}</h3>
+  <app-technique-list [definitions]="ninja().techniqueGroup.techniques" />
+</section>

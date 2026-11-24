@@ -36,7 +36,14 @@
     "download": "Descargar PDF",
     "print": "Abrir PDF para imprimir",
     "viewEquipment": "Ver efectos del equipamiento",
-    "selectLanguage": "Cambiar a {language}"
+    "selectLanguage": "Cambiar a {language}",
+    "chooseType": "Escoger tipo",
+    "changeType": "Cambiar tipo: {name}",
+    "chooseWeapon": "Escoger arma {number}",
+    "chooseItem": "Escoger objeto {number}",
+    "changeSchool": "Cambiar escuela: {name}",
+    "close": "Cerrar",
+    "viewDetails": "Ver ficha"
   },
   "labels": {
     "squad": "Escuadra:",
@@ -65,7 +72,14 @@
     "sheetTemplate": "Plantilla de ficha",
     "sheetActions": "Acciones de la ficha",
     "mokushin": "Mokushin",
-    "jutsuTemplate": "Jutsu — tres ninjas por página"
+    "jutsuTemplate": "Jutsu — tres ninjas por página",
+    "selectSchool": "Selecciona escuela",
+    "noSchool": "Sin escuela",
+    "typeSelection": "Escoger tipo de ninja",
+    "weaponSelection": "Escoger arma",
+    "itemSelection": "Escoger objeto",
+    "schoolSelection": "Seleccionar escuela",
+    "equipmentSlot": "{slot}: {name}"
   },
   "messages": {
     "ready": "Listo para generar tu ficha.",
@@ -80,7 +94,8 @@
     "emptyPdf": "El PDF está vacío. Genera la ficha de nuevo.",
     "invalidPdfBytes": "El generador debe devolver los datos binarios del PDF.",
     "exportFailed": "No se pudo exportar el PDF. {message}",
-    "languageLoadFailed": "No se pudo cargar el idioma solicitado. Se muestra el inglés en su lugar."
+    "languageLoadFailed": "No se pudo cargar el idioma solicitado. Se muestra el inglés en su lugar.",
+    "printWindowClosed": "La pestaña del PDF se ha cerrado. Ábrela de nuevo para imprimir."
   },
   "costs": {
     "number": "{amount}",

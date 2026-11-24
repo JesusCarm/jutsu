@@ -1,0 +1,5 @@
+<header class="panel-heading">
+  <div><h2 id="selection-panel-title">{{ title() }}</h2>@if (subtitle()) { <p>{{ subtitle() }}</p> }</div>
+  <button type="button" class="close-panel" [attr.aria-label]="i18n.t(Actions.close)" [title]="i18n.t(Actions.close)" (click)="dialog.close()"><app-ui-icon name="close" /></button>
+</header>
+<div class="panel-content"><ng-content /></div>

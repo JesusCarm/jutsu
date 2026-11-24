@@ -9,12 +9,16 @@ const ICONS: Readonly<Record<string, IconName>> = {
 };
 
 export class EquipmentPresentation {
+  icon(kind: EquipmentKind, id: string): IconName {
+    return id ? ICONS[id] ?? (kind === 'weapons' ? 'weapons' : 'equipment') : 'minus';
+  }
+
   slots(kind: EquipmentKind, entries: readonly EquipmentDefinition[], text: GameText) {
     return Array.from({ length: EQUIPMENT_LIMITS[kind] }, (_, index) => {
       const entry = entries[index];
       return {
         index, id: entry?.id ?? '', ...(entry ? text.equipment(entry) : { name: '', description: '', cost: '' }),
-        icon: entry?.id ? ICONS[entry.id] ?? (kind === 'weapons' ? 'weapons' : 'equipment') : 'minus',
+        icon: this.icon(kind, entry?.id ?? ''),
       };
     });
   }

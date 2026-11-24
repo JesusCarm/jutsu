@@ -56,6 +56,49 @@ describe('PDF browser files', () => {
     expect(vi.getTimerCount()).toBe(0);
   });
 
+  it('reserves a loading tab during the click and loads the PDF into the same tab later', () => {
+    const viewer = { closed: false, opener: window, document: document.implementation.createHTMLDocument(),
+      location: { replace: vi.fn() }, close: vi.fn() };
+    const open = vi.spyOn(window, 'open').mockReturnValue(viewer as unknown as Window);
+    const pending = files.prepareForPrinting('Generating your sheet…');
+    expect(open).toHaveBeenCalledExactlyOnceWith('about:blank', '_blank');
+    expect(viewer.opener).toBeNull();
+    expect(viewer.document.body.textContent).toBe('Generating your sheet…');
+    expect(createUrl).not.toHaveBeenCalled();
+    pending.show(new Uint8Array([37, 80, 68, 70]));
+    expect(open).toHaveBeenCalledTimes(1);
+    expect(viewer.location.replace).toHaveBeenCalledExactlyOnceWith('blob:sheet-1');
+    pending.close();
+    expect(viewer.close).not.toHaveBeenCalled();
+    viewer.closed = true;
+    vi.advanceTimersByTime(1000);
+    expect(revokeUrl).toHaveBeenCalledExactlyOnceWith('blob:sheet-1');
+  });
+
+  it('closes canceled pending tabs and cleans them up when the application is destroyed', () => {
+    const makeViewer = () => ({ closed: false, opener: null, document: document.implementation.createHTMLDocument(), close: vi.fn() });
+    const first = makeViewer(); const second = makeViewer();
+    vi.spyOn(window, 'open').mockReturnValueOnce(first as unknown as Window).mockReturnValueOnce(second as unknown as Window);
+    const pending = files.prepareForPrinting('Loading');
+    pending.close(); pending.close();
+    expect(first.close).toHaveBeenCalledTimes(1);
+    files.prepareForPrinting('Loading');
+    TestBed.resetTestingModule();
+    expect(second.close).toHaveBeenCalledTimes(1);
+    expect(createUrl).not.toHaveBeenCalled();
+  });
+
+  it('reports a manually closed or blocked print tab without creating a Blob', () => {
+    const viewer = { closed: false, opener: null, document: document.implementation.createHTMLDocument(), close: vi.fn() };
+    vi.spyOn(window, 'open').mockReturnValueOnce(viewer as unknown as Window).mockReturnValueOnce(null);
+    const pending = files.prepareForPrinting('Loading');
+    viewer.closed = true;
+    expect(() => pending.show(new Uint8Array([1]))).toThrow('messages.printWindowClosed');
+    pending.close();
+    expect(() => files.prepareForPrinting('Loading')).toThrow('messages.popupBlocked');
+    expect(createUrl).not.toHaveBeenCalled();
+  });
+
   it('reports a blocked tab and releases its unused URL', () => {
     vi.spyOn(window, 'open').mockReturnValue(null);
     expect(() => files.openForPrinting(new Uint8Array([1]))).toThrow('messages.popupBlocked');

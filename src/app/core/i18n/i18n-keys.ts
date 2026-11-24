@@ -39,7 +39,14 @@ export const Actions = {
   "download": "actions.download",
   "print": "actions.print",
   "viewEquipment": "actions.viewEquipment",
-  "selectLanguage": "actions.selectLanguage"
+  "selectLanguage": "actions.selectLanguage",
+  "chooseType": "actions.chooseType",
+  "changeType": "actions.changeType",
+  "chooseWeapon": "actions.chooseWeapon",
+  "chooseItem": "actions.chooseItem",
+  "changeSchool": "actions.changeSchool",
+  "close": "actions.close",
+  "viewDetails": "actions.viewDetails"
 } as const;
 
 export const Labels = {
@@ -69,7 +76,14 @@ export const Labels = {
   "sheetTemplate": "labels.sheetTemplate",
   "sheetActions": "labels.sheetActions",
   "mokushin": "labels.mokushin",
-  "jutsuTemplate": "labels.jutsuTemplate"
+  "jutsuTemplate": "labels.jutsuTemplate",
+  "selectSchool": "labels.selectSchool",
+  "noSchool": "labels.noSchool",
+  "typeSelection": "labels.typeSelection",
+  "weaponSelection": "labels.weaponSelection",
+  "itemSelection": "labels.itemSelection",
+  "schoolSelection": "labels.schoolSelection",
+  "equipmentSlot": "labels.equipmentSlot"
 } as const;
 
 export const Messages = {
@@ -85,7 +99,8 @@ export const Messages = {
   "emptyPdf": "messages.emptyPdf",
   "invalidPdfBytes": "messages.invalidPdfBytes",
   "exportFailed": "messages.exportFailed",
-  "languageLoadFailed": "messages.languageLoadFailed"
+  "languageLoadFailed": "messages.languageLoadFailed",
+  "printWindowClosed": "messages.printWindowClosed"
 } as const;
 
 export const Costs = {
@@ -334,6 +349,13 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "actions.print",
   "actions.viewEquipment",
   "actions.selectLanguage",
+  "actions.chooseType",
+  "actions.changeType",
+  "actions.chooseWeapon",
+  "actions.chooseItem",
+  "actions.changeSchool",
+  "actions.close",
+  "actions.viewDetails",
   "labels.squad",
   "labels.squadName",
   "labels.ninjaName",
@@ -361,6 +383,13 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "labels.sheetActions",
   "labels.mokushin",
   "labels.jutsuTemplate",
+  "labels.selectSchool",
+  "labels.noSchool",
+  "labels.typeSelection",
+  "labels.weaponSelection",
+  "labels.itemSelection",
+  "labels.schoolSelection",
+  "labels.equipmentSlot",
   "messages.ready",
   "messages.loading",
   "messages.generated",
@@ -374,6 +403,7 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "messages.invalidPdfBytes",
   "messages.exportFailed",
   "messages.languageLoadFailed",
+  "messages.printWindowClosed",
   "costs.number",
   "costs.range",
   "costs.maintenance",

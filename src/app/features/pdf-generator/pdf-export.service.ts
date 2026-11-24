@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, linkedSignal } from '@angular/core';
 import { BandStateService } from '../character-sheet/band-state.service';
 import { PdfBrowserFilesService } from './pdf-browser-files.service';
+import type { PendingPdfViewer } from './pdf-browser-files.service';
 import { PdfFileName } from './pdf-file-name';
 import { PdfGenerationService } from './pdf-generation.service';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -41,6 +42,25 @@ export class PdfExportService {
     this.run((bytes) => this.files.openForPrinting(bytes), Messages.pdfOpened);
   }
 
+  async generateAndOpenForPrinting(): Promise<void> {
+    if (this.generation.generating() || this.i18n.loading()) return;
+    let viewer: PendingPdfViewer | undefined;
+    try {
+      viewer = this.files.prepareForPrinting(this.i18n.t(Messages.loading));
+      await this.generation.generate();
+      const bytes = this.generation.getPdfBytes();
+      if (!bytes) {
+        viewer.close();
+        return;
+      }
+      viewer.show(bytes);
+      this.notice.set({ phase: 'success', message: { key: Messages.pdfOpened } });
+    } catch (error: unknown) {
+      viewer?.close();
+      this.reportError(error);
+    }
+  }
+
   private run(action: (bytes: Uint8Array) => void, key: TranslationKey): void {
     const bytes = this.generation.getPdfBytes();
     if (!bytes) {
@@ -51,8 +71,12 @@ export class PdfExportService {
       action(bytes);
       this.notice.set({ phase: 'success', message: { key } });
     } catch (error: unknown) {
-      this.notice.set({ phase: 'error', message: error instanceof TranslationError ? { key: error.key }
-        : { key: Messages.exportFailed, params: { message: error instanceof Error ? error.message : String(error) } } });
+      this.reportError(error);
     }
+  }
+
+  private reportError(error: unknown): void {
+    this.notice.set({ phase: 'error', message: error instanceof TranslationError ? { key: error.key }
+      : { key: Messages.exportFailed, params: { message: error instanceof Error ? error.message : String(error) } } });
   }
 }

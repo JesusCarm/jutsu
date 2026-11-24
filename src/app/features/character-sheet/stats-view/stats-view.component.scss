@@ -1,5 +1,5 @@
 :host { display: block; min-width: 0; }
-.stat-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .25rem; padding-block: .875rem; }
+.stat-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem .25rem; padding-block: .875rem; }
 .mini-stat { display: flex; flex-wrap: wrap; align-items: center; gap: .125rem; min-width: 0; font-size: .875rem; }
 .mini-stat dt { display: flex; color: #b6b6b6; }
 .mini-stat dd { color: #f2f2f2; font-variant-numeric: tabular-nums; }

@@ -1,0 +1,3 @@
+<app-selection-panel [title]="i18n.t(Labels.weaponSelection)" [subtitle]="ninja().name || i18n.t(Labels.ninja, {number: data.ninjaIndex + 1})">
+  <app-equipment-choices kind="weapons" [selectedId]="selectedId()" (picked)="dialog.close($event)" />
+</app-selection-panel>

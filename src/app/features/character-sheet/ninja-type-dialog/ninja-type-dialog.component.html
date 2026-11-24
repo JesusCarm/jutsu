@@ -1,0 +1,11 @@
+<app-selection-panel [title]="i18n.t(Labels.typeSelection)" [subtitle]="ninja().name || i18n.t(Labels.ninja, {number: data.ninjaIndex + 1})">
+  <div class="choice-list">
+    <button type="button" class="selection-card" [class.is-current]="!ninja().type" [attr.aria-pressed]="!ninja().type" data-option-id="" (click)="dialog.close('')"><span class="choice-heading"><app-ui-icon name="minus" />{{ i18n.t(Labels.noType) }}</span></button>
+    @for (type of state.catalog.ninjaTypes; track type.id) {
+      <button type="button" class="selection-card" [class.is-current]="ninja().type === type.id" [attr.aria-pressed]="ninja().type === type.id" [attr.data-option-id]="type.id" (click)="dialog.close(type.id)">
+        <span class="choice-heading">@if (typePresentation.icon(type.id); as icon) { <app-ui-icon [name]="icon" /> }{{ text.typeName(type.id) }}</span>
+        @if (type.stats; as stats) { <app-stats-view [stats]="stats" /> }
+      </button>
+    }
+  </div>
+</app-selection-panel>

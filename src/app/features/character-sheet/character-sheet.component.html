@@ -4,9 +4,9 @@
     <div class="squad-bar"><div><app-band-name-editor /><p id="band-help">{{ i18n.t(App.help, {count: state.band().ninjas.length}) }}</p></div><span class="badge squad-count">{{ i18n.t(App.count, {count: state.band().ninjas.length}) }}</span></div>
     <div class="ninja-grid">
       @for (ninja of state.band().ninjas; track $index) {
-        <article class="ninja-column" [class.is-selected]="selectedIndex() === $index" [style.--ninja-column]="$index + 1">
+        <article class="ninja-column" [class.is-selected]="selectedIndex() === $index" [style.--ninja-position]="$index + 1" [attr.aria-label]="ninja.name || i18n.t(Labels.ninja, {number: $index + 1})">
           <app-ninja-summary [ninja]="ninja" [index]="$index" [active]="selectedIndex() === $index" (selected)="selectedIndex.set($index)" />
-          <div class="ninja-panel" [id]="'ninja-' + ($index + 1) + '-panel'" role="region" [attr.aria-labelledby]="'ninja-' + ($index + 1) + '-title'">
+          <div class="ninja-panel" [id]="'ninja-' + ($index + 1) + '-panel'" role="region" [attr.aria-label]="i18n.t(Labels.editNamedNinja, {name: ninja.name || i18n.t(Labels.ninja, {number: $index + 1})})">
             <app-ninja-editor [ninja]="ninja" [index]="$index" />
           </div>
         </article>
