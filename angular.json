@@ -83,7 +83,8 @@
             "allowedCommonJsDependencies": [
               "pdf-lib",
               "@pdf-lib/fontkit"
-            ]
+            ],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {

@@ -9,7 +9,7 @@
     "preview": "npm run i18n:generate && ng serve --configuration production",
     "test": "npm run i18n:check && ng test --watch=false",
     "test:watch": "npm run i18n:check && ng test",
-    "typecheck": "npm run i18n:check && tsc --noEmit -p tsconfig.app.json",
+    "typecheck": "npm run i18n:check && tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.worker.json",
     "i18n:generate": "node scripts/generate-i18n-keys.mjs",
     "i18n:check": "node scripts/generate-i18n-keys.mjs --check"
   },

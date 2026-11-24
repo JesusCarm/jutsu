@@ -100,7 +100,9 @@ export const Messages = {
   "invalidPdfBytes": "messages.invalidPdfBytes",
   "exportFailed": "messages.exportFailed",
   "languageLoadFailed": "messages.languageLoadFailed",
-  "printWindowClosed": "messages.printWindowClosed"
+  "printWindowClosed": "messages.printWindowClosed",
+  "pdfWorkerUnavailable": "messages.pdfWorkerUnavailable",
+  "pdfWorkerFailed": "messages.pdfWorkerFailed"
 } as const;
 
 export const Costs = {
@@ -404,6 +406,8 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "messages.exportFailed",
   "messages.languageLoadFailed",
   "messages.printWindowClosed",
+  "messages.pdfWorkerUnavailable",
+  "messages.pdfWorkerFailed",
   "costs.number",
   "costs.range",
   "costs.maintenance",

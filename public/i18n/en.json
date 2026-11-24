@@ -95,7 +95,9 @@
     "invalidPdfBytes": "The generator must return PDF bytes.",
     "exportFailed": "Could not export the PDF. {message}",
     "languageLoadFailed": "The requested language could not be loaded. English is shown instead.",
-    "printWindowClosed": "The PDF tab was closed. Open it again to print."
+    "printWindowClosed": "The PDF tab was closed. Open it again to print.",
+    "pdfWorkerUnavailable": "This browser does not support background PDF generation.",
+    "pdfWorkerFailed": "Background PDF generation failed. Try generating the sheet again."
   },
   "costs": {
     "number": "{amount}",

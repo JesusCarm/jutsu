@@ -14,8 +14,8 @@ export const GENERATE_BAND_PDF = new InjectionToken<GenerateBandPdf>('Generate a
   providedIn: 'root',
   factory: () => {
     return async (band, template) => {
-      const { BandPdfGenerator } = await import('./band-pdf-generator');
-      return new BandPdfGenerator().generate(band, template);
+      const { BandPdfWorkerClient } = await import('./band-pdf-worker-client');
+      return new BandPdfWorkerClient().generate(band, template);
     };
   },
 });

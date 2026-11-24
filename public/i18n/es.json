@@ -95,7 +95,9 @@
     "invalidPdfBytes": "El generador debe devolver los datos binarios del PDF.",
     "exportFailed": "No se pudo exportar el PDF. {message}",
     "languageLoadFailed": "No se pudo cargar el idioma solicitado. Se muestra el inglés en su lugar.",
-    "printWindowClosed": "La pestaña del PDF se ha cerrado. Ábrela de nuevo para imprimir."
+    "printWindowClosed": "La pestaña del PDF se ha cerrado. Ábrela de nuevo para imprimir.",
+    "pdfWorkerUnavailable": "Este navegador no admite la generación de PDF en segundo plano.",
+    "pdfWorkerFailed": "Ha fallado la generación del PDF en segundo plano. Vuelve a generar la ficha."
   },
   "costs": {
     "number": "{amount}",

@@ -134,6 +134,7 @@ The real `MediaBox` dimensions and origin coordinates are used. Other templates 
 | `JutsuPdfTemplate` | Asset URLs and field mappings for this template. |
 | `PdfTemplatesService` | Available template catalog and selection independent of squad state. |
 | `PdfGenerationService` | Asynchronous generation, status, and latest valid PDF bytes. |
+| `BandPdfWorkerClient` | Starting a module worker, receiving the PDF or error, and releasing the worker. |
 | `PdfFileName` | Download filename derived from the squad name. |
 | `PdfBrowserFilesService` | Downloads, PDF tabs, and temporary URL lifecycle. |
 | `PdfExportService` | Export actions for the current PDF and their result messages. |
@@ -155,6 +156,16 @@ The generator takes a JSON snapshot before loading resources. Model instances re
 The separate toolbar Download PDF button has been removed; Generate and download PDF remains available. `PdfFileName` uses `jutsu-squad-[name].pdf` for a named squad and `jutsu-squad.pdf` for an empty name. It preserves Unicode and replaces unsupported characters. **Open PDF for printing** is available before generation and after edits. `generateAndOpenForPrinting()` reserves a blank tab synchronously from the click, generates a fresh PDF, and navigates that tab to the completed Blob. This preserves browser user activation. Failed or stale results close the reserved tab; blocked or manually closed tabs produce a retryable error. The browser viewer supplies the print controls. See [the selection-panel and printing guide](../../../../docs/selection-panels.md).
 
 Download URLs are revoked after 60 seconds. Printing URLs remain until their tabs close, even if the squad is edited in the meantime. `PdfBrowserFilesService` releases URLs and timers when the application is destroyed. Data and bytes stay in local memory; files are not uploaded, and no persistence is introduced.
+
+## Background generation
+
+The browser provider for `GENERATE_BAND_PDF` uses `BandPdfWorkerClient`. It sends the localized snapshot and plain template configuration to `band-pdf.worker.ts`, where the existing Angular-independent `BandPdfGenerator` runs. A successful response transfers the PDF byte buffer to the page. Engine errors retain their diagnostic text; worker startup/transport failures are reported through the existing localized status. Each request owns one worker, which terminates after success or failure. The stale-result checks for squad, language, and template changes remain on the page.
+
+This matters for printing: opening the reserved tab puts the editor in the background. `pdf-lib` yields through timers while parsing and serializing, and Fontkit's font subsetting uses timer-backed stream callbacks. Firefox delays timers in inactive pages, which can make the loading tab appear stuck until the editor is selected again. The worker keeps this processing off the editor's window thread. See [Mozilla's inactive-tab timer documentation](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#timeouts_in_inactive_tabs).
+
+Angular CLI bundles the worker through `new Worker(new URL(..., import.meta.url), { type: 'module' })`; `webWorkerTsConfig` in `angular.json` points to `tsconfig.worker.json`. The worker has its own WebWorker TypeScript library configuration, and `npm run typecheck` checks both application and worker. Worker and asset URLs respect application subpaths. There is no new dependency or server-side generation.
+
+Tests cover message delivery without advancing page timers, the application's worker provider, byte/error validation, failed posts, script/message errors, unsupported environments, and worker cleanup. A production-worker check also generated the real three-card PDF in a separate thread with parent timers and rendering suspended, then reopened it to verify one A4 page without an AcroForm or annotations. Browser UI verification still requires Firefox access.
 
 ## Available templates
 
