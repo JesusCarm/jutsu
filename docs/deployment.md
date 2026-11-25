@@ -61,6 +61,16 @@ For any static hosting outside Docker, the committed runtime config keeps Analyt
 
 ## Local Docker check
 
+Run the automated container check before pushing:
+
+```bash
+npm run test:docker
+```
+
+This requires Docker daemon access, Bash, curl, jq, and Git. It builds `jutsu:local-test` with the current commit, starts a temporary container on a random loopback port, and checks startup, health, build metadata, runtime configuration, Angular route fallback, and missing assets. The container is removed after the check; the local image remains available.
+
+To keep a container running for manual inspection:
+
 ```bash
 cp .env.example .env
 # Optionally set GA_MEASUREMENT_ID in .env.

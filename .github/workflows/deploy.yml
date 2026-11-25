@@ -83,7 +83,10 @@ jobs:
           docker run --detach --name jutsu-smoke --publish 127.0.0.1:8080:80 \
             --env GA_MEASUREMENT_ID=G-CITEST0001 "$IMAGE"
           trap 'docker logs jutsu-smoke; docker rm --force jutsu-smoke' EXIT
-          curl --fail --retry 20 --retry-connrefused --retry-delay 1 http://127.0.0.1:8080/healthz
+          # The published port can reset connections while Nginx finishes starting.
+          curl --fail --silent --show-error --output /dev/null \
+            --retry 20 --retry-all-errors --retry-delay 1 --retry-max-time 30 \
+            --connect-timeout 2 --max-time 5 http://127.0.0.1:8080/healthz
           curl --fail http://127.0.0.1:8080/build-info.json | jq --exit-status --arg commit "$APP_COMMIT" '.commit == $commit'
           curl --fail http://127.0.0.1:8080/runtime-config.js | grep --fixed-strings --quiet G-CITEST0001
           curl --fail http://127.0.0.1:8080/a-client-route | grep --fixed-strings --quiet '<app-root>'
