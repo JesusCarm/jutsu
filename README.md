@@ -36,7 +36,9 @@ Static output: **`dist/jutsu/browser/`**. Publish its contents on a static host 
 npm run build -- --base-href /jutsu/
 ```
 
-`npm run preview` serves a production build through Angular CLI. The application has not been published, and no application server has been configured.
+`npm run preview` serves a production build through Angular CLI. Each production build also writes `build-info.json` with the package version and `APP_COMMIT` (or `local`).
+
+The repository includes a multi-stage Dockerfile, Nginx configuration, a CapRover `captain-definition`, and a GitHub Actions workflow that publishes and deploys a prebuilt image after pushes to `main`. Google Analytics is optional and configured through the running container's `GA_MEASUREMENT_ID`, keeping the real identifier out of the repository and image. [Deployment, subdomain, secrets, registry access, and consent setup](docs/deployment.md).
 
 ## Tests
 
@@ -142,7 +144,7 @@ The engine in `features/pdf-generator/` does not depend on Angular or the DOM. I
 
 Any edit, including the squad name, or a language/template change invalidates the generated PDF. Generate/download and print actions produce a new PDF from the current data. A generation that becomes stale is discarded. Already-open PDFs keep their resources until their tabs close; temporary download URLs are released after download starts, and all resources are cleaned up when the application is destroyed.
 
-The template, coordinates, fonts, and catalogs are copied as application assets. `PlatformAssetsService` centralizes URL resolution against `<base href>`, supporting static navigation and future platform adaptations. There is no backend, authentication, remote API, runtime AI, or cloud storage. The earlier version did not persist squads: reloading still clears the data, and no storage is migrated or introduced.
+The template, coordinates, fonts, and catalogs are copied as application assets. `PlatformAssetsService` centralizes URL resolution against `<base href>`, supporting static navigation and future platform adaptations. There is no application backend, authentication, runtime AI, or cloud storage. Optional Google Analytics loads only in configured production deployments after consent. Analytics consent is saved in local storage; squads remain in memory and reloading clears their data.
 
 Future PWA or Capacitor support can reuse the engine and adapt platform access. **Capacitor, Service Worker, and offline caching are not installed in this phase.**
 

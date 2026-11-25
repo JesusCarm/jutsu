@@ -8,5 +8,9 @@
     <a href="https://www.instagram.com/gipsygames/" target="_blank" rel="noopener noreferrer">{{ i18n.t(Footer.instagram) }}</a>
     <a href="https://github.com/JesusCarm/jutsu" target="_blank" rel="noopener noreferrer">{{ i18n.t(Footer.github) }}</a>
     <a href="https://gipsygames.com/" target="_blank" rel="noopener noreferrer">{{ i18n.t(App.publisher) }}</a>
+    @if (analytics.enabled) {
+      <button class="analytics-settings" type="button" [attr.aria-expanded]="analytics.showConsent()" (click)="analytics.openPreferences()">{{ i18n.t(Analytics.settings) }}</button>
+    }
   </nav>
 </footer>
+<app-analytics-consent />

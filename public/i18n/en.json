@@ -19,6 +19,13 @@
     "github": "GitHub",
     "version": "Version {version}"
   },
+  "analytics": {
+    "title": "Analytics preferences",
+    "description": "Allow Google Analytics to collect usage statistics for this app? You can change your choice using the footer link.",
+    "accept": "Allow analytics",
+    "reject": "Reject analytics",
+    "settings": "Analytics preferences"
+  },
   "stats": {
     "attack": "Attack",
     "defense": "Defense",

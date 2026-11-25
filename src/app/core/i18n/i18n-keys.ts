@@ -21,6 +21,14 @@ export const Footer = {
   "version": "footer.version"
 } as const;
 
+export const Analytics = {
+  "title": "analytics.title",
+  "description": "analytics.description",
+  "accept": "analytics.accept",
+  "reject": "analytics.reject",
+  "settings": "analytics.settings"
+} as const;
+
 export const Stats = {
   "attack": "stats.attack",
   "defense": "stats.defense",
@@ -328,7 +336,7 @@ export const Items = {
 } as const;
 
 type Leaves<T> = T extends string ? T : { [K in keyof T]: Leaves<T[K]> }[keyof T];
-export type TranslationKey = Leaves<typeof App | typeof Footer | typeof Stats | typeof ShortStats | typeof Actions | typeof Labels | typeof Messages | typeof Costs | typeof NinjaTypes | typeof TechniqueGroups | typeof Techniques | typeof Weapons | typeof Items>;
+export type TranslationKey = Leaves<typeof App | typeof Footer | typeof Analytics | typeof Stats | typeof ShortStats | typeof Actions | typeof Labels | typeof Messages | typeof Costs | typeof NinjaTypes | typeof TechniqueGroups | typeof Techniques | typeof Weapons | typeof Items>;
 export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "app.title",
   "app.documentTitle",
@@ -346,6 +354,11 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "footer.instagram",
   "footer.github",
   "footer.version",
+  "analytics.title",
+  "analytics.description",
+  "analytics.accept",
+  "analytics.reject",
+  "analytics.settings",
   "stats.attack",
   "stats.defense",
   "stats.movement",

@@ -1,0 +1,10 @@
+@if (analytics.showConsent()) {
+  <section class="consent-banner" role="region" aria-labelledby="analytics-consent-title" aria-describedby="analytics-consent-description">
+    <h2 id="analytics-consent-title">{{ i18n.t(Analytics.title) }}</h2>
+    <p id="analytics-consent-description">{{ i18n.t(Analytics.description) }}</p>
+    <div class="consent-actions">
+      <button type="button" id="reject-analytics" (click)="analytics.reject()">{{ i18n.t(Analytics.reject) }}</button>
+      <button type="button" id="accept-analytics" (click)="analytics.accept()">{{ i18n.t(Analytics.accept) }}</button>
+    </div>
+  </section>
+}

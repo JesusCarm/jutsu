@@ -19,6 +19,13 @@
     "github": "GitHub",
     "version": "Versión {version}"
   },
+  "analytics": {
+    "title": "Preferencias de analítica",
+    "description": "¿Permites que Google Analytics recopile estadísticas de uso de esta aplicación? Puedes cambiar tu elección desde el enlace del pie de página.",
+    "accept": "Permitir analítica",
+    "reject": "Rechazar analítica",
+    "settings": "Preferencias de analítica"
+  },
   "stats": {
     "attack": "Ataque",
     "defense": "Defensa",
