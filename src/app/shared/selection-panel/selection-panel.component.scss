@@ -1,7 +1,7 @@
-:host { display: flex; flex-direction: column; height: 100%; min-height: 0; color: #ededed; background: var(--color-surface); border-left: 1px solid #444; box-shadow: -1rem 0 3rem #0006; }
+:host { display: flex; flex-direction: column; height: 100%; min-height: 0; color: var(--color-text); background: var(--color-surface); border-left: 1px solid var(--color-control-border); box-shadow: -1rem 0 3rem var(--color-panel-shadow); }
 .panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem; border-bottom: 1px solid var(--color-border); }
 .panel-heading > div { min-width: 0; }
 .panel-heading h2 { font-size: 1.125rem; font-weight: 600; overflow-wrap: anywhere; }
 .panel-heading p { margin-top: .25rem; color: var(--color-muted); font-size: .875rem; overflow-wrap: anywhere; }
-.close-panel { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 2.75rem; height: 2.75rem; border: 1px solid #444; border-radius: .5rem; color: inherit; background: #252525; }
+.close-panel { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 2.75rem; height: 2.75rem; border: 1px solid var(--color-control-border); border-radius: .5rem; color: var(--color-text); background: var(--color-surface-subtle); }
 .panel-content { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 1rem; }

@@ -1,9 +1,9 @@
 :host { display: block; height: 100%; min-width: 0; }
 
 .choice-list { display: grid; gap: .75rem; }
-.selection-card { position: relative; display: block; width: 100%; min-width: 0; padding: 1rem; border: 1px solid #444; border-radius: .75rem; color: inherit; background: #202020; text-align: left; }
-.selection-card:hover { border-color: #888; background: #282828; }
-.selection-card.is-current { border-color: #ddd; box-shadow: inset 0 0 0 1px #ddd; }
+.selection-card { position: relative; display: block; width: 100%; min-width: 0; padding: 1rem; border: 1px solid var(--color-control-border); border-radius: .75rem; color: var(--color-text); background: var(--color-surface-choice); text-align: left; }
+.selection-card:hover { border-color: var(--color-control-border-hover); background: var(--color-surface-choice-hover); }
+.selection-card.is-current { border-color: var(--color-selection-border); box-shadow: inset 0 0 0 1px var(--color-selection-border); }
 .choice-heading { display: flex; align-items: center; gap: .5rem; font-weight: 600; }
 .choice-description { display: block; margin-top: .5rem; color: var(--color-muted); font-size: .875rem; white-space: pre-line; overflow-wrap: anywhere; }
-.choice-cost { display: block; margin-top: .375rem; color: #bbb; font-size: .75rem; }
+.choice-cost { display: block; margin-top: .375rem; color: var(--color-text-cost); font-size: .75rem; }

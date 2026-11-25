@@ -30,18 +30,18 @@
   min-width: 1.5rem;
   min-height: 1.75rem;
   padding: 0.125rem;
-  border: 1px solid #444;
+  border: 1px solid var(--color-control-border);
   border-radius: 0.3125rem;
-  color: #e1e1e1;
-  background: #292929;
+  color: var(--color-text-token);
+  background: var(--color-surface-token);
 }
 .equipment-token.is-empty {
-  color: #999;
+  color: var(--color-text-subtle);
   border-style: dashed;
 }
 .equipment-token:hover {
-  border-color: #aaa;
-  background: #353535;
+  border-color: var(--color-token-border-hover);
+  background: var(--color-surface-token-hover);
 }
 @media (min-width: 36rem) {
   .equipment-token {
@@ -62,5 +62,5 @@
  app-ui-icon.inventory-category {
     display: inline-flex;
     margin-right: 0.125rem;
-    color: #999;
+    color: var(--color-text-subtle);
   }

@@ -5,26 +5,17 @@
       <span class="editor-subtitle">{{ i18n.t(App.subtitle) }}</span>
     </div>
     <div class="toolbar-actions">
-      <app-language-switcher /><app-pdf-toolbar />
+      <app-language-switcher /><app-theme-switcher /><app-pdf-toolbar />
     </div>
   </header>
   <form
     id="band-form"
     class="band-form"
     aria-labelledby="squad-heading"
-    aria-describedby="band-help"
     (submit)="$event.preventDefault()"
   >
     <div class="squad-bar">
-      <div>
-        <app-band-name-editor />
-        <p id="band-help">
-          {{ i18n.t(App.help, { count: state.band().ninjas.length }) }}
-        </p>
-      </div>
-      <span class="badge squad-count">{{
-        i18n.t(App.count, { count: state.band().ninjas.length })
-      }}</span>
+      <app-band-name-editor />
     </div>
     <div class="ninja-grid">
       @for (ninja of state.band().ninjas; track $index) {

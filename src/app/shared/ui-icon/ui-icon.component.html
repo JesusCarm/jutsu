@@ -1,7 +1,7 @@
 @if (imageUrl(); as url) {
   <img [src]="url" [class.colored]="colored()" alt="" width="20" height="20" aria-hidden="true" draggable="false" />
 } @else {
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"
     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
     @for (path of paths(); track $index) { <path [attr.d]="path" /> }
   </svg>

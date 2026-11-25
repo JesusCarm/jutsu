@@ -1,0 +1,88 @@
+@use '@angular/material' as mat;
+
+:root {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: (primary: mat.$red-palette, theme-type: color-scheme),
+    typography: (plain-family: 'system-ui', brand-family: 'system-ui'),
+    density: -2,
+  ));
+
+  // Surfaces. Keep the original dark palette as the second light-dark() value.
+  --color-background: light-dark(#f5f5f5, #111);
+  --color-surface: light-dark(#fff, #181818);
+  --color-surface-recessed: light-dark(#f0f0f0, #121212);
+  --color-surface-stat: light-dark(#f5f5f5, #141414);
+  --color-surface-subtle: light-dark(#eee, #252525);
+  --color-surface-token: light-dark(#ededed, #292929);
+  --color-surface-token-hover: light-dark(#ddd, #353535);
+  --color-surface-choice: light-dark(#fafafa, #202020);
+  --color-surface-choice-hover: light-dark(#eee, #282828);
+  --color-surface-toolbar-hover: light-dark(#e6e6e6, #2a2a2a);
+  --color-surface-field: light-dark(#e9e9e9, #303030);
+  --color-surface-field-focus: light-dark(#ddd, #383838);
+
+  // Text and icons.
+  --color-text: light-dark(#202020, #ededed);
+  --color-text-strong: light-dark(#111, #f2f2f2);
+  --color-text-field: light-dark(#242424, #eee);
+  --color-text-heading: light-dark(#303030, #ddd);
+  --color-text-detail: light-dark(#333, #e4e4e4);
+  --color-text-token: light-dark(#333, #e1e1e1);
+  --color-text-secondary: light-dark(#454545, #c6c6c6);
+  --color-text-toolbar: light-dark(#444, #d5d5d5);
+  --color-text-cost: light-dark(#555, #bbb);
+  --color-text-stat: light-dark(#555, #b6b6b6);
+  --color-text-subtle: light-dark(#626262, #999);
+  --color-text-caption: light-dark(#5c5c5c, #aaa);
+  --color-text-soft: light-dark(#606060, #b8b8b8);
+  --color-text-file: light-dark(#242424, #e7e7e7);
+  --color-muted: light-dark(#5c5c5c, #adadad);
+  --color-placeholder: light-dark(#666, #888);
+  --color-icon: currentColor;
+
+  // Borders, selection, and keyboard focus.
+  --color-border: light-dark(#d4d4d4, #303030);
+  --color-line: light-dark(#e2e2e2, #252525);
+  --color-summary-border: light-dark(#d8d8d8, #2c2c2c);
+  --color-input-border: light-dark(#8c8c8c, #3b3b3b);
+  --color-name-border: light-dark(#7e7e7e, #4a4a4a);
+  --color-control-border: light-dark(#888, #444);
+  --color-border-hover: light-dark(#626262, #686868);
+  --color-control-border-hover: light-dark(#666, #888);
+  --color-token-border-hover: light-dark(#555, #aaa);
+  --color-selection-border: light-dark(#333, #ddd);
+  --color-focus-ring: light-dark(#242424, #eee);
+
+  // Actions and feedback.
+  --color-primary: light-dark(#292929, #e8e8e8);
+  --color-primary-hover: light-dark(#111, #fff);
+  --color-on-primary: light-dark(#fff, #161616);
+  --color-contrast: light-dark(#111, #fff);
+  --color-on-contrast: light-dark(#fff, #111);
+  --color-error: light-dark(#b42318, #ffa6a6);
+
+  // Overlays and transparent controls.
+  --color-panel-shadow: light-dark(#0002, #0006);
+  --color-overlay-backdrop: light-dark(rgb(0 0 0 / 24%), rgb(0 0 0 / 32%));
+  --color-transparent: transparent;
+
+  // invert() accepts numbers rather than colors, so it needs a media query.
+  --icon-filter: invert(0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --icon-filter: invert(1);
+  }
+}
+
+:root[data-color-scheme='light'] {
+  color-scheme: light;
+  --icon-filter: invert(0);
+}
+
+:root[data-color-scheme='dark'] {
+  color-scheme: dark;
+  --icon-filter: invert(1);
+}

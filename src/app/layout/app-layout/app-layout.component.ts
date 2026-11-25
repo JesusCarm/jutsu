@@ -1,6 +1,7 @@
 import { I18nService } from '../../core/i18n/i18n.service';
-import { App } from '../../core/i18n/i18n-keys';
+import { App, Footer } from '../../core/i18n/i18n-keys';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { version } from '../../../../package.json';
 
 @Component({
   selector: 'app-layout',
@@ -11,4 +12,6 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 export class AppLayoutComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly App = App;
+  protected readonly Footer = Footer;
+  protected readonly version = version;
 }

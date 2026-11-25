@@ -6,7 +6,7 @@ A local Gipsy Games application for building a squad of **three ninjas** and gen
 
 - Node.js `^20.19.0`, `^22.12.0`, or `>=24.0.0`; migration verified with **22.22.1** and npm **9.2.0**.
 - Angular **21.2.26**, CLI and application builder `@angular/build` **21.2.30**.
-- Angular Material and CDK **21.2.14**, with a Material 3 theme and customizable colors in `src/styles.scss`.
+- Angular Material and CDK **21.2.14**, with a Material 3 theme and shared CSS color variables in `src/_variables.scss`.
 - TypeScript **5.9.3**, strict mode and strict templates.
 - Vitest **4.0.18** and jsdom **28.0.0** through the official Angular CLI test runner.
 - Existing `pdf-lib` **1.17.1** and `@pdf-lib/fontkit` **1.1.1** dependencies.
@@ -75,6 +75,7 @@ src/
     pdf/                    # PDF form and legacy coordinate configuration
   index.html
   main.ts
+  _variables.scss           # Material theme and shared light/dark color variables
   styles.scss
 public/
   i18n/                     # English reference and partial Spanish dictionary
@@ -105,12 +106,15 @@ There is one application screen. Angular Router loads it lazily and redirects un
 
 The presentation follows the dark editor references: a compact header, squad bar, and three mini sheets. Names are edited in place with Reactive Forms. Type, weapon, item, and school buttons open four right-side selection panels with localized labels, previews, and descriptions. Panels use the installed Angular CDK Dialog and Overlay packages over the Material theme.
 
+The interface initially follows the system's light or dark preference, including changes while the page is open. The sun/moon button next to the language flags switches between light and dark for the current page; reloading restores the system preference. `src/_variables.scss` defines the Material theme and all application CSS color variables, using `light-dark(light, dark)` with `color-scheme: light dark`. Components and shared controls consume these variables for text, surfaces, borders, focus rings, errors, and overlays. Dark values preserve the original palette. The monochrome SVG filter follows both the system preference and the button's override; flags retain their original colors.
+
 Below **56 rem**, the three mini sheets stack vertically at full width. “View details” opens a read-only panel with the chosen ninja's full sheet: name, type, six labeled stats, school, all techniques and expanded equipment descriptions. The inline descriptions below the mini sheets are hidden on mobile. At and above that width, three columns each display a mini sheet and its inline descriptions. Mini sheets have no selection state or card-wide click action; only their explicit controls are interactive. Names, type, equipment, and school are edited directly from the mini sheet. Opening or closing a sheet preserves form controls, squad data and any generated PDF. See [the selection-panel guide](docs/selection-panels.md) for component responsibilities, accessibility, and printing.
 
 `NinjaSummaryComponent`, `StatsViewComponent`, and `EquipmentSummaryComponent` present summaries; editing actions go through `NinjaDialogsService` and `BandStateService`. `EquipmentPresentation` shares the icon and slot mapping between mini sheets and choice panels; `NinjaTypePresentation` maps type IDs to icons in the summaries and type picker. `UiIconComponent`, in `shared/ui-icon/ui-icon.component.ts`, centralizes the supplied SVG assets in `src/assets/icons/`. SVGs cover all six stats, ninja types, weapons, items, the jutsu school, equipment categories, and Mokushin. Inline drawings remain for utility actions and empty slots. `mokushin_ico.svg` is shared with PDF generation. `objetivo_ico.svg` is registered as `target`, available for assignment once its use is defined. URLs respect `<base href>`, and icons appear at **20 × 20 px**, without circular cropping. Black SVGs are displayed in a light color through CSS for contrast with the dark background; flags retain their colors. To replace another icon, register its asset in that component; catalog data and rules need no changes. All six stats include movement and remain read-only. Weapon and item details are available under “View equipment effects.”
 
 ## Current features
 
+- Automatic light and dark themes based on the system preference, with a sun/moon button for manual switching.
 - An optional squad name used to identify the downloaded file.
 - Three independent ninjas, each with a name and one of four types.
 - Read-only stats derived from the selected type, including zero values.

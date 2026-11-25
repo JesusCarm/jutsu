@@ -3,9 +3,6 @@
     "title": "JUTSU",
     "documentTitle": "Jutsu Band Builder | Gipsy Games",
     "subtitle": "Squad editor",
-    "tagline": "{count} ninjas. One squad.",
-    "help": "Customize the {count} ninjas in your squad",
-    "count": "{count} ninjas",
     "skip": "Skip to the squad editor",
     "language": "Language",
     "english": "English",
@@ -13,6 +10,14 @@
     "description": "Create your ninja squad and generate your character sheet with Jutsu Band Builder by Gipsy Games.",
     "product": "Jutsu",
     "publisher": "Gipsy Games"
+  },
+  "footer": {
+    "links": "Gipsy Games links",
+    "patreon": "Patreon",
+    "myMiniFactory": "MyMiniFactory",
+    "instagram": "Instagram",
+    "github": "GitHub",
+    "version": "Version {version}"
   },
   "stats": {
     "attack": "Attack",
@@ -37,6 +42,8 @@
     "print": "Open PDF for printing",
     "viewEquipment": "View equipment effects",
     "selectLanguage": "Switch to {language}",
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode",
     "chooseType": "Choose type",
     "changeType": "Change type: {name}",
     "chooseWeapon": "Choose weapon {number}",

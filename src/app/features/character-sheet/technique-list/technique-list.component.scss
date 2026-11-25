@@ -4,8 +4,8 @@
 .technique-card:last-child { border-bottom: 0; }
 .technique-heading { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; }
 .technique-heading h3 { min-width: 0; font-size: .875rem; font-weight: 500; overflow-wrap: anywhere; }
-.chakra-cost { display: inline-flex; align-items: center; flex: 0 0 auto; gap: .25rem; color: #b8b8b8; font-size: .75rem; }
+.chakra-cost { display: inline-flex; align-items: center; flex: 0 0 auto; gap: .25rem; color: var(--color-text-soft); font-size: .75rem; }
 .technique-card p, .empty-techniques { color: var(--color-muted); font-size: .875rem; line-height: 1.5; overflow-wrap: anywhere; }
 .technique-card p { margin-top: .375rem; white-space: pre-line; }
 .empty-techniques { padding: .75rem; }
-.mokushin-badge { display: inline-flex; align-items: center; gap: .375rem; margin-top: .5rem; padding: .0625rem .375rem; border: 1px solid #444; border-radius: .25rem; color: #c6c6c6; font-size: .75rem; }
+.mokushin-badge { display: inline-flex; align-items: center; gap: .375rem; margin-top: .5rem; padding: .0625rem .375rem; border: 1px solid var(--color-control-border); border-radius: .25rem; color: var(--color-text-secondary); font-size: .75rem; }

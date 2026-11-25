@@ -3,9 +3,6 @@ export const App = {
   "title": "app.title",
   "documentTitle": "app.documentTitle",
   "subtitle": "app.subtitle",
-  "tagline": "app.tagline",
-  "help": "app.help",
-  "count": "app.count",
   "skip": "app.skip",
   "language": "app.language",
   "english": "app.english",
@@ -13,6 +10,15 @@ export const App = {
   "description": "app.description",
   "product": "app.product",
   "publisher": "app.publisher"
+} as const;
+
+export const Footer = {
+  "links": "footer.links",
+  "patreon": "footer.patreon",
+  "myMiniFactory": "footer.myMiniFactory",
+  "instagram": "footer.instagram",
+  "github": "footer.github",
+  "version": "footer.version"
 } as const;
 
 export const Stats = {
@@ -40,6 +46,8 @@ export const Actions = {
   "print": "actions.print",
   "viewEquipment": "actions.viewEquipment",
   "selectLanguage": "actions.selectLanguage",
+  "switchToLightMode": "actions.switchToLightMode",
+  "switchToDarkMode": "actions.switchToDarkMode",
   "chooseType": "actions.chooseType",
   "changeType": "actions.changeType",
   "chooseWeapon": "actions.chooseWeapon",
@@ -320,14 +328,11 @@ export const Items = {
 } as const;
 
 type Leaves<T> = T extends string ? T : { [K in keyof T]: Leaves<T[K]> }[keyof T];
-export type TranslationKey = Leaves<typeof App | typeof Stats | typeof ShortStats | typeof Actions | typeof Labels | typeof Messages | typeof Costs | typeof NinjaTypes | typeof TechniqueGroups | typeof Techniques | typeof Weapons | typeof Items>;
+export type TranslationKey = Leaves<typeof App | typeof Footer | typeof Stats | typeof ShortStats | typeof Actions | typeof Labels | typeof Messages | typeof Costs | typeof NinjaTypes | typeof TechniqueGroups | typeof Techniques | typeof Weapons | typeof Items>;
 export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "app.title",
   "app.documentTitle",
   "app.subtitle",
-  "app.tagline",
-  "app.help",
-  "app.count",
   "app.skip",
   "app.language",
   "app.english",
@@ -335,6 +340,12 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "app.description",
   "app.product",
   "app.publisher",
+  "footer.links",
+  "footer.patreon",
+  "footer.myMiniFactory",
+  "footer.instagram",
+  "footer.github",
+  "footer.version",
   "stats.attack",
   "stats.defense",
   "stats.movement",
@@ -353,6 +364,8 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "actions.print",
   "actions.viewEquipment",
   "actions.selectLanguage",
+  "actions.switchToLightMode",
+  "actions.switchToDarkMode",
   "actions.chooseType",
   "actions.changeType",
   "actions.chooseWeapon",

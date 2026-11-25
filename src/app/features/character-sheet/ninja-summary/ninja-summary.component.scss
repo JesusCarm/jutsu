@@ -1,17 +1,17 @@
 :host { display: block; min-width: 0; }
-.ninja-summary { display: flex; flex-direction: column; height: 100%; padding: .625rem .5rem; background: #181818; border: 1px solid #2c2c2c; border-radius: .875rem; }
+.ninja-summary { display: flex; flex-direction: column; height: 100%; padding: .625rem .5rem; background: var(--color-surface); border: 1px solid var(--color-summary-border); border-radius: .875rem; }
 .ninja-identity { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .25rem; }
-.selection-trigger { display: inline-flex; align-items: center; justify-content: center; gap: .375rem; width: fit-content; min-width: 1.75rem; min-height: 1.75rem; max-width: 100%; padding: .25rem; border: 1px solid #444; border-radius: .375rem; color: #ddd; background: #252525; font-size: .6875rem; line-height: 1.3; }
+.selection-trigger { display: inline-flex; align-items: center; justify-content: center; gap: .375rem; width: fit-content; min-width: 1.75rem; min-height: 1.75rem; max-width: 100%; padding: .25rem; border: 1px solid var(--color-control-border); border-radius: .375rem; color: var(--color-text-heading); background: var(--color-surface-subtle); font-size: .6875rem; line-height: 1.3; }
 .selection-trigger.has-value { max-width: 12rem; }
 .selection-trigger:not(.has-value) { max-width: 5.5rem; border-style: dashed; }
 .selection-label { min-width: 0; overflow-wrap: anywhere; text-align: left; }
-.selection-trigger:hover { border-color: #888; color: #fff; }
+.selection-trigger:hover { border-color: var(--color-control-border-hover); color: var(--color-contrast); }
 .ninja-type { margin-top: .25rem; }
-.ninja-details-button { width: 100%; margin-top: .625rem; padding: .375rem .125rem; border: 1px solid #444; border-radius: .375rem; background: #252525; color: #ddd; font-size: .6875rem; }
+.ninja-details-button { width: 100%; margin-top: .625rem; padding: .375rem .125rem; border: 1px solid var(--color-control-border); border-radius: .375rem; background: var(--color-surface-subtle); color: var(--color-text-heading); font-size: .6875rem; }
 @media (min-width: 36rem) {
   .ninja-summary { padding: .75rem; }
 }
 @media (min-width: 56rem) {
-  .ninja-summary { padding: .875rem .75rem .75rem; border: 0; border-radius: .875rem .875rem 0 0; background: transparent; }
+  .ninja-summary { padding: .875rem .75rem .75rem; border: 0; border-radius: .875rem .875rem 0 0; background: var(--color-transparent); }
   .ninja-details-button { display: none; }
 }

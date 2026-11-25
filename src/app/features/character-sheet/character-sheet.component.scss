@@ -5,10 +5,7 @@
 h1 { font-size: 1.625rem; line-height: 1.15; font-weight: 700; letter-spacing: -.04em; }
 .editor-subtitle { color: var(--color-muted); font-size: .75rem; }
 .band-form { margin: 0; }
-.squad-bar { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .75rem; margin-bottom: .875rem; border-radius: .875rem; background: #121212; }
-.squad-bar > div { min-width: 0; flex: 1; }
-.squad-bar p { margin-top: .25rem; color: var(--color-muted); font-size: .75rem; }
-.squad-count { flex: 0 0 auto; white-space: nowrap; }
+.squad-bar { padding: .75rem; margin-bottom: .875rem; border-radius: .875rem; background: var(--color-surface-recessed); }
 .ninja-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: .5rem; align-items: start; }
 .ninja-column { min-width: 0; }
 app-ninja-summary { display: block; min-width: 0; }
@@ -18,7 +15,7 @@ app-ninja-summary { display: block; min-width: 0; }
   .builder { padding: 1.25rem; }
   .ninja-grid { gap: .75rem; }
   .editor-brand { flex-direction: row; align-items: center; gap: .625rem; }
-  .editor-subtitle { padding: .125rem .5rem; border-radius: 1rem; background: #252525; }
+  .editor-subtitle { padding: .125rem .5rem; border-radius: 1rem; background: var(--color-surface-subtle); }
 }
 
 @media (min-width: 56rem) {

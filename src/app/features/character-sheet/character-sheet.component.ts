@@ -8,10 +8,11 @@ import { PdfActionsComponent } from '../pdf-generator/pdf-actions/pdf-actions.co
 import { PdfToolbarComponent } from '../pdf-generator/pdf-toolbar/pdf-toolbar.component';
 import { BandNameEditorComponent } from './band-name-editor/band-name-editor.component';
 import { LanguageSwitcherComponent } from '../../shared/language-switcher/language-switcher.component';
+import { ThemeSwitcherComponent } from '../../shared/theme-switcher/theme-switcher.component';
 
 @Component({
   selector: 'app-character-sheet',
-  imports: [NinjaEditorComponent, NinjaSummaryComponent, PdfActionsComponent, PdfToolbarComponent, BandNameEditorComponent, LanguageSwitcherComponent],
+  imports: [NinjaEditorComponent, NinjaSummaryComponent, PdfActionsComponent, PdfToolbarComponent, BandNameEditorComponent, LanguageSwitcherComponent, ThemeSwitcherComponent],
   templateUrl: './character-sheet.component.html',
   styleUrl: './character-sheet.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

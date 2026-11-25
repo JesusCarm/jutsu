@@ -1,3 +1,12 @@
 <a class="skip-link" href="#main-content">{{ i18n.t(App.skip) }}</a>
 <main id="main-content" class="container main-content"><ng-content /></main>
-<footer class="site-footer container"><p>{{ i18n.t(App.product) }} <span aria-hidden="true">·</span> {{ i18n.t(App.publisher) }}</p><span>{{ i18n.t(App.tagline, {count: 3}) }}</span></footer>
+<footer class="site-footer container">
+  <p class="footer-brand">{{ i18n.t(App.product) }} <span class="app-version">{{ i18n.t(Footer.version, {version}) }}</span></p>
+  <nav class="footer-links" [attr.aria-label]="i18n.t(Footer.links)">
+    <a href="https://www.patreon.com/cw/GipsyGames" target="_blank" rel="noopener noreferrer">{{ i18n.t(Footer.patreon) }}</a>
+    <a href="https://www.myminifactory.com/profile/gipsygames" target="_blank" rel="noopener noreferrer">{{ i18n.t(Footer.myMiniFactory) }}</a>
+    <a href="https://www.instagram.com/gipsygames/" target="_blank" rel="noopener noreferrer">{{ i18n.t(Footer.instagram) }}</a>
+    <a href="https://github.com/JesusCarm/jutsu" target="_blank" rel="noopener noreferrer">{{ i18n.t(Footer.github) }}</a>
+    <a href="https://gipsygames.com/" target="_blank" rel="noopener noreferrer">{{ i18n.t(App.publisher) }}</a>
+  </nav>
+</footer>

@@ -1,16 +1,16 @@
 :host { display: block; min-width: 0; }
 .stat-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem .25rem; padding-block: .875rem; }
 .mini-stat { display: flex; flex-wrap: wrap; align-items: center; gap: .125rem; min-width: 0; font-size: .875rem; }
-.mini-stat dt { display: flex; color: #b6b6b6; }
-.mini-stat dd { color: #f2f2f2; font-variant-numeric: tabular-nums; }
+.mini-stat dt { display: flex; color: var(--color-text-stat); }
+.mini-stat dd { color: var(--color-text-strong); font-variant-numeric: tabular-nums; }
 .stat-caption { display: none; }
 .show-labels .mini-stat { flex-direction: column; align-items: center; gap: .25rem; text-align: center; }
 .show-labels .mini-stat dd { display: flex; flex-direction: column; align-items: center; gap: .25rem; }
-.show-labels .stat-caption { display: block; color: #aaa; font-size: .75rem; line-height: 1.25; overflow-wrap: anywhere; }
+.show-labels .stat-caption { display: block; color: var(--color-text-caption); font-size: .75rem; line-height: 1.25; overflow-wrap: anywhere; }
 
 @media (min-width: 56rem) {
-  .stat-fields { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .25rem; margin-top: .75rem; padding: .625rem .25rem .75rem; border-radius: .625rem; background: #141414; }
+  .stat-fields { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .25rem; margin-top: .75rem; padding: .625rem .25rem .75rem; border-radius: .625rem; background: var(--color-surface-stat); }
   .mini-stat { display: flex; flex-direction: column; flex-wrap: nowrap; align-items: center; gap: .25rem; text-align: center; }
   .mini-stat dd { display: flex; flex-direction: column; align-items: center; gap: .25rem; }
-  .stat-caption { display: block; color: #aaa; font-size: .75rem; line-height: 1.25; }
+  .stat-caption { display: block; color: var(--color-text-caption); font-size: .75rem; line-height: 1.25; }
 }

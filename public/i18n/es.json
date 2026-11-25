@@ -3,9 +3,6 @@
     "title": "JUTSU",
     "documentTitle": "Editor de escuadras de Jutsu | Gipsy Games",
     "subtitle": "Editor de escuadra",
-    "tagline": "{count} ninjas. Una escuadra.",
-    "help": "Personaliza los {count} ninjas de tu escuadra",
-    "count": "{count} ninjas",
     "skip": "Ir al editor de escuadra",
     "language": "Idioma",
     "english": "Inglés",
@@ -13,6 +10,14 @@
     "description": "Crea tu escuadra ninja y genera tu ficha de personaje con el editor de Jutsu de Gipsy Games.",
     "product": "Jutsu",
     "publisher": "Gipsy Games"
+  },
+  "footer": {
+    "links": "Enlaces de Gipsy Games",
+    "patreon": "Patreon",
+    "myMiniFactory": "MyMiniFactory",
+    "instagram": "Instagram",
+    "github": "GitHub",
+    "version": "Versión {version}"
   },
   "stats": {
     "attack": "Ataque",
@@ -37,6 +42,8 @@
     "print": "Abrir PDF para imprimir",
     "viewEquipment": "Ver efectos del equipamiento",
     "selectLanguage": "Cambiar a {language}",
+    "switchToLightMode": "Cambiar a modo claro",
+    "switchToDarkMode": "Cambiar a modo oscuro",
     "chooseType": "Escoger tipo",
     "changeType": "Cambiar tipo: {name}",
     "chooseWeapon": "Escoger arma {number}",
