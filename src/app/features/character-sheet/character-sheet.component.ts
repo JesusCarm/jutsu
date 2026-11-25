@@ -9,6 +9,7 @@ import { PdfToolbarComponent } from '../pdf-generator/pdf-toolbar/pdf-toolbar.co
 import { BandNameEditorComponent } from './band-name-editor/band-name-editor.component';
 import { LanguageSwitcherComponent } from '../../shared/language-switcher/language-switcher.component';
 import { ThemeSwitcherComponent } from '../../shared/theme-switcher/theme-switcher.component';
+import { PlatformAssetsService } from '../../core/services/platform-assets.service';
 
 @Component({
   selector: 'app-character-sheet',
@@ -21,6 +22,8 @@ export class CharacterSheetComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly App = App;
   protected readonly Labels = Labels;
+  private readonly assets = inject(PlatformAssetsService);
+  protected readonly logoUrl = new URL('logos/JUTSU Logo.png', this.assets.baseUrl).href;
 
   protected readonly state = inject(BandStateService);
 }
