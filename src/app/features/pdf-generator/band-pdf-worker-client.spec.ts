@@ -5,8 +5,9 @@ import type { LocalizedBandSnapshot } from '../../core/i18n/game-text';
 import { BandPdfWorkerClient, type PdfWorkerConnection } from './band-pdf-worker-client';
 import { GENERATE_BAND_PDF } from './pdf-generation.service';
 import type { PdfTemplate } from './pdf-types';
+import { localizeBand } from '../../../../tests/fixtures/localized-band.js';
 
-const band: LocalizedBandSnapshot = { name: 'Ravens', ninjas: [] };
+const band: LocalizedBandSnapshot = localizeBand({ name: 'Ravens', ninjas: [] });
 const template: PdfTemplate = { configUrl: 'https://example.test/jutsu/assets/layout.json', fontUrls: {} };
 
 function connection(): PdfWorkerConnection {

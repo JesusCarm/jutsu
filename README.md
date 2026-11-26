@@ -126,7 +126,7 @@ Below **56 rem**, the three mini sheets stack vertically at full width. “View 
 - PDF generation from a squad snapshot, loading/success/error states, and invalidation after editing.
 - A single-ninja template with fifteen named fields and three Mokushin marker notes; generation of three independent cards on one A4 page without form boxes or editing highlights.
 - Eagle Lake with DejaVu Sans fallback, locally embedded fonts, and text fitted to each field. The legacy coordinate engine remains available for other templates.
-- A selector offering the current three-ninja-per-page template; only available templates are listed.
+- A template selector with the original three-ninja sheet and a landscape A5 card view matching the desktop ninja grid.
 - PDF download and opening in another tab for printing through the browser's PDF viewer.
 
 No new required fields or name restrictions have been added. The model still rejects unknown types and groups, invalid indexes, malformed data, and excess equipment.
@@ -138,7 +138,7 @@ The engine in `features/pdf-generator/` does not depend on Angular or the DOM. I
 `PdfGenerationService` connects the engine to the form and keeps valid bytes in memory. The browser runs the engine in a dedicated module Web Worker, so opening the print tab does not leave PDF/font generation dependent on timers in the hidden editor page. `BandPdfWorkerClient` transfers the result back and terminates the worker after success or failure. `getPdfBytes()` returns a copy, or `null` if the squad, language, or template changed. [PDF engine and export documentation](src/app/features/pdf-generator/README.md).
 
 1. Enter a **Squad** name to customize the filename and complete the ninjas. Edit ninja names directly, and use the mini-sheet buttons for type, school, weapons, and items. On mobile, use View details to open the full ninja sheet.
-2. Choose a **Sheet template**. For now, only the original Eagle Lake template is available.
+2. Choose a **Sheet template**: the original Eagle Lake sheet or **Card view — landscape A5**. Card view includes ninja types, statistics, a single row of equipment icons, and techniques in three columns. Equipment descriptions and action costs are omitted.
 3. Click **Generate and download PDF** in the toolbar or below the editor. Once generation finishes, download starts automatically and the filename appears. For example, `The Ravens` produces `jutsu-squad-The-Ravens.pdf`; an empty name uses `jutsu-squad.pdf`. Unsupported filename characters are replaced, and long names are limited.
 4. **Open PDF for printing** is available immediately and generates a fresh document before loading it into a reserved tab. Use the PDF viewer's print controls. If the browser blocks the tab, the status asks you to allow pop-ups for this site and retry. Icons have accessible labels and display their actions on hover.
 

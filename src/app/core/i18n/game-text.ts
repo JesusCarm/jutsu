@@ -1,19 +1,29 @@
 import type { BandSnapshot } from '../models/band-snapshot';
 import type { ChakraCost, EquipmentDefinition, TechniqueDefinition } from '../models/game-types';
 import rules from '../../../assets/data/rules.json';
-import { Costs, Items, NinjaTypes, TechniqueGroups, Techniques, Weapons, type TranslationKey } from './i18n-keys';
+import { Costs, Items, Labels, NinjaTypes, ShortStats, TechniqueGroups, Techniques, Weapons, type TranslationKey } from './i18n-keys';
 import { TranslationDictionary } from './translation-dictionary';
 
 export interface EquipmentText { readonly name: string; readonly description: string; readonly cost: string; }
 export interface TechniqueText { readonly name: string; readonly description: string; readonly chakra: string; readonly isMokushin: boolean; }
 export interface LocalizedBandSnapshot {
   readonly name: string;
+  readonly labels: {
+    readonly stats: Readonly<Record<keyof BandSnapshot['ninjas'][number]['stats'], string>>;
+    readonly weapons: string; readonly items: string; readonly mokushin: string;
+    readonly noType: string; readonly noSchool: string; readonly emptyTechniques: string;
+  };
   readonly ninjas: readonly {
     readonly name: string;
+    readonly displayName: string;
+    readonly typeId: string;
     readonly type: string;
     readonly stats: BandSnapshot['ninjas'][number]['stats'];
     readonly techniqueGroup: { readonly name: string; readonly techniques: readonly TechniqueText[] };
-    readonly equipment: { readonly weapons: readonly EquipmentText[]; readonly items: readonly EquipmentText[] };
+    readonly equipment: {
+      readonly weapons: readonly (EquipmentText & { readonly id: string })[];
+      readonly items: readonly (EquipmentText & { readonly id: string })[];
+    };
   }[];
 }
 
@@ -49,12 +59,23 @@ export class GameText {
   band(band: BandSnapshot): LocalizedBandSnapshot {
     return {
       name: band.name,
-      ninjas: band.ninjas.map((ninja) => ({
-        name: ninja.name, type: this.typeName(ninja.type), stats: { ...ninja.stats },
+      labels: {
+        stats: {
+          chakra: this.dictionary.t(ShortStats.chakra), attack: this.dictionary.t(ShortStats.attack),
+          defense: this.dictionary.t(ShortStats.defense), movement: this.dictionary.t(ShortStats.movement),
+          skill: this.dictionary.t(ShortStats.skill), health: this.dictionary.t(ShortStats.health),
+        },
+        weapons: this.dictionary.t(Labels.weapons), items: this.dictionary.t(Labels.items),
+        mokushin: this.dictionary.t(Labels.mokushin), noType: this.dictionary.t(Labels.noType),
+        noSchool: this.dictionary.t(Labels.noSchool), emptyTechniques: this.dictionary.t(Labels.emptyTechniques),
+      },
+      ninjas: band.ninjas.map((ninja, index) => ({
+        name: ninja.name, displayName: ninja.name || this.dictionary.t(Labels.ninja, { number: index + 1 }),
+        typeId: ninja.type, type: this.typeName(ninja.type), stats: { ...ninja.stats },
         techniqueGroup: { name: this.groupName(ninja.techniqueGroup.id), techniques: ninja.techniqueGroup.techniques.map((technique) => this.technique(technique)) },
         equipment: {
-          weapons: ninja.equipment.weapons.map((entry) => this.equipment(entry)),
-          items: ninja.equipment.items.map((entry) => this.equipment(entry)),
+          weapons: ninja.equipment.weapons.map((entry) => ({ ...this.equipment(entry), id: entry.id })),
+          items: ninja.equipment.items.map((entry) => ({ ...this.equipment(entry), id: entry.id })),
         },
       })),
     };

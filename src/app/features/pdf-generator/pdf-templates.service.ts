@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, InjectionToken, signal } from '@angular/core';
 import { PlatformAssetsService } from '../../core/services/platform-assets.service';
 import { JutsuPdfTemplate } from './jutsu-pdf-template';
+import { NinjaGridPdfTemplate } from './ninja-grid-pdf-template';
 import type { PdfTemplate } from './pdf-types';
 import { Labels, type TranslationKey } from '../../core/i18n/i18n-keys';
 import type { Language } from '../../core/i18n/languages';
@@ -18,6 +19,10 @@ export const PDF_TEMPLATE_OPTIONS = new InjectionToken<readonly PdfTemplateOptio
     id: 'jutsu-fichas-rellenables',
     labelKey: Labels.jutsuTemplate,
     create: (base) => new JutsuPdfTemplate(base),
+  }, {
+    id: 'ninja-grid',
+    labelKey: Labels.ninjaGridTemplate,
+    create: (base) => new NinjaGridPdfTemplate(base),
   }],
 });
 

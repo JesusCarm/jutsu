@@ -17,17 +17,23 @@ describe('Available PDF templates', () => {
     expect(templates.getTemplate('localized', 'en').configUrl).toBe('/shared.json');
   });
 
-  it('offers only the current three-ninja sheet with local resources under the app base path', () => {
+  it('offers the original sheet and card view with local resources under the app base path', () => {
     TestBed.configureTestingModule({ providers: [
       { provide: PlatformAssetsService, useValue: { baseUrl: 'https://example.test/jutsu/assets/' } },
     ] });
     const templates = TestBed.inject(PdfTemplatesService);
-    expect(templates.options).toHaveLength(1);
+    expect(templates.options.map((option) => option.id)).toEqual(['jutsu-fichas-rellenables', 'ninja-grid']);
     expect(templates.selectedId()).toBe('jutsu-fichas-rellenables');
     const template = templates.getTemplate(templates.selectedId());
     expect(template.configUrl).toBe('https://example.test/jutsu/assets/pdf/fichas_rellenables_coordenadas.json');
     expect(template.pdfUrl).toBe('https://example.test/jutsu/assets/pdf/fichas_rellenables.pdf');
     expect(template.fontUrls['Eagle Lake']).toContain('/jutsu/assets/fonts/Eagle_Lake/');
+    templates.select('ninja-grid');
+    const grid = templates.getTemplate('ninja-grid');
+    expect(grid.ninjaGrid).toBe(true);
+    expect(grid.configUrl).toBeUndefined();
+    expect(grid.fontUrls['DejaVu Sans']).toContain('/jutsu/assets/fonts/DejaVu_Sans/');
+    expect(grid.iconUrls?.attack).toBe('https://example.test/jutsu/assets/icons/ataque_ico.svg');
   });
 
   it('changes the template independently of the band and rejects unknown IDs', () => {

@@ -1,31 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { PlatformAssetsService } from '../../core/services/platform-assets.service';
+import { UI_ICON_ASSETS } from './ui-icon-assets';
 
 const ICONS = {
-  flagEn: 'flag-en.svg',
-  flagEs: 'flag-es.svg',
-  chakra: 'chakra_ico.svg',
-  attack: 'ataque_ico.svg',
-  defense: 'defensa_ico.svg',
-  movement: 'movimiento_ico.svg',
-  skill: 'habilidad_ico.svg',
-  weapons: 'armas_ico.svg',
-  equipment: 'equipo_ico.svg',
-  mokushin: 'mokushin_ico.svg',
-  target: 'objetivo_ico.svg',
-  health: 'vida_ico.svg',
-  kunai: 'kunai.svg',
-  shuriken: 'shuriken.svg',
-  seal: 'sello_explosivo.svg',
-  smoke: 'bomba_humo.svg',
-  pill: 'pildora_soldado.svg',
-  healing: 'pildora_curry.svg',
-  potion: 'pildora_pastel.svg',
-  book: 'escuela_jutsu.svg',
-  physical: 'fisico.svg',
-  defensive: 'defensivo.svg',
-  offensive: 'ofensivo.svg',
-  jutsuMaster: 'jutsu_master.svg',
+  ...UI_ICON_ASSETS,
   minus: ['M6 12h12'],
   plus: ['M6 12h12M12 6v12'],
   close: ['m6 6 12 12M18 6 6 18'],

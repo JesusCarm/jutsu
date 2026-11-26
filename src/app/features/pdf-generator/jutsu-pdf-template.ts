@@ -1,4 +1,4 @@
-import type { PdfTemplate, PdfInlineIconName } from './pdf-types';
+import type { PdfTemplate } from './pdf-types';
 import { JutsuFormFields } from './jutsu-form-fields';
 
 export class JutsuPdfTemplate implements PdfTemplate {
@@ -9,7 +9,7 @@ export class JutsuPdfTemplate implements PdfTemplate {
   readonly configUrl: string;
   readonly pdfUrl: string;
   readonly fontUrls: Record<string, string>;
-  readonly iconUrls: Record<PdfInlineIconName, string>;
+  readonly iconUrls: Record<'mokushin', string>;
 
   constructor(assetBase: string | URL) {
     this.configUrl = new URL('pdf/fichas_rellenables_coordenadas.json', assetBase).href;

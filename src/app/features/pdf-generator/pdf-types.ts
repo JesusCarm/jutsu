@@ -1,5 +1,6 @@
 import type { PDFFont, PDFRef } from 'pdf-lib';
 import type { Font } from '@pdf-lib/fontkit';
+import type { UI_ICON_ASSETS } from '../../shared/ui-icon/ui-icon-assets';
 export type FetchResource = (url: string) => Promise<Response>;
 export interface PdfBox { x: number; y: number; width: number; height: number; }
 export interface DraftBox { x: number | null; y: number | null; width: number | null; height: number | null; }
@@ -14,7 +15,7 @@ export type FieldType = 'text' | 'number' | 'boolean' | 'list';
 export interface PdfField { id: string; page: number; type: FieldType; box: DraftBox; enabled?: boolean; sources?: string[]; typography?: Partial<Typography>; }
 export interface PdfTemplateDefinition { id: string; pdf: string; pages: { index: number; reference: PageReference }[]; typography: Typography; fields: PdfField[]; }
 export type FormValueType = FieldType | 'technique';
-export type PdfInlineIconName = 'mokushin';
+export type PdfInlineIconName = keyof typeof UI_ICON_ASSETS;
 export interface PdfInlineIcon { ref: PDFRef; width: number; height: number; }
 export interface PdfFormField {
   name: string; sources: readonly string[]; type: FormValueType; multiline: boolean; typography: ReadyTypography;
@@ -22,7 +23,8 @@ export interface PdfFormField {
 export interface PdfFormIcon { name: string; source: string; icon: PdfInlineIconName; }
 export interface PdfRepeatedSheet { count: number; pageSize: readonly [number, number]; }
 export interface PdfTemplate {
-  configUrl: string; pdfUrl?: string; fontUrls: Record<string, string>;
+  configUrl?: string; pdfUrl?: string; fontUrls: Record<string, string>;
+  ninjaGrid?: boolean;
   formFields?: readonly PdfFormField[]; formOutput?: 'editable' | 'flattened';
   iconUrls?: Partial<Record<PdfInlineIconName, string>>;
   formIcons?: readonly PdfFormIcon[]; repeatedSheet?: PdfRepeatedSheet;
