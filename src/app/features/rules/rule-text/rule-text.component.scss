@@ -1,0 +1,4 @@
+:host { white-space: inherit; }
+.rule-keyword { display: inline; padding: 0; border: 0; border-radius: .125rem; color: inherit; background: transparent; font: inherit; text-decoration: underline dotted; text-underline-offset: .2em; text-decoration-color: var(--color-control-border); }
+.rule-keyword:hover { color: var(--color-text-strong); text-decoration-style: solid; }
+.is-strong { font-weight: 700; }

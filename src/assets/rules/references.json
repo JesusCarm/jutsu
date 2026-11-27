@@ -1,0 +1,336 @@
+{
+  "attack-stat": {
+    "file": "attributes.md",
+    "anchor": "attack-stat",
+    "related": [
+      "attack",
+      "charge",
+      "follow-up"
+    ]
+  },
+  "defense-stat": {
+    "file": "attributes.md",
+    "anchor": "defense-stat",
+    "related": [
+      "attack",
+      "ranged",
+      "rear"
+    ]
+  },
+  "skill": {
+    "file": "attributes.md",
+    "anchor": "skill",
+    "related": [
+      "attack",
+      "charge"
+    ]
+  },
+  "movement-stat": {
+    "file": "attributes.md",
+    "anchor": "movement-stat",
+    "related": [
+      "move",
+      "jump",
+      "climb",
+      "charge",
+      "impulse"
+    ]
+  },
+  "chakra": {
+    "file": "attributes.md",
+    "anchor": "chakra",
+    "related": [
+      "jutsu",
+      "recover-chakra",
+      "mokushin"
+    ]
+  },
+  "life": {
+    "file": "attributes.md",
+    "anchor": "life",
+    "related": [
+      "attack",
+      "collision",
+      "fall"
+    ]
+  },
+  "interaction-distance": {
+    "file": "basic-concepts.md",
+    "anchor": "interaction-distance"
+  },
+  "line-of-sight": {
+    "file": "basic-concepts.md",
+    "anchor": "line-of-sight"
+  },
+  "cover": {
+    "file": "basic-concepts.md",
+    "anchor": "cover"
+  },
+  "rounding": {
+    "file": "basic-concepts.md",
+    "anchor": "rounding"
+  },
+  "round": {
+    "file": "game-flow.md",
+    "anchor": "round"
+  },
+  "move": {
+    "file": "actions.md",
+    "anchor": "move"
+  },
+  "jump": {
+    "file": "actions.md",
+    "anchor": "jump"
+  },
+  "climb": {
+    "file": "actions.md",
+    "anchor": "climb"
+  },
+  "charge": {
+    "file": "actions.md",
+    "anchor": "charge"
+  },
+  "follow-up": {
+    "file": "actions.md",
+    "anchor": "follow-up"
+  },
+  "impulse": {
+    "file": "actions.md",
+    "anchor": "impulse"
+  },
+  "use-item": {
+    "file": "actions.md",
+    "anchor": "use-item"
+  },
+  "jutsu": {
+    "file": "actions.md",
+    "anchor": "jutsu"
+  },
+  "mokushin": {
+    "file": "actions.md",
+    "anchor": "mokushin",
+    "related": [
+      "charge",
+      "jutsu",
+      "smoke-bomb"
+    ]
+  },
+  "recover-chakra": {
+    "file": "actions.md",
+    "anchor": "recover-chakra"
+  },
+  "attack": {
+    "file": "combat.md",
+    "anchor": "attack"
+  },
+  "ranged": {
+    "file": "combat.md",
+    "anchor": "ranged"
+  },
+  "rear": {
+    "file": "combat.md",
+    "anchor": "rear"
+  },
+  "collision": {
+    "file": "combat.md",
+    "anchor": "collision"
+  },
+  "fall": {
+    "file": "combat.md",
+    "anchor": "fall"
+  },
+  "team-creation": {
+    "file": "team-creation.md",
+    "anchor": "team-creation",
+    "related": [
+      "ninja-types",
+      "weapons",
+      "jutsu"
+    ]
+  },
+  "ninja-types": {
+    "file": "team-creation.md",
+    "anchor": "ninja-types"
+  },
+  "weapons": {
+    "file": "equipment.md",
+    "anchor": "weapons",
+    "related": [
+      "kunai",
+      "shuriken",
+      "explosive-tag"
+    ]
+  },
+  "kunai": {
+    "file": "equipment.md",
+    "anchor": "kunai"
+  },
+  "shuriken": {
+    "file": "equipment.md",
+    "anchor": "shuriken"
+  },
+  "explosive-tag": {
+    "file": "equipment.md",
+    "anchor": "explosive-tag"
+  },
+  "smoke-bomb": {
+    "file": "equipment.md",
+    "anchor": "smoke-bomb"
+  },
+  "soldier-pill": {
+    "file": "equipment.md",
+    "anchor": "soldier-pill"
+  },
+  "curry-pill": {
+    "file": "equipment.md",
+    "anchor": "curry-pill"
+  },
+  "cake-pill": {
+    "file": "equipment.md",
+    "anchor": "cake-pill"
+  },
+  "jutsu-puerta-de-la-velocidad": {
+    "file": "jutsus/taijutsu.md",
+    "anchor": "jutsu-puerta-de-la-velocidad"
+  },
+  "jutsu-puerta-de-la-fuerza": {
+    "file": "jutsus/taijutsu.md",
+    "anchor": "jutsu-puerta-de-la-fuerza"
+  },
+  "jutsu-puerta-protectora": {
+    "file": "jutsus/taijutsu.md",
+    "anchor": "jutsu-puerta-protectora"
+  },
+  "jutsu-curacion": {
+    "file": "jutsus/medico.md",
+    "anchor": "jutsu-curacion"
+  },
+  "jutsu-cambiazo": {
+    "file": "jutsus/medico.md",
+    "anchor": "jutsu-cambiazo"
+  },
+  "jutsu-cirugia": {
+    "file": "jutsus/medico.md",
+    "anchor": "jutsu-cirugia"
+  },
+  "jutsu-vinculo-sombrio": {
+    "file": "jutsus/sombra.md",
+    "anchor": "jutsu-vinculo-sombrio"
+  },
+  "jutsu-transporte": {
+    "file": "jutsus/sombra.md",
+    "anchor": "jutsu-transporte"
+  },
+  "jutsu-sombra-ramificada": {
+    "file": "jutsus/sombra.md",
+    "anchor": "jutsu-sombra-ramificada"
+  },
+  "jutsu-ojo-blanco": {
+    "file": "jutsus/blandas.md",
+    "anchor": "jutsu-ojo-blanco"
+  },
+  "jutsu-anulacion": {
+    "file": "jutsus/blandas.md",
+    "anchor": "jutsu-anulacion"
+  },
+  "jutsu-puntos-de-presion": {
+    "file": "jutsus/blandas.md",
+    "anchor": "jutsu-puntos-de-presion"
+  },
+  "jutsu-torbellino-de-la-villa": {
+    "file": "jutsus/defensa-blanda.md",
+    "anchor": "jutsu-torbellino-de-la-villa"
+  },
+  "jutsu-palma-de-vacio": {
+    "file": "jutsus/defensa-blanda.md",
+    "anchor": "jutsu-palma-de-vacio"
+  },
+  "jutsu-anti-chakra": {
+    "file": "jutsus/defensa-blanda.md",
+    "anchor": "jutsu-anti-chakra"
+  },
+  "jutsu-ojo-rojo": {
+    "file": "jutsus/ilusorias.md",
+    "anchor": "jutsu-ojo-rojo"
+  },
+  "jutsu-pupila-roja": {
+    "file": "jutsus/ilusorias.md",
+    "anchor": "jutsu-pupila-roja"
+  },
+  "jutsu-intercambio": {
+    "file": "jutsus/ilusorias.md",
+    "anchor": "jutsu-intercambio"
+  },
+  "jutsu-bola-de-fuego": {
+    "file": "jutsus/igneas.md",
+    "anchor": "jutsu-bola-de-fuego"
+  },
+  "jutsu-llamarada": {
+    "file": "jutsus/igneas.md",
+    "anchor": "jutsu-llamarada"
+  },
+  "jutsu-fenix": {
+    "file": "jutsus/igneas.md",
+    "anchor": "jutsu-fenix"
+  },
+  "jutsu-rayo": {
+    "file": "jutsus/atmosfericas.md",
+    "anchor": "jutsu-rayo"
+  },
+  "jutsu-viento": {
+    "file": "jutsus/atmosfericas.md",
+    "anchor": "jutsu-viento"
+  },
+  "jutsu-tormenta": {
+    "file": "jutsus/atmosfericas.md",
+    "anchor": "jutsu-tormenta"
+  },
+  "jutsu-arenas-movedizas": {
+    "file": "jutsus/tierra.md",
+    "anchor": "jutsu-arenas-movedizas"
+  },
+  "jutsu-manto-de-arena": {
+    "file": "jutsus/tierra.md",
+    "anchor": "jutsu-manto-de-arena"
+  },
+  "jutsu-tumba-del-desierto": {
+    "file": "jutsus/tierra.md",
+    "anchor": "jutsu-tumba-del-desierto"
+  },
+  "jutsu-bola-de-energia": {
+    "file": "jutsus/ocultas.md",
+    "anchor": "jutsu-bola-de-energia"
+  },
+  "jutsu-clon": {
+    "file": "jutsus/ocultas.md",
+    "anchor": "jutsu-clon"
+  },
+  "jutsu-multiplicacion-de-cuerpos": {
+    "file": "jutsus/ocultas.md",
+    "anchor": "jutsu-multiplicacion-de-cuerpos"
+  },
+  "jutsu-potencia-animal": {
+    "file": "jutsus/espiritu-animal.md",
+    "anchor": "jutsu-potencia-animal"
+  },
+  "jutsu-cambiapieles": {
+    "file": "jutsus/espiritu-animal.md",
+    "anchor": "jutsu-cambiapieles"
+  },
+  "jutsu-cuatro-garras": {
+    "file": "jutsus/espiritu-animal.md",
+    "anchor": "jutsu-cuatro-garras"
+  },
+  "jutsu-lluvia-de-acero": {
+    "file": "jutsus/invocacion.md",
+    "anchor": "jutsu-lluvia-de-acero"
+  },
+  "jutsu-arsenal": {
+    "file": "jutsus/invocacion.md",
+    "anchor": "jutsu-arsenal"
+  },
+  "jutsu-fuegos-artificiales": {
+    "file": "jutsus/invocacion.md",
+    "anchor": "jutsu-fuegos-artificiales"
+  }
+}

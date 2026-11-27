@@ -57,7 +57,7 @@ export class PdfDocument {
   }
 
   embedSvgIcon(source: string) {
-    return new PdfSvgIcon(this.#document.context).embed(source);
+    return new PdfSvgIcon(this.#document.context, (png) => this.#document.embedPng(png)).embed(source);
   }
 
   async save() {

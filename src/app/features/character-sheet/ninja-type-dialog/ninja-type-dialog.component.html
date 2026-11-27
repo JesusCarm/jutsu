@@ -4,7 +4,7 @@
     @for (type of state.catalog.ninjaTypes; track type.id) {
       <button type="button" class="selection-card" [class.is-current]="ninja().type === type.id" [attr.aria-pressed]="ninja().type === type.id" [attr.data-option-id]="type.id" (click)="dialog.close(type.id)">
         <span class="choice-heading">@if (typePresentation.icon(type.id); as icon) { <app-ui-icon [name]="icon" /> }{{ text.typeName(type.id) }}</span>
-        @if (type.stats; as stats) { <app-stats-view [stats]="stats" /> }
+        @if (type.stats; as stats) { <app-stats-view [stats]="stats" [showHelp]="false" /> }
       </button>
     }
   </div>

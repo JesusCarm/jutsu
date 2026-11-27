@@ -88,6 +88,7 @@
     "sheetActions": "Acciones de la ficha",
     "mokushin": "Mokushin",
     "jutsuTemplate": "Jutsu — tres ninjas por página",
+    "ninjaGridTemplate": "Vista de tarjetas — A5 horizontal",
     "selectSchool": "Selecciona escuela",
     "noSchool": "Sin escuela",
     "typeSelection": "Escoger tipo de ninja",
@@ -319,6 +320,23 @@
     "cakePill": {
       "name": "Píldora de Pastel",
       "description": "Recupera {chakra} de Chakra, sin superar el máximo."
+    }
+  },
+  "rules": {
+    "title": "Referencia rápida",
+    "view": "Consultar reglas: {name}",
+    "loading": "Cargando reglas…",
+    "failed": "No se pudieron cargar las reglas. Inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "back": "Regla anterior",
+    "related": "Reglas relacionadas",
+    "contents": "Contenido",
+    "chapters": {
+      "basicConcepts": "Conceptos básicos",
+      "gameFlow": "Flujo de juego",
+      "combat": "Combate",
+      "actions": "Acciones y maniobras",
+      "teamCreation": "Creación del equipo"
     }
   }
 }

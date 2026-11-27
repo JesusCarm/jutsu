@@ -1,0 +1,27 @@
+<header class="rule-header">
+  <div>
+    <p class="reference-label">{{ i18n.t(Rules.title) }}</p>
+    <h2 #heading id="rule-dialog-title" tabindex="-1" [attr.lang]="section() ? contentLanguage() : null">
+      @if (section()?.icon; as icon) { <img class="rule-icon" [src]="rules.imageUrl(icon)" alt="" width="24" height="24" /> }
+      {{ section()?.title || i18n.t(Rules.title) }}
+    </h2>
+  </div>
+  <button type="button" class="rule-close" [title]="i18n.t(Actions.close)" [attr.aria-label]="i18n.t(Actions.close)" (click)="dialog.close()"><app-ui-icon name="close" /></button>
+</header>
+<div #content class="rule-content" [attr.aria-busy]="loading()">
+  @if (history().length) { <button type="button" class="rule-back" (click)="back()">← {{ i18n.t(Rules.back) }}</button> }
+  @if (loading()) { <p role="status">{{ i18n.t(Rules.loading) }}</p> }
+  @if (failed()) {
+    <p role="alert">{{ i18n.t(Rules.failed) }}</p>
+    <button type="button" class="rule-retry" (click)="load(true)">{{ i18n.t(Rules.retry) }}</button>
+  }
+  @if (section(); as rule) {
+    <app-rule-content [section]="rule" [current]="current()" [language]="contentLanguage()" (selectedRule)="navigate($event)" />
+  }
+  @if (related().length) {
+    <nav class="related-rules" [attr.aria-label]="i18n.t(Rules.related)">
+      <h3>{{ i18n.t(Rules.related) }}</h3>
+      <div>@for (rule of related(); track rule.id) { <button type="button" [attr.lang]="contentLanguage()" [attr.data-related-rule]="rule.id" (click)="navigate(rule.id)">{{ rule.title }} →</button> }</div>
+    </nav>
+  }
+</div>

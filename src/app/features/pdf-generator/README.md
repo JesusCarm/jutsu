@@ -1,6 +1,6 @@
 # PDF templates and generation
 
-The active template is the **single-ninja** form `src/assets/pdf/fichas_rellenables.pdf`. The generator fills it three times, once per character, and composes all three cards on one static A4 page without form borders or backgrounds. Positions and dimensions come from PDF fields and notes; no coordinate JSON is loaded. The source template remains fillable and unchanged.
+The default template is the **single-ninja** form `src/assets/pdf/fichas_rellenables.pdf`. The generator fills it three times, once per character, and composes all three cards on one static A4 page without form borders or backgrounds. Positions and dimensions come from PDF fields and notes; no coordinate JSON is loaded. The source template remains fillable and unchanged.
 
 `JutsuPdfTemplate` receives the local asset base URL and supplies the `JutsuFormFields` mapping. Angular CLI copies `src/assets/` to `assets/` without modifying files. `PlatformAssetsService` resolves that base against the application's `<base href>`, including deployment under a subdirectory.
 
@@ -52,7 +52,7 @@ Leading/trailing whitespace and letter case are ignored; the current template mi
 
 When `isMokushin` is true, `PdfNoteIconRenderer` centers `mokushin_ico.svg` in that rectangle, preserving its aspect ratio. Otherwise, the space remains empty. The template does not need a fixed Mokushin image, and generated PDFs do not display note icons. Marker or resource errors identify the affected marker and ninja.
 
-The icon is loaded from `JutsuPdfTemplate.iconUrls` and embedded once per card, only when a technique uses it. `PdfSvgIcon` preserves the Affinity SVG's monochrome paths, matrix-transformed groups, and fill rule as vectors, omitting its transparent reference rectangle. It rejects other element and transform types to avoid partial conversion. It requires no DOM, canvas, or external dependencies.
+The icon is loaded from `JutsuPdfTemplate.iconUrls` and embedded once per card, only when a technique uses it. `PdfSvgIcon` preserves the Affinity SVG's monochrome paths, matrix-transformed groups, and fill rule as vectors, omitting its transparent reference rectangle. For the grid icons, it also retains path strokes and embedded PNG details referenced by local `use` elements. It rejects unsupported elements, transforms, and external image references to avoid partial conversion. It requires no DOM, canvas, or external dependencies.
 
 ## Page composition
 
@@ -131,7 +131,10 @@ The real `MediaBox` dimensions and origin coordinates are used. Other templates 
 | `PdfTextLayout` | Line wrapping, size fitting, and text positions. |
 | `PdfFieldRenderer` | Writing text onto a page. |
 | `BandPdfGenerator` | Data snapshot and composition/form/coordinate engine selection. |
-| `JutsuPdfTemplate` | Asset URLs and field mappings for this template. |
+| `JutsuPdfTemplate` | Asset URLs and field mappings for the original sheet. |
+| `NinjaGridPdfTemplate` | Shared editor icon URLs and the embedded sans-serif font for card view. |
+| `NinjaGridPdfGenerator` | Localized grid input, document creation, and resource loading. |
+| `NinjaGridPdfRenderer` | Three-column landscape A5 layout and continuation pages. |
 | `PdfTemplatesService` | Available template catalog and selection independent of squad state. |
 | `PdfGenerationService` | Asynchronous generation, status, and latest valid PDF bytes. |
 | `BandPdfWorkerClient` | Starting a module worker, receiving the PDF or error, and releasing the worker. |
@@ -169,9 +172,17 @@ Tests cover message delivery without advancing page timers, the application's wo
 
 ## Available templates
 
-`PDF_TEMPLATE_OPTIONS`, in `pdf-templates.service.ts`, registers each template's identifier, typed `labelKey`, and asset factory. Only **Jutsu — three ninjas per page** is registered, as agreed for this phase. The test PDF in `public/templates/` is not offered as a character sheet.
+`PDF_TEMPLATE_OPTIONS`, in `pdf-templates.service.ts`, registers each template's identifier, typed `labelKey`, and asset factory. It offers **Jutsu — three ninjas per page** and **Card view — landscape A5**. The test PDF in `public/templates/` is not offered as a character sheet.
 
-To add another real template, place its PDF in `src/assets/pdf/` and register an option with a unique identifier, fonts, and `formFields` mapping. `formIcons` defines note markers and their indicators; `repeatedSheet` composes ninja copies on one page. For coordinate templates, provide their JSON and omit `formFields` and `repeatedSheet`. `PdfTemplatesService` keeps selection outside `BandStateService`: changing the design does not modify ninjas or the squad name. The generator receives the selected template as an argument and remains independent of Angular and the DOM.
+For form-based templates, place the PDF in `src/assets/pdf/` and register an option with a unique identifier, fonts, and `formFields` mapping. `formIcons` defines note markers and their indicators; `repeatedSheet` composes ninja copies on one page. For coordinate templates, provide their JSON and omit `formFields` and `repeatedSheet`. `PdfTemplatesService` keeps selection outside `BandStateService`: changing the design does not modify ninjas or the squad name. The generator receives the selected template as an argument and remains independent of Angular and the DOM.
+
+## Card view
+
+`NinjaGridPdfTemplate` selects `NinjaGridPdfGenerator` through `ninjaGrid: true`. It recreates the desktop `.ninja-grid` as three vector columns on landscape A5 (595.28 × 419.53 pt), independent of the screen width, theme, or open dialogs. It includes names, ninja types, school names, all six stats, a single row of equipment icons matching the form, technique descriptions, chakra costs, and conditional Mokushin markers. The equipment row preserves the three weapon slots and two item slots, with dashed plus tokens for empty slots; names, descriptions, and action costs are omitted. Unset stats show a dash and zero remains visible. The PDF uses a light print palette and DejaVu Sans, with the same SVG assets as `UiIconComponent` through `UI_ICON_ASSETS`.
+
+`GameText.band()` supplies localized labels, fallback ninja display names, and stable type/equipment IDs alongside the existing translated values. The snapshot and template remain serializable for the existing worker. No HTML capture, canvas, new package, or external service is required. The original form template and coordinate pipeline remain available.
+
+The renderer measures the inventory row and each technique block before placing it. A block that would cross the bottom margin continues in that ninja's column on a later landscape page, with its name repeated. Other columns retain their own flow. A block larger than a page fails with a diagnostic identifying the ninja. Shared fonts and icons are fetched and embedded once per document. The existing generation, download, printing, and stale-result handling apply to this template as well.
 
 ## Editing configuration
 
@@ -188,4 +199,4 @@ In coordinate configuration, `null` still means pending data, not zero. `getPend
 
 The editable domain stores stable IDs, numeric parameters, and structured costs. `GameText` converts these into a `LocalizedBandSnapshot` with the existing engine paths and text fields. `PdfGenerationService` captures the active dictionary once at generation start and invalidates bytes or pending results when language changes. Free-form names and filenames are preserved. See [the i18n guide](../../../../docs/i18n.md) for the full boundary and fallback behavior.
 
-An option can provide `localized: { es: (base) => new SpanishTemplate(base) }`; `PdfTemplatesService.getTemplate(id, language)` uses it when present, otherwise the shared `create` factory. The current shared design remains the only registered template. Its artwork and coordinates are unchanged; it has no fields for ninja type or equipment descriptions, although the localized DTO includes them.
+An option can provide `localized: { es: (base) => new SpanishTemplate(base) }`; `PdfTemplatesService.getTemplate(id, language)` uses it when present, otherwise the shared `create` factory. The original shared design has no fields for ninja type or equipment descriptions. Card view includes ninja types and a compact equipment icon row using the same localized input.

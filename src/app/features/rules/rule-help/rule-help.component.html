@@ -1,0 +1,1 @@
+<button type="button" class="rule-help" [class.with-label]="showLabel()" [attr.data-rule-id]="rule()" aria-haspopup="dialog" [title]="i18n.t(Rules.view, {name: label()})" [attr.aria-label]="i18n.t(Rules.view, {name: label()})" (click)="$event.stopPropagation(); open()"><app-ui-icon [name]="icon()" />@if (showLabel()) { <span>{{ label() }}</span> }</button>

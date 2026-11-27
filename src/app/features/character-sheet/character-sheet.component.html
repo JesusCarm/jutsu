@@ -5,7 +5,7 @@
       <span class="editor-subtitle">{{ i18n.t(App.subtitle) }}</span>
     </div>
     <div class="toolbar-actions">
-      <app-language-switcher /><app-theme-switcher /><app-pdf-toolbar />
+      <app-rule-help rule="overview" [label]="i18n.t(Rules.title)" icon="book" [showLabel]="true" /><app-language-switcher /><app-theme-switcher /><app-pdf-toolbar />
     </div>
   </header>
   <form

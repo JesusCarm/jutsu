@@ -1,0 +1,10 @@
+:host { display: block; min-width: 0; }
+article { line-height: 1.65; }
+article > * + * { margin-top: 1rem; }
+article p { white-space: pre-line; overflow-wrap: anywhere; }
+figure { max-width: 36rem; margin: 1rem 0; padding: 1rem .5rem; border-radius: .5rem; background: #fff; color-scheme: light; }
+.rule-diagram { display: block; width: 100%; height: auto; }
+.rule-table { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+th, td { padding: .5rem; border-bottom: 1px solid var(--color-border); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }

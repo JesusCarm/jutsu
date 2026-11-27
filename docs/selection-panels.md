@@ -27,6 +27,10 @@ The school preview and the sheet use the same technique component. Weapon and it
 
 Below 56 rem, the three mini sheets stack vertically at full width. “View details” opens a separate panel for that ninja; the inline detail panels are hidden on mobile. The full sheet includes the name, type, six labeled stats, school, three techniques with Chakra costs and Mokushin, and equipment descriptions open by default. It is read-only and cannot launch nested selection dialogs. At desktop width the three mini sheets remain in columns with all three inline detail panels visible. Mini sheets have no selected/active state or card-wide click handler. Their editing buttons work at both sizes. Existing name controls and equipment buttons remain in place as choices or language change. Opening or closing the full sheet does not publish a squad revision or invalidate the PDF. The sheet supports close, Escape, backdrop dismissal and focus restoration, like the selection panels.
 
+## Contextual rules
+
+Attribute, technique and equipment help can open a separate reference dialog above a selection panel or full sheet. Closing the reference returns to the panel and its original help button without changing the selection. Rule navigation stays inside the same reference dialog. Type-profile previews keep plain attribute icons inside their selection buttons to avoid nested interactive controls. See [contextual rules](rules.md) for the content format, asset resolution and reference lifecycle.
+
 ## Printing
 
 The top toolbar retains Generate and download PDF and Open PDF for printing. The separate Download PDF button has been removed. Printing is available before a PDF has been generated and after edits; it is temporarily disabled while generation or language loading is in progress.

@@ -179,7 +179,8 @@ describe('Compact character sheet', () => {
       expect(overlay.querySelector('.action-cost')!.textContent).toContain('action');
       expect(overlay.querySelector('.chakra-cost')).not.toBeNull();
       expect(overlay.querySelector('.mokushin-badge')).not.toBeNull();
-      expect(overlay.querySelectorAll('input, select, [aria-haspopup="dialog"]')).toHaveLength(0);
+      expect(overlay.querySelectorAll('input, select, [aria-haspopup="dialog"]:not([data-rule-id])')).toHaveLength(0);
+      expect(overlay.querySelectorAll('app-rule-help')).not.toHaveLength(0);
       overlay.querySelector<HTMLButtonElement>('.close-panel')!.click();
       await fixture.whenStable();
       expect(overlay.querySelector('[role="dialog"]')).toBeNull();
@@ -277,5 +278,24 @@ describe('Compact character sheet', () => {
     await fixture.whenStable();
     expect(files.download).toHaveBeenCalledExactlyOnceWith(new Uint8Array([37, 80, 68, 70]), 'jutsu-squad-The-Ravens.pdf');
     expect(element.querySelector('#pdf-status')!.textContent).toBe('Download started.');
+  });
+
+  it('uses card view for both download and printing after selecting the new template', async () => {
+    const { fixture, element, generate, files, viewer, state } = await setup();
+    const band = state.band();
+    const selection = element.querySelector<HTMLSelectElement>('#pdf-template')!;
+    expect([...selection.options].some((option) => option.value === 'ninja-grid' && option.textContent?.includes('Card view'))).toBe(true);
+    selection.value = 'ninja-grid';
+    selection.dispatchEvent(new Event('change', { bubbles: true }));
+    await fixture.whenStable();
+    element.querySelector<HTMLButtonElement>('#generate-pdf-bottom')!.click();
+    await fixture.whenStable();
+    expect(generate.mock.calls[0][1].ninjaGrid).toBe(true);
+    expect(files.download).toHaveBeenCalledTimes(1);
+    element.querySelector<HTMLButtonElement>('#print-pdf')!.click();
+    await fixture.whenStable();
+    expect(generate.mock.calls[1][1].ninjaGrid).toBe(true);
+    expect(viewer.show).toHaveBeenCalledWith(new Uint8Array([37, 80, 68, 70]));
+    expect(state.band()).toBe(band);
   });
 });

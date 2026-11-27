@@ -1,0 +1,14 @@
+<article [attr.lang]="language()" [attr.data-rule-section]="current()">
+  @for (block of section().blocks; track $index) {
+    @switch (block.kind) {
+      @case ('paragraph') { <p><app-rule-text [text]="block.text" [exclude]="opensDialog() ? undefined : current()" [opensDialog]="opensDialog()" (selectedRule)="selectedRule.emit($event)" /></p> }
+      @case ('image') { <figure><img class="rule-diagram" [src]="rules.imageUrl(block.path)" [alt]="block.alt" /></figure> }
+      @case ('list') { <ul>@for (item of block.items; track $index) { <li><app-rule-text [text]="item" [exclude]="opensDialog() ? undefined : current()" [opensDialog]="opensDialog()" (selectedRule)="selectedRule.emit($event)" /></li> }</ul> }
+      @case ('table') {
+        <div class="rule-table"><table><caption class="sr-only">{{ section().title }}</caption><thead><tr>@for (header of block.headers; track $index) { <th scope="col">{{ header }}</th> }</tr></thead>
+          <tbody>@for (row of block.rows; track $index) { <tr>@for (cell of row; track $index) { <td>{{ cell }}</td> }</tr> }</tbody>
+        </table></div>
+      }
+    }
+  }
+</article>

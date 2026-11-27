@@ -1,0 +1,174 @@
+{
+  "interaction-distance": [
+    "Distancia de Interacción",
+    "Interaction Distance",
+    "Engagement Range",
+    "DI",
+    "ID",
+    "ER"
+  ],
+  "line-of-sight": [
+    "Línea de Visión",
+    "Line of Sight",
+    "LDV",
+    "LoS"
+  ],
+  "cover": [
+    "Cobertura",
+    "Cover"
+  ],
+  "rounding": [
+    "redondeando hacia abajo",
+    "redondeo",
+    "round down",
+    "rounding",
+    "abajo"
+  ],
+  "round": [
+    "activación",
+    "activaciones",
+    "activation",
+    "activations",
+    "ronda",
+    "rondas",
+    "round",
+    "rounds"
+  ],
+  "move": [
+    "Movimiento",
+    "Movement",
+    "Move"
+  ],
+  "jump": [
+    "Salto",
+    "Saltos",
+    "Jump"
+  ],
+  "climb": [
+    "Escalada",
+    "Escalar",
+    "Climb"
+  ],
+  "charge": [
+    "Carga",
+    "Charge",
+    "charged"
+  ],
+  "follow-up": [
+    "Ataca y Remata",
+    "Attack and Finish",
+    "follow-up attack"
+  ],
+  "impulse": [
+    "Impulso",
+    "Dash",
+    "Burst"
+  ],
+  "use-item": [
+    "Usar Objeto",
+    "Use Item"
+  ],
+  "jutsu": [
+    "Jutsu",
+    "Jutsus"
+  ],
+  "mokushin": [
+    "Mokushin"
+  ],
+  "recover-chakra": [
+    "Acumular Chakra",
+    "Gather Chakra",
+    "Recover Chakra"
+  ],
+  "attack": [
+    "Ataque",
+    "Ataques",
+    "Attack",
+    "Attacks",
+    "bloquear",
+    "block",
+    "intercambiar impactos",
+    "trade blows",
+    "éxito",
+    "éxitos",
+    "success",
+    "successes",
+    "impacto",
+    "impactos",
+    "hit",
+    "hits"
+  ],
+  "ranged": [
+    "Ataque a distancia",
+    "Ataques a distancia",
+    "ranged attack",
+    "ranged attacks"
+  ],
+  "rear": [
+    "Ataque por la espalda",
+    "ataques por la espalda",
+    "attack from behind",
+    "attacks from behind",
+    "Rear Attack",
+    "Rear Attacks"
+  ],
+  "collision": [
+    "Choque",
+    "Choques",
+    "Collision",
+    "Collisions"
+  ],
+  "fall": [
+    "Caída",
+    "Caídas",
+    "Fall",
+    "Falls"
+  ],
+  "defense-stat": [
+    "Defensa",
+    "Defense",
+    "Defence"
+  ],
+  "skill": [
+    "Habilidad",
+    "Skill"
+  ],
+  "chakra": [
+    "Chakra",
+    "CH"
+  ],
+  "life": [
+    "Vida",
+    "Health"
+  ],
+  "weapons": [
+    "Armas",
+    "Weapons"
+  ],
+  "kunai": [
+    "Kunai"
+  ],
+  "shuriken": [
+    "Shuriken"
+  ],
+  "explosive-tag": [
+    "Sello Explosivo",
+    "Explosive Seal"
+  ],
+  "smoke-bomb": [
+    "Bomba de Humo",
+    "Smoke Bomb"
+  ],
+  "soldier-pill": [
+    "Píldora del Soldado",
+    "Soldier Pill"
+  ],
+  "curry-pill": [
+    "Píldora de Curry",
+    "Curry Pill"
+  ],
+  "cake-pill": [
+    "Píldora de Pastel",
+    "Cake Pill"
+  ]
+}
