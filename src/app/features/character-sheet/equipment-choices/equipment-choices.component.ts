@@ -6,9 +6,11 @@ import type { EquipmentKind } from '../../../core/models/game-types';
 import { BandStateService } from '../band-state.service';
 import { EquipmentPresentation } from '../equipment-presentation';
 import { UiIconComponent } from '../../../shared/ui-icon/ui-icon.component';
+import { RuleHelpComponent } from '../../rules/rule-help/rule-help.component';
+import { EQUIPMENT_RULES } from '../../rules/rule-references';
 
 @Component({
-  selector: 'app-equipment-choices', imports: [UiIconComponent],
+  selector: 'app-equipment-choices', imports: [UiIconComponent, RuleHelpComponent],
   templateUrl: './equipment-choices.component.html', styleUrl: './equipment-choices.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -22,6 +24,6 @@ export class EquipmentChoicesComponent {
   private readonly text = inject(GameTextService);
   private readonly presentation = new EquipmentPresentation();
   protected readonly options = computed(() => this.state.catalog.getEquipment(this.kind()).map((entry) => ({
-    id: entry.id, ...this.text.equipment(entry), icon: this.presentation.icon(this.kind(), entry.id),
+    id: entry.id, ...this.text.equipment(entry), icon: this.presentation.icon(this.kind(), entry.id), rule: EQUIPMENT_RULES[entry.id],
   })));
 }

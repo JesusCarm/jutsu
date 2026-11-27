@@ -5,6 +5,7 @@ import { UI_ICON_ASSETS } from './ui-icon-assets';
 const ICONS = {
   ...UI_ICON_ASSETS,
   minus: ['M6 12h12'],
+  help: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z', 'M9.5 9a2.5 2.5 0 1 1 3.3 2.4c-.8.3-.8.8-.8 1.6M12 16h.01'],
   plus: ['M6 12h12M12 6v12'],
   close: ['m6 6 12 12M18 6 6 18'],
   sun: ['M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z', 'M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5'],

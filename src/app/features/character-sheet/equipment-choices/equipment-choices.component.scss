@@ -7,3 +7,6 @@
 .choice-heading { display: flex; align-items: center; gap: .5rem; font-weight: 600; }
 .choice-description { display: block; margin-top: .5rem; color: var(--color-muted); font-size: .875rem; white-space: pre-line; overflow-wrap: anywhere; }
 .choice-cost { display: block; margin-top: .375rem; color: var(--color-text-cost); font-size: .75rem; }
+.equipment-option { padding: 0; }
+.equipment-choice { display: block; width: 100%; min-width: 0; padding: 1rem 3.25rem 1rem 1rem; border: 0; border-radius: inherit; color: inherit; background: transparent; text-align: left; }
+.equipment-option > app-rule-help { position: absolute; top: .625rem; right: .5rem; }

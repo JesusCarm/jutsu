@@ -1,0 +1,33 @@
+<header class="quick-reference-header">
+  <h2 id="quick-reference-title"><app-ui-icon name="book" />{{ i18n.t(Rules.title) }}</h2>
+  <button type="button" class="quick-reference-close" [title]="i18n.t(Actions.close)" [attr.aria-label]="i18n.t(Actions.close)" (click)="dialog.close()"><app-ui-icon name="close" /></button>
+</header>
+<div #content class="quick-reference-content" [attr.aria-busy]="loading()">
+  @if (loading()) { <p role="status">{{ i18n.t(Rules.loading) }}</p> }
+  @if (failed()) {
+    <p role="alert">{{ i18n.t(Rules.failed) }}</p>
+    <button type="button" class="quick-reference-retry" (click)="load()">{{ i18n.t(Rules.retry) }}</button>
+  }
+  @if (chapters().length) {
+    <nav class="quick-reference-index" [attr.aria-label]="i18n.t(Rules.contents)">
+      <h3>{{ i18n.t(Rules.contents) }}</h3>
+      <div>@for (chapter of chapters(); track chapter.id) { <button type="button" [attr.data-chapter-target]="chapter.id" (click)="goToChapter(chapter.id)">{{ chapter.title }}</button> }</div>
+    </nav>
+    @for (chapter of chapters(); track chapter.id) {
+      <section class="quick-reference-chapter" [attr.aria-labelledby]="chapter.id">
+        <h3 [id]="chapter.id" tabindex="-1">{{ chapter.title }}</h3>
+        <div class="quick-reference-entries">
+          @for (entry of chapter.entries; track entry.id) {
+            <section class="quick-reference-entry" [attr.lang]="contentLanguage()" [attr.aria-labelledby]="'quick-reference-' + entry.id">
+              <h4 [id]="'quick-reference-' + entry.id"><button type="button" [attr.data-quick-rule]="entry.id" aria-haspopup="dialog" [title]="i18n.t(Rules.view, {name: entry.section.title})" (click)="dialogs.open(entry.id)">
+                @if (entry.section.icon; as icon) { <img class="rule-icon" [src]="rules.imageUrl(icon)" alt="" width="20" height="20" /> }
+                {{ entry.section.title }}<app-ui-icon name="help" />
+              </button></h4>
+              <app-rule-content [section]="entry.section" [current]="entry.id" [language]="contentLanguage()" [opensDialog]="true" (selectedRule)="dialogs.open($event)" />
+            </section>
+          }
+        </div>
+      </section>
+    }
+  }
+</div>

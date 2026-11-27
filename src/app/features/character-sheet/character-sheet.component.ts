@@ -1,5 +1,5 @@
 import { I18nService } from '../../core/i18n/i18n.service';
-import { App, Labels } from '../../core/i18n/i18n-keys';
+import { App, Labels, Rules } from '../../core/i18n/i18n-keys';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NinjaEditorComponent } from './ninja-editor/ninja-editor.component';
 import { NinjaSummaryComponent } from './ninja-summary/ninja-summary.component';
@@ -10,10 +10,11 @@ import { BandNameEditorComponent } from './band-name-editor/band-name-editor.com
 import { LanguageSwitcherComponent } from '../../shared/language-switcher/language-switcher.component';
 import { ThemeSwitcherComponent } from '../../shared/theme-switcher/theme-switcher.component';
 import { PlatformAssetsService } from '../../core/services/platform-assets.service';
+import { RuleHelpComponent } from '../rules/rule-help/rule-help.component';
 
 @Component({
   selector: 'app-character-sheet',
-  imports: [NinjaEditorComponent, NinjaSummaryComponent, PdfActionsComponent, PdfToolbarComponent, BandNameEditorComponent, LanguageSwitcherComponent, ThemeSwitcherComponent],
+  imports: [NinjaEditorComponent, NinjaSummaryComponent, PdfActionsComponent, PdfToolbarComponent, BandNameEditorComponent, LanguageSwitcherComponent, ThemeSwitcherComponent, RuleHelpComponent],
   templateUrl: './character-sheet.component.html',
   styleUrl: './character-sheet.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +23,7 @@ export class CharacterSheetComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly App = App;
   protected readonly Labels = Labels;
+  protected readonly Rules = Rules;
   private readonly assets = inject(PlatformAssetsService);
   protected readonly logoUrl = new URL('logos/JUTSU Logo.png', this.assets.baseUrl).href;
 

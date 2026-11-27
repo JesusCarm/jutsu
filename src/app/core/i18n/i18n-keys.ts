@@ -336,8 +336,26 @@ export const Items = {
   }
 } as const;
 
+export const Rules = {
+  "title": "rules.title",
+  "view": "rules.view",
+  "loading": "rules.loading",
+  "failed": "rules.failed",
+  "retry": "rules.retry",
+  "back": "rules.back",
+  "related": "rules.related",
+  "contents": "rules.contents",
+  "chapters": {
+    "basicConcepts": "rules.chapters.basicConcepts",
+    "gameFlow": "rules.chapters.gameFlow",
+    "combat": "rules.chapters.combat",
+    "actions": "rules.chapters.actions",
+    "teamCreation": "rules.chapters.teamCreation"
+  }
+} as const;
+
 type Leaves<T> = T extends string ? T : { [K in keyof T]: Leaves<T[K]> }[keyof T];
-export type TranslationKey = Leaves<typeof App | typeof Footer | typeof Analytics | typeof Stats | typeof ShortStats | typeof Actions | typeof Labels | typeof Messages | typeof Costs | typeof NinjaTypes | typeof TechniqueGroups | typeof Techniques | typeof Weapons | typeof Items>;
+export type TranslationKey = Leaves<typeof App | typeof Footer | typeof Analytics | typeof Stats | typeof ShortStats | typeof Actions | typeof Labels | typeof Messages | typeof Costs | typeof NinjaTypes | typeof TechniqueGroups | typeof Techniques | typeof Weapons | typeof Items | typeof Rules>;
 export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "app.title",
   "app.documentTitle",
@@ -547,5 +565,18 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "items.curryPill.name",
   "items.curryPill.description",
   "items.cakePill.name",
-  "items.cakePill.description"
+  "items.cakePill.description",
+  "rules.title",
+  "rules.view",
+  "rules.loading",
+  "rules.failed",
+  "rules.retry",
+  "rules.back",
+  "rules.related",
+  "rules.contents",
+  "rules.chapters.basicConcepts",
+  "rules.chapters.gameFlow",
+  "rules.chapters.combat",
+  "rules.chapters.actions",
+  "rules.chapters.teamCreation"
 ];

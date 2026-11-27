@@ -179,7 +179,8 @@ describe('Compact character sheet', () => {
       expect(overlay.querySelector('.action-cost')!.textContent).toContain('action');
       expect(overlay.querySelector('.chakra-cost')).not.toBeNull();
       expect(overlay.querySelector('.mokushin-badge')).not.toBeNull();
-      expect(overlay.querySelectorAll('input, select, [aria-haspopup="dialog"]')).toHaveLength(0);
+      expect(overlay.querySelectorAll('input, select, [aria-haspopup="dialog"]:not([data-rule-id])')).toHaveLength(0);
+      expect(overlay.querySelectorAll('app-rule-help')).not.toHaveLength(0);
       overlay.querySelector<HTMLButtonElement>('.close-panel')!.click();
       await fixture.whenStable();
       expect(overlay.querySelector('[role="dialog"]')).toBeNull();

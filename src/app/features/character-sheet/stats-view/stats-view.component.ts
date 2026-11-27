@@ -6,10 +6,12 @@ import type { NinjaSnapshot } from '../../../core/models/band-snapshot';
 import type { StatName } from '../../../core/models/game-types';
 import { UiIconComponent } from '../../../shared/ui-icon/ui-icon.component';
 import type { IconName } from '../../../shared/ui-icon/ui-icon.component';
+import { RuleHelpComponent } from '../../rules/rule-help/rule-help.component';
+import { STAT_RULES } from '../../rules/rule-references';
 
 @Component({
   selector: 'app-stats-view',
-  imports: [UiIconComponent],
+  imports: [UiIconComponent, RuleHelpComponent],
   templateUrl: './stats-view.component.html',
   styleUrl: './stats-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +24,8 @@ export class StatsViewComponent {
 
   readonly stats = input.required<NinjaSnapshot['stats']>();
   readonly showLabels = input(false);
+  readonly showHelp = input(true);
+  protected readonly statRules = STAT_RULES;
   protected readonly fields: readonly { key: StatName; label: TranslationKey; short: TranslationKey; icon: IconName }[] = [
     { key: 'chakra', label: Stats.chakra, short: ShortStats.chakra, icon: 'chakra' },
     { key: 'attack', label: Stats.attack, short: ShortStats.attack, icon: 'attack' },

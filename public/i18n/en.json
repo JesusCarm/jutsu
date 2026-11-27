@@ -321,5 +321,22 @@
       "name": "Cake Pill",
       "description": "Recover {chakra} Chakra, up to maximum."
     }
+  },
+  "rules": {
+    "title": "Quick reference",
+    "view": "View rules: {name}",
+    "loading": "Loading rules…",
+    "failed": "The rules could not be loaded. Try again.",
+    "retry": "Try again",
+    "back": "Previous rule",
+    "related": "Related rules",
+    "contents": "Contents",
+    "chapters": {
+      "basicConcepts": "Basic concepts",
+      "gameFlow": "Game flow",
+      "combat": "Combat",
+      "actions": "Actions and maneuvers",
+      "teamCreation": "Team creation"
+    }
   }
 }

@@ -4,7 +4,7 @@
     @for (group of groups(); track group.kind) {
       <section><h3>{{ group.label }}</h3>
         @for (slot of group.slots; track slot.index) {
-          <div class="equipment-effect"><strong><app-ui-icon [name]="slot.icon" />{{ slot.name }}</strong><span class="action-cost">{{ slot.cost }}</span><p>{{ slot.description }}</p></div>
+          <div class="equipment-effect"><strong><app-ui-icon [name]="slot.icon" />{{ slot.name }}@if (equipmentRules[slot.id]; as rule) { <app-rule-help [rule]="rule" [label]="slot.name" /> }</strong><span class="action-cost">{{ slot.cost }}</span><p><app-rule-text [text]="slot.description" (selectedRule)="rules.open($event)" /></p></div>
         }
       </section>
     }
