@@ -1,13 +1,17 @@
 <section class="builder" aria-labelledby="squad-heading">
   <header class="editor-toolbar">
     <div class="editor-brand">
-      <h1 id="squad-heading"><img class="editor-logo" [src]="logoUrl" [alt]="i18n.t(App.title)" width="512" height="512" /></h1>
-      <span class="editor-subtitle">{{ i18n.t(App.subtitle) }}</span>
+      <img class="editor-logo" [src]="logoUrl" alt="" width="512" height="512" />
+      <div class="editor-heading">
+        <h1 id="squad-heading">{{ i18n.t(App.heading) }}</h1>
+        <span class="editor-subtitle">{{ i18n.t(App.subtitle) }}</span>
+      </div>
     </div>
     <div class="toolbar-actions">
       <app-rule-help rule="overview" [label]="i18n.t(Rules.title)" icon="book" [showLabel]="true" /><app-language-switcher /><app-theme-switcher /><app-pdf-toolbar />
     </div>
   </header>
+  <p class="editor-introduction">{{ i18n.t(App.introduction) }}</p>
   <form
     id="band-form"
     class="band-form"

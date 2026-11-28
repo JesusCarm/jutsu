@@ -31,7 +31,7 @@ Open `http://localhost:4200`. `npm start` is equivalent. The development server 
 npm run build
 ```
 
-Static output: **`dist/jutsu/browser/`**. Publish its contents on a static host that redirects application routes to `index.html`. For a subdirectory, such as `/jutsu/`:
+Static output: **`dist/jutsu/browser/`**. Publish its contents on a static host that serves `/es/` from `es/index.html` before applying the application fallback to `index.html`. For a subdirectory, such as `/jutsu/`:
 
 ```bash
 npm run build -- --base-href /jutsu/
@@ -159,6 +159,6 @@ Current verification includes automated tests, type checking, and the production
 
 ## Internationalization
 
-Use the header flags or `?lang=en` / `?lang=es`. English is complete; Spanish contains only review samples and falls back to English per key. Switching language preserves form data and updates the URL without reloading. The PDF uses the same active dictionary; changing language invalidates the previous export. No translation dependencies or browser persistence were added.
+Use the header flags, `/` for English, or `/es/` for Spanish. Legacy `?lang=en` / `?lang=es` links also work. English is complete; Spanish contains translated introductory copy and review samples, with English fallback per untranslated key. Switching language preserves form data and updates the URL without reloading. The PDF uses the same active dictionary; changing language invalidates the previous export. No translation dependencies or browser persistence were added. See [SEO and indexing](seo.md) for localized initial HTML and crawler discovery files.
 
 Edit `public/i18n/en.json` and run `npm run i18n:generate` for typed autocomplete constants. Game catalogs now contain stable IDs and numeric rule parameters. See [the i18n guide](docs/i18n.md) for the data model, adding locales, deployment under a subpath, and the PDF boundary.

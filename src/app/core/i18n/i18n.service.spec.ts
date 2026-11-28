@@ -42,6 +42,13 @@ describe('I18n service and URL language', () => {
     expect(TestBed.inject(DOCUMENT).documentElement.lang).toBe('es');
   });
 
+  it.each(['/es/', '/es/?lang=en'])('uses the Spanish route before legacy parameters for %s', async (url) => {
+    const { i18n } = setup(url);
+    await i18n.initialize();
+    expect(i18n.lang()).toBe('es');
+    expect(i18n.t(App.heading)).toBe(spanish.app.heading);
+  });
+
   it('loads asynchronously under the app base and waits for the requested dictionary', async () => {
     let releaseEnglish!: (value: unknown) => void;
     let releaseSpanish!: (value: unknown) => void;
@@ -81,7 +88,8 @@ describe('I18n service and URL language', () => {
     expect(tree.queryParamMap.get('campaign')).toBe('ravens');
     expect(tree.queryParamMap.getAll('tag')).toEqual(['a', 'b']);
     expect(tree.fragment).toBe('ninja-2');
-    expect(tree.queryParamMap.get('lang')).toBe('es');
+    expect(tree.queryParamMap.has('lang')).toBe(false);
+    expect(tree.root.children['primary'].segments[0].path).toBe('es');
     const snapshot = i18n.snapshot();
     await i18n.setLanguage('en');
     expect(snapshot.t(App.subtitle)).toBe('Editor de escuadra');
@@ -101,6 +109,14 @@ describe('I18n service and URL language', () => {
     const revision = i18n.revision();
     await router.navigateByUrl('/?lang=en&campaign=other');
     expect(i18n.revision()).toBe(revision);
+  });
+
+  it('replaces a legacy language parameter while retaining other URL state', async () => {
+    const { i18n, router } = setup('/?lang=es&campaign=ravens#ninja-2');
+    await i18n.initialize();
+    await i18n.setLanguage('en');
+    expect(router.url).toBe('/?campaign=ravens#ninja-2');
+    expect(i18n.lang()).toBe('en');
   });
 
   it('ignores a late response after navigating to another language', async () => {

@@ -6,7 +6,7 @@
     "dev": "npm run i18n:generate && ng serve",
     "start": "npm run i18n:generate && ng serve",
     "build": "npm run i18n:generate && ng build",
-    "postbuild": "node scripts/write-build-info.mjs",
+    "postbuild": "node scripts/write-build-info.mjs && node scripts/write-seo-pages.mjs",
     "preview": "npm run i18n:generate && ng serve --configuration production",
     "test": "npm run i18n:check && ng test --watch=false",
     "test:docker": "bash scripts/test-docker-local.sh",

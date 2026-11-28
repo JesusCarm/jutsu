@@ -17,7 +17,7 @@ CapRover's **Method 3: Deploy from GitHub/Bitbucket/GitLab** is a separate sourc
 
 Keep CapRover's default Nginx template in its dashboard. It terminates HTTPS, manages certificate challenges, and proxies requests to the application's **Container HTTP Port**, which must be **80**. Its generated `$upstream` already points at the application container, so no manual upstream or proxy location changes are needed for this app.
 
-The separate `docker/nginx.conf` is installed inside the application image. It serves the compiled Angular files and handles route fallback, caching, `/runtime-config.js`, `/build-info.json`, and `/healthz`. Keep those rules in the container; do not paste them over CapRover's proxy template. The container uses plain HTTP on its internal Docker network, with public TLS handled by CapRover.
+The separate `docker/nginx.conf` is installed inside the application image. It serves the compiled Angular files and handles route fallback, localized `/es/` HTML, crawler discovery files, caching, `/runtime-config.js`, `/build-info.json`, and `/healthz`. Keep those rules in the container; do not paste them over CapRover's proxy template. The container uses plain HTTP on its internal Docker network, with public TLS handled by CapRover. See [SEO and indexing](seo.md) for canonical URLs, static HTML generation, and Search Console verification.
 
 ## GitHub configuration
 
@@ -67,7 +67,7 @@ Run the automated container check before pushing:
 npm run test:docker
 ```
 
-This requires Docker daemon access, Bash, curl, jq, and Git. It builds `jutsu:local-test` with the current commit, starts a temporary container on a random loopback port, and checks startup, health, build metadata, runtime configuration, Angular route fallback, and missing assets. The container is removed after the check; the local image remains available.
+This requires Docker daemon access, Bash, curl, jq, and Git. It builds `jutsu:local-test` with the current commit, starts a temporary container on a random loopback port, and checks startup, health, build metadata, runtime configuration, Angular route fallback, missing assets, localized HTML, and crawler discovery files and content types. The container is removed after the check; the local image remains available.
 
 To keep a container running for manual inspection:
 
