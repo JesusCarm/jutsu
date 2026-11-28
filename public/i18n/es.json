@@ -1,15 +1,18 @@
 {
   "app": {
     "title": "JUTSU",
-    "documentTitle": "Editor de escuadras de Jutsu | Gipsy Games",
+    "documentTitle": "Jutsu | Creador de bandas ninja y fichas PDF | Gipsy Games",
     "subtitle": "Editor de escuadra",
     "skip": "Ir al editor de escuadra",
     "language": "Idioma",
     "english": "Inglés",
     "spanish": "Español",
-    "description": "Crea tu escuadra ninja y genera tu ficha de personaje con el editor de Jutsu de Gipsy Games.",
+    "description": "Crea una banda de tres ninjas para Jutsu. Elige tipos, escuelas de jutsu, armas y equipo, y descarga tus fichas de personaje en PDF para imprimir.",
     "product": "Jutsu",
-    "publisher": "Gipsy Games"
+    "publisher": "Gipsy Games",
+    "heading": "Jutsu — creador de bandas ninja",
+    "introduction": "Crea tu banda de tres ninjas para Jutsu, el juego de escaramuzas ninja de Gipsy Games. Elige el tipo, la escuela de jutsu, las armas y el equipo de cada ninja y descarga sus fichas de personaje en PDF, listas para imprimir y jugar.",
+    "javascriptRequired": "Activa JavaScript para editar tu banda y descargar el PDF."
   },
   "footer": {
     "links": "Enlaces de Gipsy Games",

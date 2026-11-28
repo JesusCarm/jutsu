@@ -91,6 +91,14 @@ jobs:
           curl --fail http://127.0.0.1:8080/runtime-config.js | grep --fixed-strings --quiet G-CITEST0001
           curl --fail http://127.0.0.1:8080/a-client-route | grep --fixed-strings --quiet '<app-root>'
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:8080/assets/missing.json)" = 404
+          spanish_html="$(curl --fail --silent http://127.0.0.1:8080/es/)"
+          [[ "$spanish_html" == *'<html lang="es"'* ]]
+          legacy_html="$(curl --fail --silent 'http://127.0.0.1:8080/?lang=es')"
+          [[ "$legacy_html" == *'<html lang="es"'* ]]
+          curl --fail --silent http://127.0.0.1:8080/robots.txt | grep --fixed-strings --quiet 'Sitemap: https://jutsu.gipsygames.com/sitemap.xml'
+          curl --fail --silent http://127.0.0.1:8080/sitemap.xml | grep --fixed-strings --quiet '<loc>https://jutsu.gipsygames.com/es/</loc>'
+          test "$(curl --fail --silent --output /dev/null --write-out '%{content_type}' http://127.0.0.1:8080/robots.txt)" = text/plain
+          test "$(curl --fail --silent --output /dev/null --write-out '%{content_type}' http://127.0.0.1:8080/sitemap.xml)" = application/xml
 
   deploy:
     needs: publish

@@ -1,8 +1,10 @@
-import { DOCUMENT, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { computed, DestroyRef, inject, Injectable, InjectionToken, signal } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, PRIMARY_OUTLET, Router, type UrlTree } from '@angular/router';
 import { PlatformAssetsService } from '../services/platform-assets.service';
-import { App, Messages, type TranslationKey } from './i18n-keys';
+import { Messages, type TranslationKey } from './i18n-keys';
+import { SeoService } from '../seo/seo.service';
+import site from '../seo/site-config.json';
 import { DEFAULT_LANGUAGE, supportedLanguage, type Language } from './languages';
 import { TranslationDictionary, type TranslationParams } from './translation-dictionary';
 
@@ -22,9 +24,10 @@ export const TRANSLATION_FETCH = new InjectionToken<TranslationFetch>('Load a tr
 export class I18nService {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
-  private readonly document = inject(DOCUMENT);
+  private readonly seo = inject(SeoService);
   private readonly assets = inject(PlatformAssetsService);
   private readonly fetchDictionary = inject(TRANSLATION_FETCH);
+  private readonly currentUrl = signal(this.location.path(true) || '/');
   private readonly cache = new Map<Language, Promise<unknown>>();
   private readonly state = signal({ lang: DEFAULT_LANGUAGE, dictionary: new TranslationDictionary(), loading: true, revision: 0, failed: false });
   private english: unknown = {};
@@ -38,9 +41,12 @@ export class I18nService {
 
   constructor() {
     const subscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && this.initial) {
-        const lang = this.languageFromUrl(event.urlAfterRedirects);
-        if (lang !== this.lang() || this.state().failed) this.pending = this.activate(lang);
+      if (event instanceof NavigationEnd) {
+        this.currentUrl.set(event.urlAfterRedirects);
+        if (this.initial) {
+          const lang = this.languageFromUrl(event.urlAfterRedirects);
+          if (lang !== this.lang() || this.state().failed) this.pending = this.activate(lang);
+        }
       }
     });
     inject(DestroyRef).onDestroy(() => subscription.unsubscribe());
@@ -52,12 +58,20 @@ export class I18nService {
 
   async setLanguage(value: string): Promise<void> {
     await this.initialize();
-    const tree = this.router.parseUrl(this.location.path(true) || '/');
-    tree.queryParams = { ...tree.queryParams, lang: supportedLanguage(value) };
+    const tree = this.languageUrl(value);
     const navigated = await this.router.navigateByUrl(tree);
     if (!navigated && this.state().failed) this.pending = this.activate(this.languageFromUrl(this.location.path(true)));
     // NavigationEnd owns the language state, including Back and Forward navigations.
     await this.pending;
+  }
+
+  languageUrl(value: string): UrlTree {
+    const current = this.router.parseUrl(this.currentUrl());
+    const tree = this.router.parseUrl(`/${site.paths[supportedLanguage(value)]}`);
+    tree.queryParams = { ...current.queryParams };
+    delete tree.queryParams['lang'];
+    tree.fragment = current.fragment;
+    return tree;
   }
 
   t(key: TranslationKey, params?: TranslationParams): string {
@@ -69,6 +83,7 @@ export class I18nService {
   }
 
   private async start(): Promise<void> {
+    this.currentUrl.set(this.location.path(true) || '/');
     try {
       this.english = await this.load(DEFAULT_LANGUAGE);
     } catch {
@@ -78,7 +93,10 @@ export class I18nService {
   }
 
   private languageFromUrl(url: string): Language {
-    return supportedLanguage(this.router.parseUrl(url || '/').queryParamMap.get('lang'));
+    const tree = this.router.parseUrl(url || '/');
+    const path = tree.root.children[PRIMARY_OUTLET]?.segments[0]?.path;
+    if (path === 'es') return 'es';
+    return supportedLanguage(tree.queryParamMap.get('lang'));
   }
 
   private async activate(lang: Language, force = false): Promise<void> {
@@ -90,9 +108,7 @@ export class I18nService {
     try { active = await this.load(lang); } catch { failed = true; }
     if (request !== this.request) return;
     this.state.update((state) => ({ ...state, dictionary: new TranslationDictionary(this.english, active), loading: false, failed }));
-    this.document.documentElement.lang = lang;
-    this.document.title = this.t(App.documentTitle);
-    this.document.querySelector('meta[name="description"]')?.setAttribute('content', this.t(App.description));
+    this.seo.update(lang, this.snapshot());
   }
 
   private load(lang: Language): Promise<unknown> {

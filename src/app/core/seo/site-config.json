@@ -1,0 +1,6 @@
+{
+  "url": "https://jutsu.gipsygames.com/",
+  "paths": { "en": "", "es": "es/" },
+  "locales": { "en": "en_US", "es": "es_ES" },
+  "image": "assets/logos/logo_square512x512.png"
+}

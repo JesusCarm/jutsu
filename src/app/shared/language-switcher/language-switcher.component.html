@@ -1,9 +1,10 @@
 <div class="language-switcher" role="group" [attr.aria-label]="i18n.t(App.language)">
   @for (language of languages; track language.id) {
-    <button type="button" [attr.data-language]="language.id" [class.is-active]="i18n.lang() === language.id"
-      [attr.aria-pressed]="i18n.lang() === language.id"
+    <a [routerLink]="i18n.languageUrl(language.id)" [attr.hreflang]="language.id"
+      [attr.data-language]="language.id" [class.is-active]="i18n.lang() === language.id"
+      [attr.aria-current]="i18n.lang() === language.id ? 'page' : null"
       [attr.aria-label]="i18n.t(Actions.selectLanguage, {language: i18n.t(language.label)})"
       [title]="i18n.t(Actions.selectLanguage, {language: i18n.t(language.label)})"
-      (click)="i18n.setLanguage(language.id)"><app-ui-icon [name]="language.icon" /></button>
+      (click)="retryLanguage(language.id)"><app-ui-icon [name]="language.icon" /></a>
   }
 </div>

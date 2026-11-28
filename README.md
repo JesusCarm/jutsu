@@ -85,6 +85,7 @@ All squad processing and document generation take place on the client side, with
 
 - [Deployment and CI/CD](docs/deployment.md)
 - [Internationalization](docs/i18n.md)
+- [SEO and indexing](docs/seo.md)
 - [UI and selection panels](docs/selection-panels.md)
 - [Contextual rules and quick-reference content](docs/rules.md)
 - [PDF generation engine](src/app/features/pdf-generator/README.md)

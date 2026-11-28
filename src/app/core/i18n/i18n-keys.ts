@@ -9,7 +9,10 @@ export const App = {
   "spanish": "app.spanish",
   "description": "app.description",
   "product": "app.product",
-  "publisher": "app.publisher"
+  "publisher": "app.publisher",
+  "heading": "app.heading",
+  "introduction": "app.introduction",
+  "javascriptRequired": "app.javascriptRequired"
 } as const;
 
 export const Footer = {
@@ -367,6 +370,9 @@ export const ALL_TRANSLATION_KEYS: readonly TranslationKey[] = [
   "app.description",
   "app.product",
   "app.publisher",
+  "app.heading",
+  "app.introduction",
+  "app.javascriptRequired",
   "footer.links",
   "footer.patreon",
   "footer.myMiniFactory",

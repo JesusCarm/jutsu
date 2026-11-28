@@ -1,15 +1,18 @@
 {
   "app": {
     "title": "JUTSU",
-    "documentTitle": "Jutsu Band Builder | Gipsy Games",
+    "documentTitle": "Jutsu Band Builder | Ninja Squad & PDF Sheets | Gipsy Games",
     "subtitle": "Squad editor",
     "skip": "Skip to the squad editor",
     "language": "Language",
     "english": "English",
     "spanish": "Spanish",
-    "description": "Create your ninja squad and generate your character sheet with Jutsu Band Builder by Gipsy Games.",
+    "description": "Create a squad of three ninjas for Jutsu. Choose types, jutsu schools, weapons and equipment, then download your character sheets as a printable PDF.",
     "product": "Jutsu",
-    "publisher": "Gipsy Games"
+    "publisher": "Gipsy Games",
+    "heading": "Jutsu Band Builder — ninja squad creator",
+    "introduction": "Build your squad of three ninjas for Jutsu, the ninja skirmish game by Gipsy Games. Choose each ninja’s type, jutsu school, weapons and equipment, then download your character sheets as a PDF ready to print and play.",
+    "javascriptRequired": "Enable JavaScript to edit your squad and download the PDF."
   },
   "footer": {
     "links": "Gipsy Games links",
